@@ -21,7 +21,7 @@
             <input type="password" name="contraseña nueva" placeholder="''''''''''''''''" >
             <i class="fas fa-eye-slash" id="togglePassword"></i>
             <h4>Repetir contraseña</h4>
-            <input type="password" name="repetir conyraseña" placeholder="''''''''''''''''" >
+            <input type="password" name="repetir contraseña" placeholder="''''''''''''''''" >
             <i class="fas fa-eye-slash" id="togglePassword"></i>
             </div>
         
