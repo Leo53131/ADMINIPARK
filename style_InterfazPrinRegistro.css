@@ -1,0 +1,131 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Nunito', sans-serif; /* Usar fuente Nunito */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para mantener la barra superior fija */
+    background-color: white;
+}
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+    height: 100vh; /* Hacer que ocupe toda la pantalla */
+    width: 100vw;  /* Asegura que ocupe todo el ancho */
+    margin: 0;
+    padding: 0;
+}
+
+.div1 {
+    grid-column: span 5 / span 5; /* Ocupa todas las columnas */
+    display: flex;
+    justify-content: space-between;
+}
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px 20px;
+}
+
+/* Logo alineado a la izquierda */
+.logo-container img {
+    width: 120px;
+    height: auto;
+}
+
+/* Contenedor para usuario y notificaciones alineados a la derecha */
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre el perfil y la campanita */
+}
+
+/* Perfil de usuario con fondo naranja */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #da7e5b;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+.user-profile i {
+    font-size: 24px;
+}
+
+/* Icono de notificaciones */
+.notification {
+    font-size: 24px;
+    color: #da7e5b;
+}
+
+/* Línea naranja debajo de la barra superior */
+.separator-line {
+    border: none;
+    border-top: 4px solid #da7e5b;
+    margin: 0;
+}
+
+.div2 {
+    width: 80px;
+    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
+    grid-row-start: 2;            /* Comienza en la fila 2 */
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    padding-left: 10px; /* Espacio adicional */
+    padding-right: 10px; /* Espacio adicional */
+}
+
+.sidebar a {
+    margin: 25px 0; /* Espaciado vertical aumentado */
+    color: #da7e5b;
+    text-decoration: none;
+    font-size: 20px; /* Tamaño del texto de los íconos reducido */
+    position: relative;
+    width: 100%; /* Para ocupar todo el ancho */
+    display: flex; /* Flex para centrar el texto */
+    justify-content: center; /* Centra el texto horizontalmente */
+}
+.sidebar a span {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    background-color: #da7e5b;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+.sidebar a:hover span {
+    display: inline-block;
+}
+
+.sidebar a:hover {
+    color: rgb(252, 111, 111)5b;
+}    
+
+
+
+.div3 {
+    grid-column: span 4 / span 4; /* Ocupa 4 columnas */
+    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
+    grid-row-start: 2;            /* Comienza en la fila 2 */
+    background-color: yellow;
+    
+}
+

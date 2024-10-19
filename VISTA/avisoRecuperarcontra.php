@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style_AvisoRC.css">
+    <link rel="stylesheet" href="../estilos/style_AvisoRC.css">
     <title>Aviso recuperar contraseña</title>
 </head>
 <body>
