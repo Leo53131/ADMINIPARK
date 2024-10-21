@@ -55,15 +55,14 @@ h2 {
     font-size: 24px;
 }
 
-.input-group{
+.input-group {
     display: flex;
     align-items: center;
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid  #ddd;
     padding: 0.5rem;
 }
 
-.input-group i{
+.input-group i {
     margin-right: 0rem;
     color: #999;
     background-color: white;
@@ -74,10 +73,22 @@ input, select {
     border: none;
     outline: none;
     flex: 1;
-    padding: 0.5rem;
+    padding: 0.7rem; /* Aumentar ligeramente el padding */
+    font-size: 1rem; /* Aumentar el tamaño de la fuente */
+    border-radius: 8px; /* Redondear bordes de los inputs */
+    background-color: white; /* Asegurarse de que el fondo sea blanco */
 }
-
-button{
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+.input-group i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+button {
     width: 100%;
     padding: 1rem;
     background-color: #d17e6b;
@@ -88,11 +99,11 @@ button{
     font-size: 1rem;
 }
 
-button:hover{
+button:hover {
     background-color: #ff6666;
 }
 
-.forgot-password{
+.forgot-password {
     padding: 10px;
     display: flex;
     justify-content: center;

@@ -18,15 +18,15 @@
         <form>
             <div class="input-group">
             <h4>Nombre</h4>
-            <input type="text" name="Nombre" placeholder="''''''''''''''''" >
+            <input type="text" name="Nombre" placeholder="Jimena" >
             <h4>Apellido</h4>
-            <input type="text" name="Apellido" placeholder="''''''''''''''''" >
+            <input type="text" name="Apellido" placeholder="Jimenez" >
             <h4>Correo</h4>
-            <input type="email" name="correo" placeholder="''''''''''''''''" >
+            <input type="email" name="correo" placeholder="Ejemplo@gmial.com" >
             <h4>Usuario</h4>
-            <input type="text" name="usuario" placeholder="''''''''''''''''" >
+            <input type="text" name="usuario" placeholder="jimena123" >
             <h4>contraseña</h4>
-            <input type="password" name="contraseña" placeholder="''''''''''''''''" >
+            <input type="password" name="contraseña" placeholder="*************" >
             </div>
         
             <button type="submit" class="Registrarse">Registrarse</button>

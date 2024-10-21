@@ -32,10 +32,29 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-key"></i>
-                    <input type="password" placeholder="Contraseña">
+                    <input type="password" id="password" placeholder="Contraseña">
                     <i class="fas fa-eye-slash" id="togglePassword"></i>
                 </div>
-                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                <a href="OlvidasteContraseña.php" class="forgot-password">¿Olvidaste tu contraseña?</a>
                 <button type="submit" class="login-button"><b>Iniciar sesión</b></button>
             </form>
-            <p class="register">¿Aún no tienes cuenta? <a href="#">Únete aquí</a></p>
+            <p class="register">¿Aún no tienes cuenta? <a href="crearcuenta.php">Únete aquí</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Script para mostrar/ocultar la contraseña
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            // Cambia el tipo de input entre 'password' y 'text'
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            // Cambia el ícono del ojo
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
+    </script>
+</body>
+</html>
