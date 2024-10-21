@@ -3,8 +3,6 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: 'Nunito', sans-serif; /* Usar fuente Nunito */
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column; /* Cambiado a columna para mantener la barra superior fija */
     background-color: white;
@@ -26,6 +24,7 @@ body, html {
     display: flex;
     justify-content: space-between;
 }
+
 .top-bar {
     width: 100%;
     display: flex;
@@ -58,6 +57,7 @@ body, html {
     padding: 10px;
     border-radius: 20px;
 }
+
 .user-profile i {
     font-size: 24px;
 }
@@ -77,7 +77,7 @@ body, html {
 
 .div2 {
     width: 80px;
-    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
+    grid-row: span 3 / span 3;    /* Ocupa 4 filas */
     grid-row-start: 2;            /* Comienza en la fila 2 */
     background-color: white;
     display: flex;
@@ -89,7 +89,7 @@ body, html {
 }
 
 .sidebar a {
-    margin: 25px 0; /* Espaciado vertical aumentado */
+    margin: 30px 0; /* Aumenta el espaciado vertical entre los enlaces */
     color: #da7e5b;
     text-decoration: none;
     font-size: 20px; /* Tamaño del texto de los íconos reducido */
@@ -98,6 +98,18 @@ body, html {
     display: flex; /* Flex para centrar el texto */
     justify-content: center; /* Centra el texto horizontalmente */
 }
+
+/* Aument ar el tamaño de los íconos */
+.sidebar a i {
+    font-size: 28px; /* Aumenta el tamaño de los íconos */
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+}
+
+/* Estilo específico para el enlace "Salir" */
+.sidebar a:last-child {
+    margin-top: 200px; /* Aumenta la separación superior solo para el enlace "Salir" */
+}
+
 .sidebar a span {
     display: none;
     position: absolute;
@@ -117,15 +129,102 @@ body, html {
 
 .sidebar a:hover {
     color: rgb(252, 111, 111)5b;
-}    
-
-
-
-.div3 {
-    grid-column: span 4 / span 4; /* Ocupa 4 columnas */
-    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
-    grid-row-start: 2;            /* Comienza en la fila 2 */
-    background-color: yellow;
-    
 }
 
+.div3 {
+    grid-column: span 4 / span 5; /* Cambia a 5 para que ocupe menos espacio a la derecha */
+    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
+    grid-row-start: 2;            /* Comienza en la fila 2 */
+    display: flex;                /* Usar flexbox para centrar */
+    flex-direction: column;       /* Cambiar a columna para apilar elementos */
+    align-items: center;          /* Centrar horizontalmente */
+    padding: 10px;                /* Espaciado interno */
+    margin-left: -150px;          /* Desplaza el div3 hacia la izquierda */
+}
+
+.form-container {
+    text-align: left;
+    background-color: white; /* Mantener el fondo blanco */
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;             /* Ancho fijo para el formulario */
+    margin-top: 20px;        /* Espacio superior para separación */
+    margin-left: auto;       /* Centrar horizontalmente */
+    margin-right: auto;      /* Centrar horizontalmente */
+    border: none;            /* Eliminar el borde */
+}
+
+.div3 h2 {
+    color: #da7e5b; /* Color de texto naranja */
+    text-align: left; /* Alinear a la izquierda */
+    margin: 0 0 10px; /* Margen inferior para espacio */
+}
+
+.separator-line {
+    border: none;
+    border-top: 2px solid #da7e5b; /* Línea separadora */
+    margin: 10px 0; /* Espaciado vertical */
+    width: 100%; /* Asegura que la línea ocupe todo el ancho */
+}
+
+.logo-container img {
+    width: 250px; /* Aumenta el ancho del logo */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+/* Etiquetas sobre los campos del formulario */
+.form-container h3 {
+    font-weight: 600; /* Usar negrita */
+    margin-top: 10px;
+    color: #da7e5b; /* Color de texto naranja */
+    text-align: center; /* Centrar el texto */
+}
+
+/* Contenedor para el input de contraseña y el ícono */
+.password-container {
+    position: relative; /* Para posicionar el ícono dentro del input */
+}
+
+.password-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0; /* Espacio reducido */
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Mantener el borde del input */
+}
+
+/* Estilo para el ícono del ojo */
+.password-container i {
+    position: absolute; /* Posicionar el ícono dentro del input */
+    right: 10px; /* Espacio desde la derecha */
+    top: 50%; /* Centrar verticalmente */
+    transform: translateY(-50%); /* Ajustar para centrar */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el ícono */
+}
+
+/* Campos del formulario */
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0; /* Espacio reducido */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Botón de registro */
+.form-container button {
+    background-color: #da7e5b;
+    color: white;
+    padding: 15px 20px; /* Aumentar el padding para hacer el botón más grande */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px; /* Aumentar el tamaño de la letra del botón */
+    margin-top: 15px; /* Separar el botón de los inputs */
+}
+
+.form-container button:hover {
+    background-color: #965A46;
+}
