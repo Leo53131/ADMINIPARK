@@ -17,26 +17,27 @@
                 </div>
             </div>
             <h2>¡Bienvenido!</h2>
-            <form>
+            <form id="loginForm" method="post">
                 <div class="input-group">
                     <i class="fas fa-users"></i>
-                    <select>
+                    <select id="role" required>
                         <option value="">Seleccione un rol...</option>
                         <option value="admin">Administrador</option>
-                        <option value="user">Usuario</option>
+                        <option value="employee">Empleado</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Usuario o correo">
+                    <input type="text" id="username" placeholder="Usuario o correo" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-key"></i>
-                    <input type="password" id="password" placeholder="Contraseña">
+                    <input type="password" id="password" placeholder="Contraseña" required>
                     <i class="fas fa-eye-slash" id="togglePassword"></i>
                 </div>
                 <a href="OlvidasteContraseña.php" class="forgot-password">¿Olvidaste tu contraseña?</a>
                 <button type="submit" class="login-button"><b>Iniciar sesión</b></button>
+                <p id="error-message" style="color: red; display: none;"></p>
             </form>
             <p class="register">¿Aún no tienes cuenta? <a href="crearcuenta.php">Únete aquí</a></p>
         </div>
@@ -48,12 +49,34 @@
         const passwordInput = document.getElementById('password');
 
         togglePassword.addEventListener('click', function () {
-            // Cambia el tipo de input entre 'password' y 'text'
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            // Cambia el ícono del ojo
             this.classList.toggle('fa-eye-slash');
             this.classList.toggle('fa-eye');
+        });
+
+        // Validación del formulario
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita el envío del formulario
+
+            const username = document.getElementById('username').value.trim(); // Eliminar espacios en blanco
+            const password = document.getElementById('password').value.trim(); // Eliminar espacios en blanco
+            const role = document.getElementById('role').value; // Obtener el rol seleccionado
+            const errorMessage = document.getElementById('error-message');
+
+            // Validar credenciales
+            if (username === 'frederick' && password === '12345') {
+                // Redirigir según el rol
+                if (role === 'admin') {
+                    window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
+                } else if (role === 'employee') {
+                    window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
+                }
+            } else {
+                // Si son incorrectas, muestra un mensaje de error
+                errorMessage.textContent = 'Usuario o contraseña incorrecta';
+                errorMessage.style.display = 'block';
+            }
         });
     </script>
 </body>

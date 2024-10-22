@@ -132,14 +132,15 @@ body, html {
 }
 
 .div3 {
-    grid-column: span 4 / span 5; /* Cambia a 5 para que ocupe menos espacio a la derecha */
+    grid-column: span 4 / span 4; /* Cambia a 5 para que ocupe menos espacio a la derecha */
     grid-row: span 4 / span 4;    /* Ocupa 4 filas */
     grid-row-start: 2;            /* Comienza en la fila 2 */
     display: flex;                /* Usar flexbox para centrar */
     flex-direction: column;       /* Cambiar a columna para apilar elementos */
     align-items: center;          /* Centrar horizontalmente */
     padding: 10px;                /* Espaciado interno */
-    margin-left: -150px;          /* Desplaza el div3 hacia la izquierda */
+    margin-left: -150px; 
+    margin-top: -45px;         /* Desplaza el div3 hacia la izquierda */
 }
 
 .form-container {

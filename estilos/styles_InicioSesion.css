@@ -100,7 +100,7 @@ button {
 }
 
 button:hover {
-    background-color: #ff6666;
+    background-color: #fc8d8d;
 }
 
 .forgot-password {
@@ -108,4 +108,10 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+input:focus, select:focus {
+    outline: none; /* Eliminar el contorno azul */
+    box-shadow: none; /* Eliminar cualquier sombra que se agregue al enfoque */
+    background-color: white; /* Mantener el fondo blanco */
 }
