@@ -254,6 +254,65 @@
                 document.getElementById('password').value = '';
                 document.getElementById('role').value = '-- Seleccione un rol --';
             }
+
+                    // Función para mostrar el formulario de empleado
+        function showEmployeeForm() {
+            document.getElementById('employeeFormContainer').style.display = 'block';
+            document.getElementById('employeeTableContainer').style.display = 'none';
+        }
+
+        // Función para registrar un nuevo empleado
+        function registerEmployee() {
+            const name = document.getElementById('employeeName').value;
+            const role = document.getElementById('employeeRole').value;
+
+            if (name && role) {
+                // Agregar el nuevo empleado al array
+                employees.push({ name, role });
+
+                // Limpiar los campos del formulario
+                document.getElementById('employeeName').value = '';
+                document.getElementById('employeeRole').value = '';
+
+                // Volver a mostrar la tabla y ocultar el formulario
+                showEmployeeTable();
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        // Función para mostrar la tabla de empleados
+        function showEmployeeTable() {
+            const employeeTableBody = document.getElementById('employeeTableBody');
+            employeeTableBody.innerHTML = ''; // Limpiar la tabla
+
+            // Agregar cada empleado a la tabla
+            employees.forEach(employee => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${employee.name}</td><td>${employee.role}</td>`;
+                employeeTableBody.appendChild(row);
+            });
+
+            // Mostrar la tabla y ocultar el formulario
+            document.getElementById('employeeFormContainer').style.display = 'none';
+            document.getElementById('employeeTableContainer').style.display = 'block';
+        }
+
+                // Agregar la funcionalidad de mostrar/ocultar contraseña
+                const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                // Cambia el tipo de input entre 'password' y 'text'
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                // Cambia el ícono del ojo
+                this.classList.toggle('fa-eye-slash');
+                this.classList.toggle('fa-eye');
+            });
+        }
+
         </script>
     </body>
 </html>
