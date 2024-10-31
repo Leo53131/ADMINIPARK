@@ -82,7 +82,7 @@
                 </div>
 
                 <div id="registerEmployeeForm" class="hidden">
-                    <h2>Formulario de Registro de Empleado</h2>
+                    <h2>Formulario de Registro de Empleado</h2 >
                     <div class="separator-line"></div>
                     <div class="form-container">
                         <h3 style="text-align: center;">Usuario</h3>
@@ -118,7 +118,7 @@
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Usuarios registrados</h3>
                     <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="users-table">
+                    <table class="employees-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -154,7 +154,7 @@
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Vehículos registrados</h3>
                     <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="vehicles-table">
+                    <table class="employees-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -190,9 +190,9 @@
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Facturas registradas</h3>
                     <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="invoices-table">
+                    <table class="employees-table">
                         <thead>
-                            <tr>
+ <tr>
                                 <th>ID</th>
                                 <th>Número de factura</th>
                                 <th>Fecha de emisión</th>
