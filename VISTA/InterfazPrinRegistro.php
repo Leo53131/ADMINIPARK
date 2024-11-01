@@ -11,12 +11,13 @@
     <title>Interfaz Principal Admin</title>
     <style>
         .hidden {
-            display: none;
+            display: none; /* Clase para ocultar elementos */
         }
     </style>
 </head>
 <body>
     <div class="parent">
+        <!-- Encabezado de la interfaz -->
         <div class="div1">
             <div class="top-bar">
                 <div class="logo-container">
@@ -34,16 +35,17 @@
             </div>
         </div>
        
+        <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
                 <a href="#" onclick="showSection('employees')"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
                 <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Usuarios</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
                 <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
-                <a href="inicio_sesion.php"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
-            </div>
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>            </div>
         </div>
 
+        <!-- Contenido principal -->
         <div class="div3">
             <!-- Sección de Gestión de Empleados -->
             <div id="employees" class="main-content hidden">
@@ -81,12 +83,13 @@
                     <button class="nunito-unique-600">Siguiente</button>
                 </div>
 
+                <!-- Formulario de Registro de Empleado -->
                 <div id="registerEmployeeForm" class="hidden">
-                    <h2>Formulario de Registro de Empleado</h2 >
+                    <h2>Formulario de Registro de Empleado</h2>
                     <div class="separator-line"></div>
                     <div class="form-container">
                         <h3 style="text-align: center;">Usuario</h3>
-                        <input type ="text" id="username" placeholder="Usuario" class="nunito-unique-200" oninput="saveFormData()">
+                        <input type="text" id="username" placeholder ="Usuario " class="nunito-unique-200" oninput="saveFormData()">
                         
                         <h3 style="text-align: center;">Contraseña</h3>
                         <div class="password-container">
@@ -192,12 +195,12 @@
                     <p>Fecha de registro: 16 de octubre de 2024</p>
                     <table class="employees-table">
                         <thead>
- <tr>
+                            <tr>
                                 <th>ID</th>
                                 <th>Número de factura</th>
                                 <th>Fecha de emisión</th>
-                                <th>Monto</th >
-                                <th>Acciones</th>
+                                <th>Monto</th>
+                                <th>Acciones</ th>
                             </tr>
                         </thead>
                         <tbody>
@@ -216,88 +219,136 @@
         </div>
 
         <script>
-          let employeeCount = 1;
-let employees = []; // Asegúrate de tener un array para almacenar empleados
+            let employeeCount = 1;
+            let employees = []; // Array para almacenar empleados
 
-function showSection(sectionId) {
-    const sections = document.querySelectorAll('.main-content');
-    sections.forEach(section => section.classList.add('hidden'));
-    document.getElementById(sectionId).classList.remove('hidden');
-}
+            function showSection(sectionId) {
+                const sections = document.querySelectorAll('.main-content');
+                sections.forEach(section => section.classList.add('hidden'));
+                document.getElementById(sectionId).classList.remove('hidden');
+            }
 
-// Función para mostrar el formulario de registro
-function showEmployeeForm() {
-    document.getElementById('registerEmployeeForm').classList.remove('hidden');
-    document.getElementById('employeeTableContainer').style.display = 'none'; // Ocultar tabla
-}
+            // Función para mostrar el formulario de registro
+            function showRegisterForm() {
+                document.getElementById('registerEmployeeForm').classList.remove('hidden');
+                document.getElementById('employeeTableContainer').style.display = 'none'; // Ocultar tabla
+                document.getElementById('employeeTableBody').style.display = 'none'; // Ocultar tabla
+            }
 
-// Función para registrar un nuevo empleado
-function registerEmployee() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const role = document.getElementById('role').value;
+            // Función para registrar un nuevo empleado
+            function registerEmployee() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const role = document.getElementById('role').value;
 
-    if (username && password && role) {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td>${employeeCount}</td>
-            <td>${username}</td>
-            <td>******</td>
-            <td>${role}</td>
-            <td class="action-buttons">
-                <i class="fas fa-edit" title="Editar"></i>
-                <i class="fas fa-trash" title="Eliminar"></i>
-                <i class="fas fa-pencil-alt" title="Modificar"></i>
-            </td>
-        `;
+                if (username && password && role) {
+                    // Crear un nuevo empleado
+                    const newEmployee = {
+                        id: employeeCount,
+                        name: username,
+                        password: password, // Considera encriptar la contraseña en un entorno real
+                        role: role
+                    };
 
-        document.getElementById('employeeTableBody').appendChild(newRow);
-        employeeCount++;
+                    // Agregar el nuevo empleado al array
+                    employees.push(newEmployee);
 
-        // Limpiar el formulario
-        document.getElementById('registerEmployeeForm').classList.add('hidden');
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        document.getElementById('role').value = '-- Seleccione un rol --';
+                    // Crear una nueva fila en la tabla
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${newEmployee.id}</td>
+                        <td>${newEmployee.name}</td>
+                        <td>******</td>
+                        <td>${newEmployee.role}</td>
+                        <td class="action-buttons">
+                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${newEmployee.id})"></i>
+                        </td>
+                    `;
 
-        // Mostrar la tabla después de registrar
-        showEmployeeTable();
-    } else {
-        alert('Por favor, complete todos los campos.');
-    }
-}
+                    document.getElementById('employeeTableBody').appendChild(newRow);
+                    employeeCount++;
 
-// Función para mostrar la tabla de empleados
-function showEmployeeTable() {
-    const employeeTableBody = document.getElementById('employeeTableBody');
-    employeeTableBody.innerHTML = ''; // Limpiar la tabla
+                    // Limpiar el formulario
+                    document.getElementById('registerEmployeeForm').classList.add('hidden');
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('role').value = '-- Seleccione un rol --';
 
-    // Agregar cada empleado a la tabla
-    employees.forEach(employee => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${employee.name}</td><td>${employee.role}</td>`;
-        employeeTableBody.appendChild(row);
-    });
+                    // Mostrar la tabla después de registrar
+                    document.getElementById('employeeTableContainer').style.display = 'block';
+                    document.getElementById('employeeTableBody').style.display = 'block';
+                } else {
+                    alert('Por favor, complete todos los campos.');
+                }
+            }
 
-    // Mostrar la tabla y ocultar el formulario
-    document.getElementById('employeeFormContainer').style.display = 'none';
-    document.getElementById('employeeTableContainer').style.display = 'block';
-}
+            // Función para mostrar la tabla de empleados
+            function showEmployeeTable() {
+                const employeeTableBody = document.getElementById('employeeTableBody');
+                employeeTableBody.innerHTML = ''; // Limpiar la tabla
 
-// Agregar la funcionalidad de mostrar/ocultar contraseña
-const togglePassword = document.getElementById('togglePassword');
-const passwordInput = document.getElementById('password');
+                // Agregar cada empleado a la tabla
+                employees.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.id}</td>
+                        <td>${employee.name}</td>
+                        <td>******</td>
+                        <td>${employee.role}</td>
+                        <td class="action-buttons">
+                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
+                        </td>
+                    `;
+                    employeeTableBody.appendChild(row);
+                });
 
-if (togglePassword && passwordInput) {
-    togglePassword.addEventListener('click', function () {
-        // Cambia el tipo de input entre 'password' y 'text'
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        // Cambia el ícono del ojo
-        this.classList.toggle('fa-eye-slash');
-        this.classList.toggle('fa-eye');
-    });
-}
+                // Mostrar la tabla y ocultar el formulario
+                document.getElementById('employeeFormContainer').style.display = 'none';
+                document.getElementById('employeeTableContainer').style.display = 'block';
+            }
+
+            // Función para editar un empleado
+            function editEmployee(id) {
+                const employee = employees.find(emp => emp.id === id);
+                if (employee) {
+                    document.getElementById('username').value = employee.name;
+                    document.getElementById('password').value = employee.password; // Considera encriptar la contraseña en un entorno real
+                    document.getElementById('role').value = employee.role;
+
+                    // Ocultar la tabla y mostrar el formulario
+                    document.getElementById('employeeTableContainer').style.display = 'none';
+                    document.getElementById('registerEmployeeForm').classList.remove('hidden');
+                }
+            }
+
+            // Agregar la funcionalidad de mostrar/ocultar contraseña
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function () {
+                    // Cambia el tipo de input entre 'password' y 'text '
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    // Cambia el ícono del ojo
+                    this.classList.toggle('fa-eye-slash');
+                    this.classList.toggle('fa-eye');
+                });
+            }
+
+            function logout() {
+                // Limpiar el localStorage
+                localStorage.removeItem('user');
+
+                // Redirigir a la página de inicio de sesión
+                window.location.href = 'inicio_sesion.php';
+
+                // Limpiar los campos del formulario de inicio de sesión
+                const loginForm = document.getElementById('loginForm');
+                    if (loginForm) {
+                    loginForm.reset(); // Esto limpiará todos los campos del formulario
+                }
+            }
         </script>
     </body>
 </html>

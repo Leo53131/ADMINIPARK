@@ -64,8 +64,11 @@
             const role = document.getElementById('role').value; // Obtener el rol seleccionado
             const errorMessage = document.getElementById('error-message');
 
+            // Obtener el usuario del localStorage
+            const storedUser  = JSON.parse(localStorage.getItem('user'));
+
             // Validar credenciales
-            if (username === 'frederick' && password === '12345') {
+            if (storedUser  && (storedUser .usuario === username || storedUser .correo === username) && storedUser .contraseña === password) {
                 // Redirigir según el rol
                 if (role === 'admin') {
                     window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
@@ -73,7 +76,7 @@
                     window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
                 }
             } else {
-                // Si son incorrectas, muestra un mensaje de error
+                // Si las credenciales son incorrectas, muestra un mensaje de error
                 errorMessage.textContent = 'Usuario o contraseña incorrecta';
                 errorMessage.style.display = 'block';
             }
