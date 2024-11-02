@@ -81,6 +81,35 @@
                 errorMessage.style.display = 'block';
             }
         });
+        // Validación del formulario
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita el envío del formulario
+
+    const username = document.getElementById('username').value.trim(); // Eliminar espacios en blanco
+    const password = document.getElementById('password').value.trim(); // Eliminar espacios en blanco
+    const role = document.getElementById('role').value; // Obtener el rol seleccionado
+    const errorMessage = document.getElementById('error-message');
+
+    // Obtener el usuario del localStorage
+    const storedUser  = JSON.parse(localStorage.getItem('user'));
+
+    // Validar credenciales
+    if (storedUser  && (storedUser .name === username || storedUser .email === username) && storedUser .password === password) {
+        // Redirigir según el rol
+        if (role === 'admin' && storedUser .role === 'Admin') {
+            window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
+        } else if (role === 'employee' && storedUser .role === 'Empleado') {
+            window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
+        } else {
+            errorMessage.textContent = 'No tienes permiso para acceder a esta sección.';
+            errorMessage.style.display = 'block';
+        }
+    } else {
+        // Si las credenciales son incorrectas, muestra un mensaje de error
+        errorMessage.textContent = 'Usuario o contraseña incorrecta';
+        errorMessage.style.display = 'block';
+    }
+});
     </script>
 </body>
 </html>

@@ -13,6 +13,9 @@
         .hidden {
             display: none; /* Clase para ocultar elementos */
         }
+        .centered {
+            text-align: center; /* Centrar el contenido */
+        }
     </style>
 </head>
 <body>
@@ -42,13 +45,14 @@
                 <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Usuarios</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
                 <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
-                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>            </div>
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
+            </div>
         </div>
 
         <!-- Contenido principal -->
         <div class="div3">
             <!-- Sección de Gestión de Empleados -->
-            <div id="employees" class="main-content hidden">
+            <div id="employees" class="main-content">
                 <h2 class="nunito-unique-600">Empleados</h2>
                 <hr class="separator-line">
                 
@@ -81,31 +85,31 @@
                     <button class="nunito-unique-600">1</button>
                     <button class="nunito-unique-600">2</button>
                     <button class="nunito-unique-600">Siguiente</button>
-                </div>
+                </div >
+            </div>
 
-                <!-- Formulario de Registro de Empleado -->
-                <div id="registerEmployeeForm" class="hidden">
-                    <h2>Formulario de Registro de Empleado</h2>
-                    <div class="separator-line"></div>
-                    <div class="form-container">
-                        <h3 style="text-align: center;">Usuario</h3>
-                        <input type="text" id="username" placeholder ="Usuario " class="nunito-unique-200" oninput="saveFormData()">
-                        
-                        <h3 style="text-align: center;">Contraseña</h3>
-                        <div class="password-container">
-                            <input type="password" id="password" placeholder="Contraseña" oninput="saveFormData()">
-                            <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
-                        </div>
-                        
-                        <h3 style="text-align: center;">Rol</h3>
-                        <select id="role" class="nunito-unique-200" onchange="saveFormData()">
-                            <option>-- Seleccione un rol --</option>
-                            <option>Admin</option>
-                            <option>Empleado</option>
-                        </select>
-                        
-                        <button type="submit" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
+            <!-- Formulario de Registro de Empleado -->
+            <div id="registerEmployeeForm" class="hidden centered">
+                <h2>Formulario de Registro de Empleado</h2>
+                <div class="separator-line"></div>
+                <div class="form-container">
+                    <h3 style="text-align: center;">Usuario</h3>
+                    <input type="text" id="username" placeholder ="Usuario " class="nunito-unique-200" oninput="saveFormData()">
+                    
+                    <h3 style="text-align: center;">Contraseña</h3>
+                    <div class="password-container">
+                        <input type="password" id="password" placeholder="Contraseña" oninput="saveFormData()">
+                        <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
                     </div>
+                    
+                    <h3 style="text-align: center;">Rol</h3>
+                    <select id="role" class="nunito-unique-200" onchange="saveFormData()">
+                        <option>-- Seleccione un rol --</option>
+                        <option>Admin</option>
+                        <option>Empleado</option>
+                    </select>
+                    
+                    <button type="submit" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
                 </div>
             </div>
 
@@ -191,7 +195,7 @@
                 </div>
 
                 <div class="table-container">
-                    <h3 class="nunito-unique-600">Facturas registradas</h3>
+                    <h3 class="nunito-unique-600"> Facturas registradas</h3>
                     <p>Fecha de registro: 16 de octubre de 2024</p>
                     <table class="employees-table">
                         <thead>
@@ -230,9 +234,8 @@
 
             // Función para mostrar el formulario de registro
             function showRegisterForm() {
-                document.getElementById('registerEmployeeForm').classList.remove('hidden');
-                document.getElementById('employeeTableContainer').style.display = 'none'; // Ocultar tabla
-                document.getElementById('employeeTableBody').style.display = 'none'; // Ocultar tabla
+                document.getElementById('employees').classList.add('hidden'); // Ocultar la sección de empleados
+                document.getElementById('registerEmployeeForm').classList.remove('hidden'); // Mostrar el formulario
             }
 
             // Función para registrar un nuevo empleado
@@ -269,14 +272,11 @@
                     employeeCount++;
 
                     // Limpiar el formulario
-                    document.getElementById('registerEmployeeForm').classList.add('hidden');
+                    document.getElementById('registerEmployeeForm').classList.add('hidden'); // Ocultar el formulario
+                    document.getElementById('employees').classList.remove('hidden'); // Mostrar la sección de empleados
                     document.getElementById('username').value = '';
                     document.getElementById('password').value = '';
                     document.getElementById('role').value = '-- Seleccione un rol --';
-
-                    // Mostrar la tabla después de registrar
-                    document.getElementById('employeeTableContainer').style.display = 'block';
-                    document.getElementById('employeeTableBody').style.display = 'block';
                 } else {
                     alert('Por favor, complete todos los campos.');
                 }
@@ -321,7 +321,7 @@
                 }
             }
 
-            // Agregar la funcionalidad de mostrar/ocultar contraseña
+            // Agregar la funcional idad de mostrar/ocultar contraseña
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
 
@@ -349,6 +349,8 @@
                     loginForm.reset(); // Esto limpiará todos los campos del formulario
                 }
             }
+            // Mostrar la sección de Gestión de Empleados al cargar la página
+            showSection('employees');
         </script>
     </body>
 </html>
