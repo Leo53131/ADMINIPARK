@@ -1,10 +1,13 @@
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Nunito', sans-serif; /* Usar fuente Nunito */
+    font-family: 'Nunito', sans-serif;
+    /* Usar fuente Nunito */
     display: flex;
-    flex-direction: column; /* Cambiado a columna para mantener la barra superior fija */
+    flex-direction: column;
+    /* Cambiado a columna para mantener la barra superior fija */
     background-color: white;
 }
 
@@ -13,14 +16,17 @@ body, html {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     gap: 8px;
-    height: 100vh; /* Hacer que ocupe toda la pantalla */
-    width: 100vw;  /* Asegura que ocupe todo el ancho */
+    height: 100vh;
+    /* Hacer que ocupe toda la pantalla */
+    width: 100vw;
+    /* Asegura que ocupe todo el ancho */
     margin: 0;
     padding: 0;
 }
 
 .div1 {
-    grid-column: span 5 / span 5; /* Ocupa todas las columnas */
+    grid-column: span 5 / span 5;
+    /* Ocupa todas las columnas */
     display: flex;
     justify-content: space-between;
 }
@@ -44,7 +50,8 @@ body, html {
 .top-right {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espacio entre el perfil y la campanita */
+    gap: 20px;
+    /* Espacio entre el perfil y la campanita */
 }
 
 /* Perfil de usuario con fondo naranja */
@@ -77,37 +84,49 @@ body, html {
 
 .div2 {
     width: 80px;
-    grid-row: span 3 / span 3;    /* Ocupa 4 filas */
-    grid-row-start: 2;            /* Comienza en la fila 2 */
+    grid-row: span 3 / span 3;
+    /* Ocupa 4 filas */
+    grid-row-start: 2;
+    /* Comienza en la fila 2 */
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
-    padding-left: 10px; /* Espacio adicional */
-    padding-right: 10px; /* Espacio adicional */
+    padding-left: 10px;
+    /* Espacio adicional */
+    padding-right: 10px;
+    /* Espacio adicional */
 }
 
 .sidebar a {
-    margin: 30px 0; /* Aumenta el espaciado vertical entre los enlaces */
+    margin: 30px 0;
+    /* Aumenta el espaciado vertical entre los enlaces */
     color: #da7e5b;
     text-decoration: none;
-    font-size: 20px; /* Tamaño del texto de los íconos reducido */
+    font-size: 20px;
+    /* Tamaño del texto de los íconos reducido */
     position: relative;
-    width: 100%; /* Para ocupar todo el ancho */
-    display: flex; /* Flex para centrar el texto */
-    justify-content: center; /* Centra el texto horizontalmente */
+    width: 100%;
+    /* Para ocupar todo el ancho */
+    display: flex;
+    /* Flex para centrar el texto */
+    justify-content: center;
+    /* Centra el texto horizontalmente */
 }
 
 /* Aumentar el tamaño de los íconos */
 .sidebar a i {
-    font-size: 28px; /* Aumenta el tamaño de los íconos */
-    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    font-size: 28px;
+    /* Aumenta el tamaño de los íconos */
+    margin-right: 10px;
+    /* Espacio entre el ícono y el texto */
 }
 
 /* Estilo específico para el enlace "Salir" */
 .sidebar a:last-child {
-    margin-top: 200px; /* Aumenta la separación superior solo para el enlace "Salir" */
+    margin-top: 200px;
+    /* Aumenta la separación superior solo para el enlace "Salir" */
 }
 
 .sidebar a span {
@@ -132,75 +151,108 @@ body, html {
 }
 
 .div3 {
-    grid-column: span 4 / span 4; /* Cambia a 5 para que ocupe menos espacio a la derecha */
-    grid-row: span 4 / span 4;    /* Ocupa 4 filas */
-    grid-row-start: 2;            /* Comienza en la fila 2 */
-    display: flex;                /* Usar flexbox para centrar */
-    flex-direction: column;       /* Cambiar a columna para apilar elementos */
-    align-items: center;          /* Centrar horizontalmente */
-    padding: 10px;                /* Espaciado interno */
-    margin-left: -150px; 
-    margin-top: -45px;         /* Desplaza el div3 hacia la izquierda */
+    grid-column: span 4 / span 4;
+    /* Cambia a 5 para que ocupe menos espacio a la derecha */
+    grid-row: span 4 / span 4;
+    /* Ocupa 4 filas */
+    grid-row-start: 2;
+    /* Comienza en la fila 2 */
+    display: flex;
+    /* Usar flexbox para centrar */
+    flex-direction: column;
+    /* Cambiar a columna para apilar elementos */
+    align-items: center;
+    /* Centrar horizontalmente */
+    padding: 10px;
+    /* Espaciado interno */
+    margin-left: -150px;
+    margin-top: -45px;
+    /* Desplaza el div3 hacia la izquierda */
 }
 
 .form-container {
     text-align: left;
-    background-color: white; /* Mantener el fondo blanco */
+    background-color: white;
+    /* Mantener el fondo blanco */
     padding: 20px;
     border-radius: 10px;
-    width: 400px;             /* Ancho fijo para el formulario */
-    margin-top: 20px;        /* Espacio superior para separación */
-    margin-left: auto;       /* Centrar horizontalmente */
-    margin-right: auto;      /* Centrar horizontalmente */
-    border: none;            /* Eliminar el borde */
+    width: 400px;
+    /* Ancho fijo para el formulario */
+    margin-top: 20px;
+    /* Espacio superior para separación */
+    margin-left: auto;
+    /* Centrar horizontalmente */
+    margin-right: auto;
+    /* Centrar horizontalmente */
+    border: none;
+    /* Eliminar el borde */
 }
 
 .div3 h2 {
-    color: #da7e5b; /* Color de texto naranja */
-    text-align: left; /* Alinear a la izquierda */
-    margin: 0 0 10px; /* Margen inferior para espacio */
+    color: #da7e5b;
+    /* Color de texto naranja */
+    text-align: left;
+    /* Alinear a la izquierda */
+    margin: 0 0 10px;
+    /* Margen inferior para espacio */
 }
 
 .separator-line {
     border: none;
-    border-top: 2px solid #da7e5b; /* Línea separadora */
-    margin: 10px 0; /* Espaciado vertical */
-    width: 100%; /* Asegura que la línea ocupe todo el ancho */
+    border-top: 2px solid #da7e5b;
+    /* Línea separadora */
+    margin: 10px 0;
+    /* Espaciado vertical */
+    width: 100%;
+    /* Asegura que la línea ocupe todo el ancho */
 }
 
 .logo-container img {
-    width: 250px; /* Aumenta el ancho del logo */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 250px;
+    /* Aumenta el ancho del logo */
+    height: auto;
+    /* Mantiene la proporción de la imagen */
 }
 
 /* Etiquetas sobre los campos del formulario */
 .form-container h3 {
-    font-weight: 600; /* Usar negrita */
+    font-weight: 600;
+    /* Usar negrita */
     margin-top: 10px;
-    color: #da7e5b; /* Color de texto naranja */
-    text-align: center; /* Centrar el texto */
+    color: #da7e5b;
+    /* Color de texto naranja */
+    text-align: center;
+    /* Centrar el texto */
 }
 
 /* Contenedor para el input de contraseña y el ícono */
 .password-container {
-    position: relative; /* Para posicionar el ícono dentro del input */
+    position: relative;
+    /* Para posicionar el ícono dentro del input */
 }
 
 .password-container input {
     width: 100%;
     padding: 10px;
-    margin: 5px 0; /* Espacio reducido */
+    margin: 5px 0;
+    /* Espacio reducido */
     border-radius: 5px;
-    border: 1px solid #ccc; /* Mantener el borde del input */
+    border: 1px solid #ccc;
+    /* Mantener el borde del input */
 }
 
 /* Estilo para el ícono del ojo */
 .password-container i {
-    position: absolute; /* Posicionar el ícono dentro del input */
-    right: 10px; /* Espacio desde la derecha */
-    top: 50%; /* Centrar verticalmente */
-    transform: translateY(-50%); /* Ajustar para centrar */
-    cursor: pointer; /* Cambiar el cursor al pasar sobre el ícono */
+    position: absolute;
+    /* Posicionar el ícono dentro del input */
+    right: 10px;
+    /* Espacio desde la derecha */
+    top: 50%;
+    /* Centrar verticalmente */
+    transform: translateY(-50%);
+    /* Ajustar para centrar */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar sobre el ícono */
 }
 
 /* Campos del formulario */
@@ -208,7 +260,8 @@ body, html {
 .form-container select {
     width: 100%;
     padding: 10px;
-    margin: 5px 0; /* Espacio reducido */
+    margin: 5px 0;
+    /* Espacio reducido */
     border-radius: 5px;
     border: 1px solid #ccc;
 }
@@ -217,13 +270,16 @@ body, html {
 .form-container button {
     background-color: #da7e5b;
     color: white;
-    padding: 15px 20px; /* Aumentar el padding para hacer el botón más grande */
+    padding: 15px 20px;
+    /* Aumentar el padding para hacer el botón más grande */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
-    font-size: 18px; /* Aumentar el tamaño de la letra del botón */
-    margin-top: 15px; /* Separar el botón de los inputs */
+    font-size: 18px;
+    /* Aumentar el tamaño de la letra del botón */
+    margin-top: 15px;
+    /* Separar el botón de los inputs */
 }
 
 .form-container button:hover {
@@ -236,18 +292,23 @@ body, html {
 /* Estilo de la tabla */
 .employees-table {
     width: 100%;
-    max-width: 800px; /* Ajusta este valor según sea necesario para hacer la tabla más ancha */
+    max-width: 800px;
+    /* Ajusta este valor según sea necesario para hacer la tabla más ancha */
     border-collapse: collapse;
     margin-top: 10px;
 }
 
 .employees-table th,
 .employees-table td {
-    padding: 20px; /* Aumenta el padding para más espacio interno */
+    padding: 20px;
+    /* Aumenta el padding para más espacio interno */
     text-align: left;
-    border-bottom: 1px solid #da7e5b; /* Borde inferior de cada celda */
-    font-size: 16px; /* Tamaño de fuente */
-    min-height: 50px; /* Establece una altura mínima para las celdas */
+    border-bottom: 1px solid #da7e5b;
+    /* Borde inferior de cada celda */
+    font-size: 16px;
+    /* Tamaño de fuente */
+    min-height: 50px;
+    /* Establece una altura mínima para las celdas */
 }
 
 /* Encabezado de la tabla */
@@ -259,7 +320,8 @@ body, html {
 
 /* Celdas de la tabla */
 .employees-table td {
-    color: #6c4a4a; /* Color del texto de las celdas */
+    color: #6c4a4a;
+    /* Color del texto de las celdas */
 }
 
 /* Botones de acción dentro de la tabla */
@@ -272,7 +334,8 @@ body, html {
 }
 
 .action-buttons i:hover {
-    color: #965A46; /* Cambia de color al pasar el cursor */
+    color: #965A46;
+    /* Cambia de color al pasar el cursor */
 }
 
 /* Estilo de la caja de búsqueda */
@@ -329,4 +392,3 @@ body, html {
 .pagination button:hover {
     background-color: #965A46;
 }
-

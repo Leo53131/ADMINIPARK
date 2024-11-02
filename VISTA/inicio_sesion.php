@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../estilos/styles_InicioSesion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-box">
@@ -48,7 +50,7 @@
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
 
-        togglePassword.addEventListener('click', function () {
+        togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             this.classList.toggle('fa-eye-slash');
@@ -56,7 +58,7 @@
         });
 
         // Validación del formulario
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Evita el envío del formulario
 
             const username = document.getElementById('username').value.trim(); // Eliminar espacios en blanco
@@ -65,10 +67,10 @@
             const errorMessage = document.getElementById('error-message');
 
             // Obtener el usuario del localStorage
-            const storedUser  = JSON.parse(localStorage.getItem('user'));
+            const storedUser = JSON.parse(localStorage.getItem('user'));
 
             // Validar credenciales
-            if (storedUser  && (storedUser .usuario === username || storedUser .correo === username) && storedUser .contraseña === password) {
+            if (storedUser && (storedUser.usuario === username || storedUser.correo === username) && storedUser.contraseña === password) {
                 // Redirigir según el rol
                 if (role === 'admin') {
                     window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
@@ -82,34 +84,45 @@
             }
         });
         // Validación del formulario
-document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita el envío del formulario
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el envío del formulario
 
-    const username = document.getElementById('username').value.trim(); // Eliminar espacios en blanco
-    const password = document.getElementById('password').value.trim(); // Eliminar espacios en blanco
-    const role = document.getElementById('role').value; // Obtener el rol seleccionado
-    const errorMessage = document.getElementById('error-message');
+            const username = document.getElementById('username').value.trim(); // Eliminar espacios en blanco
+            const password = document.getElementById('password').value.trim(); // Eliminar espacios en blanco
+            const role = document.getElementById('role').value; // Obtener el rol seleccionado
+            const errorMessage = document.getElementById('error-message');
 
-    // Obtener el usuario del localStorage
-    const storedUser  = JSON.parse(localStorage.getItem('user'));
+            // Obtener el usuario del localStorage
+            const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    // Validar credenciales
-    if (storedUser  && (storedUser .name === username || storedUser .email === username) && storedUser .password === password) {
-        // Redirigir según el rol
-        if (role === 'admin' && storedUser .role === 'Admin') {
-            window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
-        } else if (role === 'employee' && storedUser .role === 'Empleado') {
-            window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
-        } else {
-            errorMessage.textContent = 'No tienes permiso para acceder a esta sección.';
-            errorMessage.style.display = 'block';
-        }
-    } else {
-        // Si las credenciales son incorrectas, muestra un mensaje de error
-        errorMessage.textContent = 'Usuario o contraseña incorrecta';
-        errorMessage.style.display = 'block';
-    }
-});
+            // Validar credenciales
+            if (storedUser && (storedUser.name === username || storedUser.email === username) && storedUser.password === password) {
+                // Redirigir según el rol
+                if (role === 'admin' && storedUser.role === 'Admin') {
+                    window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
+                } else if (role === 'employee' && storedUser.role === 'Empleado') {
+                    window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
+                } else {
+                    errorMessage.textContent = 'No tienes permiso para acceder a esta sección.';
+                    errorMessage.style.display = 'block';
+                }
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                errorMessage.textContent = 'Usuario o contraseña incorrecta';
+                errorMessage.style.display = 'block';
+            }
+        }); // Almacenar el usuario en localStorage
+        const newUser = {
+            nombre: nombre,
+            apellido: apellido,
+            correo: correo,
+            usuario: usuario,
+            contraseña: contraseña // En un entorno real, deberías encriptar la contraseña
+        };
+
+        // Guardar el usuario en localStorage
+        localStorage.setItem('user', JSON.stringify(newUser));
     </script>
 </body>
+
 </html>
