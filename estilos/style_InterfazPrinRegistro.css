@@ -17,16 +17,13 @@ html {
     grid-template-rows: repeat(5, 1fr);
     gap: 8px;
     height: 100vh;
-    /* Hacer que ocupe toda la pantalla */
     width: 100vw;
-    /* Asegura que ocupe todo el ancho */
     margin: 0;
     padding: 0;
 }
 
 .div1 {
     grid-column: span 5 / span 5;
-    /* Ocupa todas las columnas */
     display: flex;
     justify-content: space-between;
 }
@@ -40,21 +37,17 @@ html {
     padding: 10px 20px;
 }
 
-/* Logo alineado a la izquierda */
 .logo-container img {
     width: 120px;
     height: auto;
 }
 
-/* Contenedor para usuario y notificaciones alineados a la derecha */
 .top-right {
     display: flex;
     align-items: center;
     gap: 20px;
-    /* Espacio entre el perfil y la campanita */
 }
 
-/* Perfil de usuario con fondo naranja */
 .user-profile {
     display: flex;
     align-items: center;
@@ -69,13 +62,11 @@ html {
     font-size: 24px;
 }
 
-/* Icono de notificaciones */
 .notification {
     font-size: 24px;
     color: #da7e5b;
 }
 
-/* Línea naranja debajo de la barra superior */
 .separator-line {
     border: none;
     border-top: 4px solid #da7e5b;
@@ -85,48 +76,34 @@ html {
 .div2 {
     width: 80px;
     grid-row: span 3 / span 3;
-    /* Ocupa 4 filas */
     grid-row-start: 2;
-    /* Comienza en la fila 2 */
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
     padding-left: 10px;
-    /* Espacio adicional */
     padding-right: 10px;
-    /* Espacio adicional */
 }
 
 .sidebar a {
     margin: 30px 0;
-    /* Aumenta el espaciado vertical entre los enlaces */
     color: #da7e5b;
     text-decoration: none;
     font-size: 20px;
-    /* Tamaño del texto de los íconos reducido */
     position: relative;
     width: 100%;
-    /* Para ocupar todo el ancho */
     display: flex;
-    /* Flex para centrar el texto */
     justify-content: center;
-    /* Centra el texto horizontalmente */
 }
 
-/* Aumentar el tamaño de los íconos */
 .sidebar a i {
     font-size: 28px;
-    /* Aumenta el tamaño de los íconos */
     margin-right: 10px;
-    /* Espacio entre el ícono y el texto */
 }
 
-/* Estilo específico para el enlace "Salir" */
 .sidebar a:last-child {
     margin-top: 200px;
-    /* Aumenta la separación superior solo para el enlace "Salir" */
 }
 
 .sidebar a span {
@@ -152,179 +129,125 @@ html {
 
 .div3 {
     grid-column: span 4 / span 4;
-    /* Cambia a 5 para que ocupe menos espacio a la derecha */
     grid-row: span 4 / span 4;
-    /* Ocupa 4 filas */
     grid-row-start: 2;
-    /* Comienza en la fila 2 */
     display: flex;
-    /* Usar flexbox para centrar */
     flex-direction: column;
-    /* Cambiar a columna para apilar elementos */
     align-items: center;
-    /* Centrar horizontalmente */
     padding: 10px;
-    /* Espaciado interno */
     margin-left: -150px;
     margin-top: -45px;
-    /* Desplaza el div3 hacia la izquierda */
 }
 
 .form-container {
     text-align: left;
     background-color: white;
-    /* Mantener el fondo blanco */
     padding: 20px;
     border-radius: 10px;
     width: 400px;
-    /* Ancho fijo para el formulario */
     margin-top: 20px;
-    /* Espacio superior para separación */
     margin-left: auto;
-    /* Centrar horizontalmente */
     margin-right: auto;
-    /* Centrar horizontalmente */
     border: none;
-    /* Eliminar el borde */
 }
 
 .div3 h2 {
     color: #da7e5b;
-    /* Color de texto naranja */
     text-align: left;
-    /* Alinear a la izquierda */
     margin: 0 0 10px;
-    /* Margen inferior para espacio */
 }
 
 .separator-line {
     border: none;
     border-top: 2px solid #da7e5b;
-    /* Línea separadora */
     margin: 10px 0;
-    /* Espaciado vertical */
     width: 100%;
-    /* Asegura que la línea ocupe todo el ancho */
 }
 
 .logo-container img {
     width: 250px;
-    /* Aumenta el ancho del logo */
     height: auto;
-    /* Mantiene la proporción de la imagen */
 }
 
-/* Etiquetas sobre los campos del formulario */
 .form-container h3 {
     font-weight: 600;
-    /* Usar negrita */
     margin-top: 10px;
     color: #da7e5b;
-    /* Color de texto naranja */
     text-align: center;
-    /* Centrar el texto */
 }
 
-/* Contenedor para el input de contraseña y el ícono */
 .password-container {
     position: relative;
-    /* Para posicionar el ícono dentro del input */
 }
 
 .password-container input {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
-    /* Espacio reducido */
     border-radius: 5px;
     border: 1px solid #ccc;
-    /* Mantener el borde del input */
 }
 
-/* Estilo para el ícono del ojo */
 .password-container i {
     position: absolute;
-    /* Posicionar el ícono dentro del input */
     right: 10px;
-    /* Espacio desde la derecha */
     top: 50%;
-    /* Centrar verticalmente */
     transform: translateY(-50%);
-    /* Ajustar para centrar */
     cursor: pointer;
-    /* Cambiar el cursor al pasar sobre el ícono */
 }
 
-/* Campos del formulario */
 .form-container input,
 .form-container select {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
-    /* Espacio reducido */
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-/* Botón de registro */
 .form-container button {
     background-color: #da7e5b;
     color: white;
     padding: 15px 20px;
-    /* Aumentar el padding para hacer el botón más grande */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
     font-size: 18px;
-    /* Aumentar el tamaño de la letra del botón */
     margin-top: 15px;
-    /* Separar el botón de los inputs */
 }
 
 .form-container button:hover {
     background-color: #965A46;
 }
 
-
-
-
 /* Estilo de la tabla */
-.employees-table {
+.common-table {
     width: 100%;
     max-width: 800px;
-    /* Ajusta este valor según sea necesario para hacer la tabla más ancha */
     border-collapse: collapse;
     margin-top: 10px;
 }
 
-.employees-table th,
-.employees-table td {
+.common-table th,
+.common-table td {
     padding: 20px;
-    /* Aumenta el padding para más espacio interno */
     text-align: left;
     border-bottom: 1px solid #da7e5b;
-    /* Borde inferior de cada celda */
     font-size: 16px;
-    /* Tamaño de fuente */
     min-height: 50px;
-    /* Establece una altura mínima para las celdas */
 }
 
-/* Encabezado de la tabla */
-.employees-table th {
+.common-table th {
     background-color: #da7e5b;
     color: white;
     font-weight: bold;
 }
 
-/* Celdas de la tabla */
-.employees-table td {
+.common-table td {
     color: #6c4a4a;
-    /* Color del texto de las celdas */
 }
 
-/* Botones de acción dentro de la tabla */
 .action-buttons i {
     cursor: pointer;
     margin-right: 15px;
@@ -335,10 +258,8 @@ html {
 
 .action-buttons i:hover {
     color: #965A46;
-    /* Cambia de color al pasar el cursor */
 }
 
-/* Estilo de la caja de búsqueda */
 .search-container {
     display: flex;
     align-items: center;
@@ -386,6 +307,125 @@ html {
     margin: 0 5px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #965A46;
+}
+
+.user-profile .btn {
+    background-color: #da7e5b; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Eliminar el borde del botón */
+    border-radius: 5px; /* Opcional: agregar un borde redondeado */
+}
+
+.user-profile .dropdown-menu {
+    background-color: #da7e5b; /* Color de fondo del menú desplegable */
+    border: none; /* Eliminar el borde del menú desplegable */
+}
+
+.user-profile .dropdown-menu .dropdown-item {
+    color: white; /* Color del texto de los elementos del menú */
+}
+
+.user-profile .dropdown-menu .dropdown-item:hover {
+    background-color: #965A46; /* Color de fondo al pasar el mouse sobre los elementos del menú */
+}
+/* Contenedor principal estilo AdminiPark */
+.mine-container {
+    background-color: #f7d5c2; /* Fondo color salmón suave */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+/* Encabezado */
+.mine-container h3 {
+    font-weight: 600;
+    color: #da7e5b;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Estilo de la tabla */
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.common-table th,
+.common-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #da7e5b;
+    font-size: 16px;
+}
+
+.common-table th {
+    background-color: #da7e5b;
+    color: white;
+    font-weight: bold;
+}
+
+.common-table td {
+    color: #6c4a4a;
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-container input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #da7e5b;
+    width: 250px;
+    font-size: 16px;
+    color: #6c4a4a;
+}
+
+.search-container button {
+    background-color: #da7e5b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: #965A46;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.pagination button {
+    background-color: #da7e5b;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 

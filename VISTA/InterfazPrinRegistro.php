@@ -20,6 +20,35 @@
         .centered {
             text-align: center;
         }
+
+        /* Estilos comunes para todas las tablas */
+        .common-table {
+            width: 100%;
+            max-width: 800px; /* Ajusta este valor según sea necesario para hacer la tabla más ancha */
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .common-table th,
+        .common-table td {
+            padding: 20px; /* Aumenta el padding para más espacio interno */
+            text-align: left;
+            border-bottom: 1px solid #da7e5b; /* Borde inferior de cada celda */
+            font-size: 16px; /* Tamaño de fuente */
+            min-height: 50px; /* Establece una altura mínima para las celdas */
+        }
+
+        /* Encabezado de la tabla */
+        .common-table th {
+            background-color: #da7e5b;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Celdas de la tabla */
+        .common-table td {
+            color: #6c4a4a; /* Color del texto de las celdas */
+        }
     </style>
 </head>
 
@@ -40,9 +69,9 @@
                             <i class="fas fa-user-circle"></i> <span id="usernameDisplay">Jimena Jiménez</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
-                            <li><button class="dropdown-item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button">Perfil</button></li>
+                            <li><button class="dropdown-item" type="button">Configuración</button></li>
+                            <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
                     </div>
                 </div>
@@ -76,13 +105,12 @@
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Empleados registrados</h3>
-                    <p>Fecha de registro: <span id="registrationDate">16 de octubre de 2024</span></p>
-                    <table class="employees-table table">
+                    <table class="employees-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Usuario</th>
-                                <th>Contraseña</th >
+                                <th>Contraseña</th>
                                 <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
@@ -116,7 +144,7 @@
                                     <h3 style="text-align: center;">Usuario</h3>
                                     <input type="text" id="username" placeholder="Usuario" class="nunito-unique-200" oninput="saveFormData()">
 
-                                    <h3 style="text-align: center;">Contr aseña</h3>
+                                    <h3 style="text-align: center;">Contraseña</h3>
                                     <div class="password-container">
                                         <input type="password" id="password" placeholder="Contraseña" oninput="saveFormData()">
                                         <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
@@ -148,8 +176,7 @@
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Usuarios registrados</h3>
-                    <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="users-table table">
+                    <table class="users-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -166,7 +193,7 @@
                 </div>
 
                 <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique -600">Anterior</button>
                     <button class="nunito-unique-600">1</button>
                     <button class="nunito-unique-600">2</button>
                     <button class="nunito-unique-600">Siguiente</button>
@@ -184,8 +211,7 @@
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Vehículos registrados</h3>
-                    <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="vehicles-table table">
+                    <table class="vehicles-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -220,8 +246,7 @@
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Facturas registradas</h3>
-                    <p>Fecha de registro: 16 de octubre de 2024</p>
-                    <table class="invoices-table table">
+                    <table class="invoices-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -281,7 +306,7 @@
                         name: username,
                         password: password, // Considera encriptar la contraseña en un entorno real
                         role: role
-                    };
+ };
 
                     // Agregar el nuevo empleado al array
                     employees.push(newEmployee);
@@ -382,9 +407,9 @@
 
             // Al cargar la página, establecer el nombre de usuario en el perfil
             document.addEventListener('DOMContentLoaded', function() {
-                const storedUser  = JSON.parse(localStorage.getItem('user'));
-                if (storedUser ) {
-                    document.getElementById('usernameDisplay').textContent = storedUser .usuario || storedUser .nombre; // Usar 'usuario' o 'nombre' según lo que guardes
+                const storedUser   = JSON.parse(localStorage.getItem('user'));
+                if (storedUser  ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser  .usuario || storedUser  .nombre; // Usar 'usuario' o 'nombre' según lo que guardes
                 }
             });
 
@@ -392,5 +417,4 @@
             showSection('employees');
         </script>
     </body>
-
-    </html>
+</html>
