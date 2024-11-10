@@ -24,18 +24,18 @@
         /* Estilos comunes para todas las tablas */
         .common-table {
             width: 100%;
-            max-width: 800px; /* Ajusta este valor según sea necesario para hacer la tabla más ancha */
+            max-width: 800px;
             border-collapse: collapse;
             margin-top: 10px;
         }
 
         .common-table th,
         .common-table td {
-            padding: 20px; /* Aumenta el padding para más espacio interno */
+            padding: 20px;
             text-align: left;
-            border-bottom: 1px solid #da7e5b; /* Borde inferior de cada celda */
-            font-size: 16px; /* Tamaño de fuente */
-            min-height: 50px; /* Establece una altura mínima para las celdas */
+            border-bottom: 1px solid #da7e5b;
+            font-size: 16px;
+            min-height: 50px;
         }
 
         /* Encabezado de la tabla */
@@ -47,7 +47,7 @@
 
         /* Celdas de la tabla */
         .common-table td {
-            color: #6c4a4a; /* Color del texto de las celdas */
+            color: #6c4a4a;
         }
     </style>
 </head>
@@ -69,7 +69,7 @@
                             <i class="fas fa-user-circle"></i> <span id="usernameDisplay">Jimena Jiménez</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><button class="dropdown-item" type="button">Perfil</button></li>
+                            <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
                             <li><button class="dropdown-item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
@@ -93,7 +93,7 @@
         <div class="div3">
             <!-- Sección de Gestión de Empleados -->
             <div id="employees" class="main-content">
-                <h2 class="nunito-unique-600">Empleados</h2>
+                <h2 class="nunito-unique -600">Empleados</h2>
                 <hr class="separator-line">
 
                 <div class="search-container">
@@ -134,31 +134,28 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel"><h2>Formulario de Registro de Empleado</h2></h5>
+                            <h5 class="modal-title" id="staticBackdropLabel">Formulario de Registro de Empleado</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <!-- Formulario de Registro de Empleado -->
-                            <div id="registerEmployeeForm">
-                                <div class="form-container">
-                                    <h3 style="text-align: center;">Usuario</h3>
-                                    <input type="text" id="username" placeholder="Usuario" class="nunito-unique-200" oninput="saveFormData()">
+                            <div class="form-container">
+                                <h3 style="text-align: center;">Usuario</h3>
+                                <input type="text" id="username" placeholder="Usuario" class="nunito-unique-200">
 
-                                    <h3 style="text-align: center;">Contraseña</h3>
-                                    <div class="password-container">
-                                        <input type="password" id="password" placeholder="Contraseña" oninput="saveFormData()">
-                                        <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
-                                    </div>
-
-                                    <h3 style="text-align: center;">Rol</h3>
-                                    <select id="role" class="nunito-unique-200" onchange="saveFormData()">
-                                        <option>-- Seleccione un rol --</option>
-                                        <option>Admin</option>
-                                        <option>Empleado</option>
-                                    </select>
-
-                                    <button type="submit" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
+                                <h3 style="text-align: center;">Contraseña</h3>
+                                <div class="password-container">
+                                    <input type="password" id="password" placeholder="Contraseña">
+                                    <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
                                 </div>
+
+                                <h3 style="text-align: center;">Rol</h3>
+                                <select id="role" class="nunito-unique-200">
+                                    <option value="">-- Seleccione un rol --</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Empleado">Empleado</option>
+                                </select>
+
+                                <button type="button" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
                             </div>
                         </div>
                     </div>
@@ -193,7 +190,7 @@
                 </div>
 
                 <div class="pagination">
-                    <button class="nunito-unique -600">Anterior</button>
+                    <button class="nunito-unique-600">Anterior</button>
                     <button class="nunito-unique-600">1</button>
                     <button class="nunito-unique-600">2</button>
                     <button class="nunito-unique-600">Siguiente</button>
@@ -205,7 +202,7 @@
                 <h2 class="nunito-unique-600">Vehículos</h2>
                 <hr class="separator-line">
 
-                <div class="search-container">
+                <div class ="search-container">
                     <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
                 </div>
 
@@ -274,12 +271,6 @@
         <script>
             let employeeCount = 1;
             let employees = []; // Array para almacenar empleados
-            let userCount = 1;
-            let users = []; // Array para almacenar usuarios
-            let vehicleCount = 1;
-            let vehicles = []; // Array para almacenar vehículos
-            let invoiceCount = 1;
-            let invoices = []; // Array para almacenar facturas
 
             function showSection(sectionId) {
                 const sections = document.querySelectorAll('.main-content');
@@ -287,93 +278,54 @@
                 document.getElementById(sectionId).classList.remove('hidden');
             }
 
-            // Función para mostrar el formulario de registro
-            function showRegisterForm() {
-                document.getElementById('employees').classList.add('hidden'); // Ocultar la sección de empleados
-                document.getElementById('registerEmployeeForm').classList.remove('hidden'); // Mostrar el formulario
-            }
-
             // Función para registrar un nuevo empleado
             function registerEmployee() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
                 const role = document.getElementById('role').value;
 
-                if (username && password && role) {
-                    // Crear un nuevo empleado
-                    const newEmployee = {
-                        id: employeeCount,
-                        name: username,
-                        password: password, // Considera encriptar la contraseña en un entorno real
-                        role: role
- };
-
-                    // Agregar el nuevo empleado al array
-                    employees.push(newEmployee);
-
-                    // Crear una nueva fila en la tabla
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td>${newEmployee.id}</td>
-                        <td>${newEmployee.name}</td>
-                        <td>******</td>
-                        <td>${newEmployee.role}</td>
-                        <td class="action-buttons">
-                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${newEmployee.id})"></i>
-                        </td>
-                    `;
-
-                    document.getElementById('employeeTableBody').appendChild(newRow);
-                    employeeCount++;
-
-                    // Limpiar el formulario
-                    document.getElementById('registerEmployeeForm').classList.add('hidden'); // Ocultar el formulario
-                    document.getElementById('employees').classList.remove('hidden'); // Mostrar la sección de empleados
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                    document.getElementById('role').value = '-- Seleccione un rol --';
-                } else {
+                // Validación de los campos
+                if (username === '' || password === '' || role === '') {
                     alert('Por favor, complete todos los campos.');
+                    return;
                 }
+
+                // Crear un nuevo empleado
+                const newEmployee = {
+                    id: employeeCount,
+                    name: username,
+                    password: password, // Considera encriptar la contraseña en un entorno real
+                    role: role
+                };
+
+                // Agregar el nuevo empleado al array
+                employees.push(newEmployee);
+
+                // Crear una nueva fila en la tabla
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${newEmployee.id}</td>
+                    <td>${newEmployee.name}</td>
+                    <td>******</td>
+                    <td>${newEmployee.role}</td>
+                    <td class="action-buttons">
+                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${newEmployee.id})"></i>
+                    </td>
+                `;
+                document.getElementById('employeeTableBody').appendChild(newRow);
+                employeeCount++;
+
+                // Restablecer el formulario y cerrar el modal
+                resetForm();
+                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                modalElement.hide();
             }
 
-            // Función para mostrar la tabla de empleados
-            function showEmployeeTable() {
-                const employeeTableBody = document.getElementById('employeeTableBody');
-                employeeTableBody.innerHTML = ''; // Limpiar la tabla
-
-                // Agregar cada empleado a la tabla
-                employees.forEach(employee => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${employee.id}</td>
-                        <td>${employee.name}</td>
-                        <td>******</td>
-                        <td>${employee.role}</td>
-                        <td class="action-buttons">
-                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
-                        </td>
-                    `;
-                    employeeTableBody.appendChild(row);
-                });
-
-                // Mostrar la tabla y ocultar el formulario
-                document.getElementById('employeeFormContainer').style.display = 'none';
-                document.getElementById('employeeTableContainer').style.display = 'block';
-            }
-
-            // Función para editar un empleado
-            function editEmployee(id) {
-                const employee = employees.find(emp => emp.id === id);
-                if (employee) {
-                    document.getElementById('username').value = employee.name;
-                    document.getElementById('password').value = employee.password; // Considera encriptar la contraseña en un entorno real
-                    document.getElementById('role').value = employee.role;
-
-                    // Ocultar la tabla y mostrar el formulario
-                    document.getElementById('employeeTableContainer').style.display = 'none';
-                    document.getElementById('registerEmployeeForm').classList.remove('hidden');
-                }
+            // Función para restablecer el formulario
+            function resetForm() {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('role').value = '';
             }
 
             // Agregar la funcionalidad de mostrar/ocultar contraseña
@@ -382,39 +334,18 @@
 
             if (togglePassword && passwordInput) {
                 togglePassword.addEventListener('click', function() {
-                    // Cambia el tipo de input entre 'password' y 'text '
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
-                    // Cambia el ícono del ojo
                     this.classList.toggle('fa-eye-slash');
                     this.classList.toggle('fa-eye');
                 });
             }
 
-            function logout() {
-                // Limpiar el localStorage
-                localStorage.removeItem('user');
-
-                // Redirigir a la página de inicio de sesión
-                window.location.href = 'inicio_sesion.php';
-
-                // Limpiar los campos del formulario de inicio de sesión
-                const loginForm = document.getElementById('loginForm');
-                if (loginForm) {
-                    loginForm.reset(); // Esto limpiará todos los campos del formulario
-                }
-            }
-
-            // Al cargar la página, establecer el nombre de usuario en el perfil
-            document.addEventListener('DOMContentLoaded', function() {
-                const storedUser   = JSON.parse(localStorage.getItem('user'));
-                if (storedUser  ) {
-                    document.getElementById('usernameDisplay').textContent = storedUser  .usuario || storedUser  .nombre; // Usar 'usuario' o 'nombre' según lo que guardes
-                }
-            });
-
-            // Mostrar la sección de Gestión de Empleados al cargar la página
-            showSection('employees');
+            // Restablecer el formulario cuando el modal se oculta
+            const modalElement = document.getElementById('staticBackdrop');
+            modalElement.addEventListener('hidden.bs.modal', resetForm);
         </script>
-    </body>
+    </div>
+</body>
+
 </html>
