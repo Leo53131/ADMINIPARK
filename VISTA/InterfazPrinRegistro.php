@@ -202,7 +202,7 @@
                 <h2 class="nunito-unique-600">Vehículos</h2>
                 <hr class="separator-line">
 
-                <div class ="search-container">
+                <div class="search-container">
                     <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
                 </div>
 
@@ -302,18 +302,85 @@
                 employees.push(newEmployee);
 
                 // Crear una nueva fila en la tabla
+                addEmployeeRow(newEmployee);
+                employeeCount++;
+
+                // Restablecer el formulario y cerrar el modal
+                resetForm();
+                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                modalElement.hide();
+            }
+
+            // Función para agregar una fila de empleado a la tabla
+            function addEmployeeRow(employee) {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td>${newEmployee.id}</td>
-                    <td>${newEmployee.name}</td>
-                    <td>******</td>
-                    <td>${newEmployee.role}</td>
-                    <td class="action-buttons">
-                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${newEmployee.id})"></i>
-                    </td>
-                `;
+            <td>${employee.id}</td>
+            <td>${employee.name}</td>
+            <td>******</td>
+            <td>${employee.role}</td>
+            <td class="action-buttons">
+                <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
+            </td>
+        `;
                 document.getElementById('employeeTableBody').appendChild(newRow);
-                employeeCount++;
+            }
+
+            // Función para editar un empleado
+            function editEmployee(id) {
+                const employee = employees.find(emp => emp.id === id);
+                if (employee) {
+                    document.getElementById('username').value = employee.name;
+                    document.getElementById('password').value = employee.password; // Puedes manejar la visualización de la contraseña aquí
+                    document.getElementById('role').value = employee.role;
+
+                    // Cambiar el botón de registrar a editar
+                    const modalTitle = document.getElementById('staticBackdropLabel');
+                    modalTitle.innerText = 'Editar Empleado';
+                    const registerButton = document.querySelector('.modal-body button');
+                    registerButton.setAttribute('onclick', `updateEmployee(${id})`);
+                    registerButton.innerText = 'Actualizar';
+
+                    // Mostrar el modal
+                    const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                    modal.show();
+                }
+            }
+
+            // Función para actualizar un empleado
+            function updateEmployee(id) {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const role = document.getElementById('role').value;
+
+                // Validación de los campos
+                if (username === '' || password === '' || role === '') {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
+
+                // Actualizar el empleado en el array
+                const employeeIndex = employees.findIndex(emp => emp.id === id);
+                if (employeeIndex !== -1) {
+                    employees[employeeIndex] = {
+                        id: id,
+                        name: username,
+                        password: password,
+                        role: role
+                    };
+
+                    // Actualizar la fila en la tabla
+                    const rows = document.querySelectorAll('#employeeTableBody tr');
+                    rows[employeeIndex].innerHTML = `
+                <td>${id}</td>
+                <td>${username}</td>
+                <td>******</td>
+                <td>${role}</td>
+                <td class="action-buttons">
+                    <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
+                </td>
+            `;
+                }
 
                 // Restablecer el formulario y cerrar el modal
                 resetForm();
@@ -326,6 +393,11 @@
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
                 document.getElementById('role').value = '';
+                const modalTitle = document.getElementById('staticBackdropLabel');
+                modalTitle.innerText = 'Formulario de Registro de Empleado';
+                const registerButton = document.querySelector('.modal-body button');
+                registerButton.setAttribute('onclick', 'registerEmployee()');
+                registerButton.innerText = 'Registrar';
             }
 
             // Agregar la funcionalidad de mostrar/ocultar contraseña
