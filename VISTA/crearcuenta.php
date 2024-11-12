@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,7 +46,7 @@
         const contraseña = this.contraseña.value;
 
         // Crear un objeto de usuario
-        const newUser  = {
+        const newUser   = {
             nombre: nombre,
             apellido: apellido,
             correo: correo,

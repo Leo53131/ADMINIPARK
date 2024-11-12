@@ -66,7 +66,7 @@
                     </div>
                     <div class="user-profile dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay">Jimena Jiménez</span>
+                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
@@ -77,7 +77,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
@@ -416,6 +415,24 @@
             // Restablecer el formulario cuando el modal se oculta
             const modalElement = document.getElementById('staticBackdrop');
             modalElement.addEventListener('hidden.bs.modal', resetForm);
+
+            function logout() {
+                // Redirigir a inicio_sesion.php
+                window.location.href = 'inicio_sesion.php';
+            }
+
+            window.history.pushState(null, '', window.location.href);
+            window.onpopstate = function() {
+                window.history.pushState(null, '', window.location.href);
+            };
+
+            // Mostrar el nombre de usuario en la interfaz
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser) {
+                document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
+            } else {
+                window.location.href = 'inicio_sesion.php'; // Redirigir si no hay usuario
+            }
         </script>
     </div>
 </body>

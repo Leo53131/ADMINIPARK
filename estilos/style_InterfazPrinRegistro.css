@@ -432,3 +432,13 @@ html {
 .pagination button:hover {
     background-color: #965A46;
 }
+
+.user-info {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el ícono y el texto */
+    font-size: 1.2em; /* Ajusta el tamaño del texto */
+}
+.user-info i {
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    color: #007BFF; /* Color del ícono (puedes cambiarlo) */
+}

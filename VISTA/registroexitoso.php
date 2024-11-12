@@ -10,7 +10,7 @@
     <div class="contenedor">
         <div class="box">
             <h1>¡Registro Exitoso!</h1>
-            <p>Tu cuenta ha sido creada cin exíto. Hemos enviado un correo de confirmacion
+            <p>Tu cuenta ha sido creada con exíto. Hemos enviado un correo de confirmacion
                 a <b>Ejemplo@gmail.com</b>. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para verificar tu cuenta.
             </p>
             <p><b>Nota: Si no encentras el correo, verifica en tu carpeta de spam o correos 
