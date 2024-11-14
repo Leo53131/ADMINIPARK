@@ -371,14 +371,14 @@
                     // Actualizar la fila en la tabla
                     const rows = document.querySelectorAll('#employeeTableBody tr');
                     rows[employeeIndex].innerHTML = `
-                <td>${id}</td>
-                <td>${username}</td>
-                <td>******</td>
-                <td>${role}</td>
-                <td class="action-buttons">
-                    <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
-                </td>
-            `;
+                        <td>${id}</td>
+                        <td>${username}</td>
+                        <td>******</td>
+                        <td>${role}</td>
+                        <td class="action-buttons">
+                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
+                        </td>
+                    `;
                 }
 
                 // Restablecer el formulario y cerrar el modal

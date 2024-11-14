@@ -53,25 +53,6 @@
         .common-table td {
             color: #6c4a4a;
         }
-
-        /* Estilos para los modales */
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-container input,
-        .form-container select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
     </style>
 </head>
 
@@ -89,7 +70,7 @@
                     </div>
                     <div class="user-profile dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay">Jimena Jiménez</span>
+                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
@@ -104,9 +85,9 @@
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
-                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Cliente</span></a>
+                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Clientes</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
-                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
+                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
@@ -114,12 +95,13 @@
         <!-- Contenido principal -->
         <div class="div3">
             <!-- Sección de Clientes -->
-            <div id="users" class="main-content hidden">
+            <div id="users" class="main-content">
                 <h2 class="nunito-unique-600">Clientes</h2>
                 <hr class="separator-line">
 
                 <div class="search-container">
-                    <input type="text" placeholder="Buscar clientes..." aria-label="Buscar clientes">
+                    <input type ="text" placeholder="Buscar clientes..." aria-label="Buscar clientes">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">Agregar Cliente</button>
                 </div>
 
                 <div class="table-container">
@@ -130,42 +112,47 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
-                                <th>Correo</th>
-                                <th>Celular</th>
+                                <th>Email</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <!-- Las filas de clientes se agregarán aquí dinámicamente -->
+                            <!-- Las filas de usuarios se agregarán aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">Agregar Cliente</button>
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
+            </div>
 
-                <!-- Modal para agregar nuevo cliente -->
-                <div class="modal fade" id="userModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="userModalLabel">Formulario de Registro de Cliente</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-container">
-                                    <h3 class="centered">Nombre</h3>
-                                    <input type="text" id="user-name" placeholder="Nombre" class="nunito-unique-200">
+            <!-- Modal para agregar nuevo cliente -->
+            <div class="modal fade" id="userModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="userModalLabel">Formulario de Registro de Cliente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                <h3 style="text-align: center;">Nombre</h3>
+                                <input type="text" id="user-name" placeholder="Nombre" class="nunito-unique-200">
 
-                                    <h3 class="centered">Apellido</h3>
-                                    <input type="text" id="user-lastname" placeholder="Apellido" class="nunito-unique-200">
+                                <h3 style="text-align: center;">Apellido</h3>
+                                <input type="text" id="user-lastname" placeholder="Apellido" class="nunito-unique-200">
 
-                                    <h3 class="centered">Correo</h3>
-                                    <input type="email" id="user-email" placeholder="Correo" class="nunito-unique-200">
+                                <h3 style="text-align: center;">Email</h3>
+                                <input type="email" id="user-email" placeholder="Email" class="nunito-unique-200">
 
-                                    <h3 class="centered">Celular</h3>
-                                    <input type="text" id="user-phone" placeholder="Celular" class="nunito-unique-200">
+                                <h3 style="text-align: center;">Teléfono</h3>
+                                <input type="text" id="user-phone" placeholder="Teléfono" class="nunito-unique-200">
 
-                                    <button type="button" class="nunito-unique-600" onclick="registerUser ()">Registrar</button>
-                                </div>
+                                <button type="button" class="nunito-unique-600" onclick="registerUser ()">Registrar</button>
                             </div>
                         </div>
                     </div>
@@ -179,6 +166,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vehicleModal">Agregar Vehículo</button>
                 </div>
 
                 <div class="table-container">
@@ -187,10 +175,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Placa</th>
+                                <th>Matrícula</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
-                                <th>Color</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="vehicleTableBody">
@@ -199,33 +187,37 @@
                     </table>
                 </div>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vehicleModal">Agregar Vehículo</button>
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
+            </div>
 
-                <!-- Modal para agregar nuevo vehículo -->
-                <div class="modal fade" id="vehicleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="vehicleModalLabel">Formulario de Registro de Vehículo</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-container">
-                                    <h3 class=" centered">Placa</h3>
-                                    <input type="text" id="vehicle-plate" placeholder="Placa" class="nunito-unique-200">
+            <!-- Modal para agregar nuevo vehículo -->
+            <div class="modal fade" id="vehicleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content ```html
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="vehicleModalLabel">Formulario de Registro de Vehículo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-container">
+                            <h3 style="text-align: center;">Matrícula</h3>
+                            <input type="text" id="vehicle-plate" placeholder="Matrícula" class="nunito-unique-200">
 
-                                    <h3 class="centered">Marca</h3>
-                                    <input type="text" id="vehicle-brand" placeholder="Marca" class="nunito-unique-200">
+                            <h3 style="text-align: center;">Marca</h3>
+                            <input type="text" id="vehicle-brand" placeholder="Marca" class="nunito-unique-200">
 
-                                    <h3 class="centered">Modelo</h3>
-                                    <input type="text" id="vehicle-model" placeholder="Modelo" class="nunito-unique-200">
+                            <h3 style="text-align: center;">Modelo</h3>
+                            <input type="text" id="vehicle-model" placeholder="Modelo" class="nunito-unique-200">
 
-                                    <h3 class="centered">Color</h3>
-                                    <input type="text" id="vehicle-color" placeholder="Color" class="nunito-unique-200">
+                            <h3 style="text-align: center;">Color</h3>
+                            <input type="text" id="vehicle-color" placeholder="Color" class="nunito-unique-200">
 
-                                    <button type="button" class="nunito-unique-600" onclick="registerVehicle()">Registrar</button>
-                                </div>
-                            </div>
+                            <button type="button" class="nunito-unique-600" onclick="registerVehicle()">Registrar</button>
                         </div>
                     </div>
                 </div>
@@ -238,6 +230,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoiceModal">Agregar Factura</button>
                 </div>
 
                 <div class="table-container">
@@ -245,10 +238,14 @@
                     <table class="invoices-table common-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Fecha</th>
-                                <th>Monto</th>
+                                <th>ID Factura</th>
+                                <th>Placa</th>
+                                <th>Usuario</th>
+                                <th>H. de Entrada</th>
+                                <th>H. de Salida</th>
+                                <th>Valor H.</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="invoiceTableBody">
@@ -257,198 +254,258 @@
                     </table>
                 </div>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoiceModal">Agregar Factura</button>
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
+            </div>
 
-                <!-- Modal para agregar nueva factura -->
-                <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="invoiceModalLabel">Formulario de Registro de Factura</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-container">
-                                    <h3 class="centered">Cliente</h3>
-                                    <input type="text" id="invoice-client" placeholder="Cliente" class="nunito-unique-200">
-
-                                    <h3 class="centered">Fecha</h3>
-                                    <input type="date" id="invoice-date" class="nunito-unique-200">
-
-                                    <h3 class="centered">Monto</h3>
-                                    <input type="number" id="invoice-amount" placeholder="Monto" class="nunito-unique-200">
-
-                                    <button type="button" class="nunito-unique-600" onclick="registerInvoice()">Registrar</button>
+            <!-- Modal para agregar nueva factura -->
+            <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invoiceModalLabel">Formulario de Registro de Factura</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <h3 class="centered">Placa</h3>
+                                        <select id="invoice-plate" class="nunito-unique-200">
+                                            <option value="">Seleccione una placa</option>
+                                            <!-- Las opciones de placas se agregarán aquí dinámicamente -->
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <h3 class="centered">Usuario</h3>
+                                        <select id="invoice-user" class="nunito-unique-200">
+                                            <option value="">Seleccione un usuario</option>
+                                            <!-- Las opciones de usuarios se agregarán aquí dinámicamente -->
+                                        </select>
+                                    </div>
                                 </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <h3 class="centered">Hora de Entrada</h3>
+                                        <input type="time" id="invoice-entry-time" class="nunito-unique-200">
+                                    </div>
+                                    <div class="col">
+                                        <h3 class="centered">AM/PM</h3>
+                                        <select id="invoice-entry-am-pm" class="nunito-unique-200">
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <h3 class="centered">Hora de Salida</h3>
+                                        <input type="time" id="invoice-exit-time" class="nunito-unique-200">
+                                    </div>
+                                    <div class="col">
+                                        <h3 class="centered">Valor Hora</h3>
+                                        <input type="number" id="invoice-hour-value" placeholder="Valor por hora" class="nunito-unique-200">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <h3 class="centered">Total</h3>
+                                        <input type="text" id="invoice-total" placeholder="Total" class="nunito-unique-200" readonly>
+                                    </div>
+                                </div>
+                                <button type="button" class="nunito-unique-600" onclick="registerInvoice()">Registrar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <script>
+                let users = [];
+                let vehicles = [];
+                let invoices = [];
+
+                function showSection(section) {
+                    document.querySelectorAll('.main-content').forEach((el) => {
+                        el.classList.add('hidden');
+                    });
+                    document.getElementById(section).classList.remove('hidden');
+                }
+
+                function registerUser () {
+                    const name = document.getElementById('user-name').value;
+                    const lastname = document.getElementById('user-lastname').value;
+                    const email = document.getElementById('user-email').value;
+                    const phone = document.getElementById('user-phone').value;
+
+                    const newUser  = {
+                        id: users.length + 1,
+                        name,
+                        lastname,
+                        email,
+                        phone
+                    };
+
+                    users.push(newUser );
+                    updateUserTable();
+                    clearUserForm();
+                    $('#userModal').modal('hide');
+                }
+
+                function updateUserTable() {
+                    const userTableBody = document.getElementById('userTableBody');
+                    userTableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = `<tr>
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.lastname}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone}</td>
+                        </tr>`;
+                        userTableBody.innerHTML += row;
+                    });
+                }
+
+                function clearUserForm() {
+                    document.getElementById('user-name').value = '';
+                    document.getElementById('user-lastname').value = '';
+                    document.getElementById('user-email').value = '';
+                    document.getElementById('user-phone').value = '';
+                }
+
+                function registerVehicle() {
+                    const plate = document.getElementById('vehicle-plate').value;
+                    const brand = document.getElementById('vehicle-brand').value;
+                    const model = document.getElementById('vehicle-model').value;
+                    const color = document.getElementById('vehicle-color').value;
+
+                    const newVehicle = {
+                        id: vehicles.length + 1,
+                        plate,
+                        brand,
+                        model,
+                        color
+                    };
+
+                    vehicles.push(newVehicle);
+                    updateVehicleTable();
+                    clearVehicleForm();
+                    $('#vehicleModal').modal('hide');
+                }
+
+                function updateVehicleTable() {
+                    const vehicleTableBody = document.getElementById('vehicleTableBody');
+                    vehicleTableBody.innerHTML = '';
+
+                    vehicles.forEach(vehicle => {
+                        const row = `<tr>
+                            <td>${vehicle.id}</td>
+                            <td>${vehicle.plate}</td>
+                            <td>${vehicle.brand}</td>
+                            <td>${vehicle.model}</td>
+                            <td>${vehicle.color}</td>
+                        </tr>`;
+                        vehicleTableBody.innerHTML += row;
+                    });
+                }
+
+                function clearVehicleForm() {
+                    document.getElementById('vehicle-plate').value = '';
+                    document.getElementById('vehicle-brand').value = '';
+                    document.getElementById('vehicle-model').value = '';
+                    document.getElementById('vehicle-color').value = '';
+                }
+
+                function registerInvoice() {
+                    const plate = document.getElementById('invoice-plate').value;
+                    const user = document.get
+                    .getElementById('invoice-user').value;
+                    const entryTime = document.getElementById('invoice-entry-time').value;
+                    const entryAmPm = document.getElementById('invoice-entry-am-pm').value;
+                    const exitTime = document.getElementById('invoice-exit-time').value;
+                    const hourValue = parseFloat(document.getElementById('invoice-hour-value').value);
+
+                    // Convertir la hora de entrada y salida a un formato que permita calcular la diferencia
+                    const entryDateTime = new Date(`1970-01-01T${entryTime}${entryAmPm === 'PM' ? 'T12:00:00' : 'T00:00:00'}`);
+                    const exitDateTime = new Date(`1970-01-01T${exitTime}${entryAmPm === 'PM' ? 'T12:00:00' : 'T00:00:00'}`);
+
+                    // Calcular la diferencia en horas
+                    const hoursSpent = (exitDateTime - entryDateTime) / (1000 * 60 * 60);
+
+                    // Calcular el total
+                    const total = hoursSpent * hourValue;
+
+                    // Crear un nuevo objeto de factura
+                    const newInvoice = {
+                        id: invoices.length + 1,
+                        plate,
+                        user,
+                        entryTime: `${entryTime} ${entryAmPm}`,
+                        exitTime: exitTime,
+                        total
+                    };
+
+                    invoices.push(newInvoice);
+                    updateInvoiceTable();
+                    clearInvoiceForm();
+                    $('#invoiceModal').modal('hide'); // Cerrar el modal
+                }
+
+                function updateInvoiceTable() {
+                    const invoiceTableBody = document.getElementById('invoiceTableBody');
+                    invoiceTableBody.innerHTML = '';
+
+                    invoices.forEach(invoice => {
+                        const row = `<tr>
+                            <td>${invoice.id}</td>
+                            <td>${invoice.plate}</td>
+                            <td>${invoice.user}</td>
+                            <td>${invoice.entryTime}</td>
+                            <td>${invoice.exitTime}</td>
+                            <td>${invoice.hourValue}</td>
+                            <td>${invoice.total}</td>
+                            <td><button class="btn btn-warning" onclick="editInvoice(${invoice.id})"><i class="fas fa-edit"></i></button></td>
+                        </tr>`;
+                        invoiceTableBody.innerHTML += row;
+                    });
+                }
+
+                function clearInvoiceForm() {
+                    document.getElementById('invoice-plate').value = '';
+                    document.getElementById('invoice-user').value = '';
+                    document.getElementById('invoice-entry-time').value = '';
+                    document.getElementById('invoice-entry-am-pm').value = 'AM';
+                    document.getElementById('invoice-exit-time').value = '';
+                    document.getElementById('invoice-hour-value').value = '';
+                    document.getElementById('invoice-total').value = '';
+                }
+
+                function logout() {
+                    // Redirigir a inicio_sesion.php
+                    window.location.href = 'inicio_sesion.php';
+                }
+
+                // Mostrar automáticamente la sección de Clientes al cargar la página
+                window.onload = function() {
+                    showSection('users');
+                }
+
+                // Mostrar el nombre de usuario en la interfaz
+                const storedUser  = JSON.parse(localStorage.getItem('user'));
+                if (storedUser ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
+                } else {
+                    window.location.href = 'inicio_sesion.php'; // Redirigir si no hay usuario
+                }
+            </script>
         </div>
     </div>
-
-    <script>
-        // Arreglos para almacenar los datos
-        let users = [];
-        let vehicles = [];
-        let invoices = [];
-
-        // Función para mostrar la sección correspondiente
-        function showSection(section) {
-            document.querySelectorAll('.main-content').forEach((el) => {
-                el.classList.add('hidden');
-            });
-            document.getElementById(section).classList.remove('hidden');
-        }
-
-        // Función para registrar un nuevo cliente
-        function registerUser () {
-            const name = document.getElementById('user-name').value;
-            const lastname = document.getElementById('user-lastname').value;
-            const email = document.getElementById('user-email').value;
-            const phone = document.getElementById('user-phone').value;
-
-            const newUser  = {
-                id: users.length + 1,
-                name,
-                lastname,
-                email,
-                phone
-            };
-
-            users.push(newUser );
-            updateUserTable();
-            clearUserForm();
-            $('#userModal').modal('hide'); // Cerrar el modal
-        }
-
-        // Función para actualizar la tabla de clientes
-        function updateUserTable() {
-            constjavascript
-            userTableBody = document.getElementById('userTableBody');
-            userTableBody.innerHTML = ''; // Limpiar la tabla
-
-            users.forEach(user => {
-                const row = `<tr>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.lastname}</td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-            </tr>`;
-                userTableBody.innerHTML += row;
-            });
-        }
-
-        // Función para limpiar el formulario de cliente
-        function clearUserForm() {
-            document.getElementById('user-name').value = '';
-            document.getElementById('user-lastname').value = '';
-            document.getElementById('user-email').value = '';
-            document.getElementById('user-phone').value = '';
-        }
-
-        // Función para registrar un nuevo vehículo
-        function registerVehicle() {
-            const plate = document.getElementById('vehicle-plate').value;
-            const brand = document.getElementById('vehicle-brand').value;
-            const model = document.getElementById('vehicle-model').value;
-            const color = document.getElementById('vehicle-color').value;
-
-            const newVehicle = {
-                id: vehicles.length + 1,
-                plate,
-                brand,
-                model,
-                color
-            };
-
-            vehicles.push(newVehicle);
-            updateVehicleTable();
-            clearVehicleForm();
-            $('#vehicleModal').modal('hide'); // Cerrar el modal
-        }
-
-        // Función para actualizar la tabla de vehículos
-        function updateVehicleTable() {
-            const vehicleTableBody = document.getElementById('vehicleTableBody');
-            vehicleTableBody.innerHTML = ''; // Limpiar la tabla
-
-            vehicles.forEach(vehicle => {
-                const row = `<tr>
-                <td>${vehicle.id}</td>
-                <td>${vehicle.plate}</td>
-                <td>${vehicle.brand}</td>
-                <td>${vehicle.model}</td>
-                <td>${vehicle.color}</td>
-            </tr>`;
-                vehicleTableBody.innerHTML += row;
-            });
-        }
-
-        // Función para limpiar el formulario de vehículo
-        function clearVehicleForm() {
-            document.getElementById('vehicle-plate').value = '';
-            document.getElementById('vehicle-brand').value = '';
-            document.getElementById('vehicle-model').value = '';
-            document.getElementById('vehicle-color').value = '';
-        }
-
-        // Función para registrar una nueva factura
-        function registerInvoice() {
-            const client = document.getElementById('invoice-client').value;
-            const date = document.getElementById('invoice-date').value;
-            const amount = document.getElementById('invoice-amount').value;
-
-            const newInvoice = {
-                id: invoices.length + 1,
-                client,
-                date,
-                amount
-            };
-
-            invoices.push(newInvoice);
-            updateInvoiceTable();
-            clearInvoiceForm();
-            $('#invoiceModal').modal('hide'); // Cerrar el modal
-        }
-
-        // Función para actualizar la tabla de facturas
-        function updateInvoiceTable() {
-            const invoiceTableBody = document.getElementById('invoiceTableBody');
-            invoiceTableBody.innerHTML = ''; // Limpiar la tabla
-
-            invoices.forEach(invoice => {
-                const row = `<tr>
-                <td>${invoice.id}</td>
-                <td>${invoice.client}</td>
-                <td>${invoice.date}</td>
-                <td>${invoice.amount}</td>
-            </tr>`;
-                invoiceTableBody.innerHTML += row;
-            });
-        }
-
-        // Función para limpiar el formulario de factura
-        function clearInvoiceForm() {
-            document.getElementById('invoice-client').value = '';
-            document.getElementById('invoice-date').value = '';
-            document.getElementById('invoice-amount').value = '';
-        }
-
-        // Función para cerrar sesión
-        function logout() {
-            // Lógica para cerrar sesión
-            alert('Sesión cerrada');
-        }
-
-        // Mostrar automáticamente la sección de Clientes al cargar la página
-        window.onload = function() {
-            showSection('users');
-        }
-    </script>
-
 </body>
 
 </html>
