@@ -1,3 +1,44 @@
+<?php
+// Incluir la conexión PDO
+include '../conexionBD/conexionBD.php';
+
+// Verificar si se ha enviado el formulario
+if (isset($_POST['registrar'])) {
+    // Recoger los datos del formulario
+    $Nombre = $_POST['Nombre'];
+    $Apellido = $_POST['Apellido'];
+    $Correo = $_POST['Correo'];
+    $Usuario = $_POST['Usuario'];
+    $Contraseña = $_POST['password']; 
+
+    try {
+        // Preparar la consulta SQL
+        $sql = "INSERT INTO administrador (Nombre, Apellido, Correo, Usuario, password) 
+                VALUES (:Nombre, :Apellido, :Correo, :Usuario, :password)";
+        
+        // Preparar la sentencia
+        $stmt = $conexion->prepare($sql);
+        
+        // Vincular los parámetros
+        $stmt->bindParam(':Nombre', $Nombre);
+        $stmt->bindParam(':Apellido', $Apellido);
+        $stmt->bindParam(':Correo', $Correo);
+        $stmt->bindParam(':Usuario', $Usuario);
+        $stmt->bindParam(':password', $Contraseña);
+        
+        // Ejecutar la consulta
+        $stmt->execute();
+
+        // Mensaje de éxito
+        echo "Registro exitoso";
+
+    } catch (PDOException $e) {
+        // Mensaje de error en caso de fallo
+        echo "Error: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,52 +56,24 @@
             <h5>¿Ya te registraste? Inicia sesión aquí</h5>
         </div>
 
-        <form id="registrationForm">
+        <form method="post" action="crearcuenta.php">
             <div class="input-group">
                 <h4>Nombre</h4>
                 <input type="text" name="Nombre" placeholder="Jimena" required>
                 <h4>Apellido</h4>
                 <input type="text" name="Apellido" placeholder="Jimenez" required>
                 <h4>Correo</h4>
-                <input type="email" name="correo" placeholder="Ejemplo@gmail.com" required>
+                <input type="email" name="Correo" placeholder="Ejemplo@gmail.com" required>
                 <h4>Usuario</h4>
-                <input type="text" name="usuario" placeholder="jimena123" required>
+                <input type="text" name="Usuario" placeholder="jimena123" required>
                 <h4>Contraseña</h4>
-                <input type="password" name="contraseña" placeholder="*************" required>
+                <input type="password" name="password" placeholder="*************" required>
             </div>
         
-            <button type="submit" class="Registrarse">Registrarse</button>
+            <button type="submit" name="registrar" class="Registrarse">Registrarse</button>
         </form>
     </div>
 </div>
 
-<script>
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evitar el envío del formulario
-
-        // Obtener los valores del formulario
-        const nombre = this.Nombre.value;
-        const apellido = this.Apellido.value;
-        const correo = this.correo.value;
-        const usuario = this.usuario.value;
-        const contraseña = this.contraseña.value;
-
-        // Crear un objeto de usuario
-        const newUser   = {
-            nombre: nombre,
-            apellido: apellido,
-            correo: correo,
-            usuario: usuario,
-            contraseña: contraseña // En un entorno real, deberías encriptar la contraseña
-        };
-
-        // Guardar el usuario en localStorage
-        localStorage.setItem('user', JSON.stringify(newUser ));
-
-        // Redirigir a la página de inicio de sesión
-        alert('Registro exitoso. Ahora puedes iniciar sesión.');
-        window.location.href = 'inicio_sesion.php'; // Cambia esto a la ruta de tu página de inicio de sesión
-    });
-</script>
 </body>
 </html>
