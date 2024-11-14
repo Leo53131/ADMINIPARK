@@ -16,6 +16,7 @@
         .hidden {
             display: none;
         }
+        
 
         .centered {
             text-align: center;
