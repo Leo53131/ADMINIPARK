@@ -12,7 +12,7 @@
     <div class="box">
         <div class="encabezado">
             <h2>Crear una cuenta nueva</h2>
-            <h5>¿Ya te registraste? Inicia sesión aquí</h5>
+            <h5>¿Ya te registraste? <a href="inicio_sesion.php"><b>Inicia sesión aquí</b></a></h5>
         </div>
 
         <form id="registrationForm">
