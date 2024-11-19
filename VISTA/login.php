@@ -19,10 +19,10 @@
                 </div>
             </div>
             <h2>¡Bienvenido!</h2>
-            <form id="loginForm" method="post">
+            <form id="loginForm" method="post" action="../controladores/UsuarioController.php">
                 <div class="input-group">
                     <i class="fas fa-users"></i>
-                    <select id="role" required>
+                    <select id="role" name="role" required>
                         <option value="">Seleccione un rol...</option>
                         <option value="admin">Administrador</option>
                         <option value="employee">Empleado</option>
@@ -30,15 +30,15 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Usuario o correo" required>
+                    <input type="text" name="Usuario" id="username" placeholder="Usuario o correo" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-key"></i>
-                    <input type="password" id="password" placeholder="Contraseña" required>
+                    <input type="password" name="password" id="password" placeholder="Contraseña" required>
                     <i class="fas fa-eye-slash" id="togglePassword"></i>
                 </div>
                 <a href="OlvidasteContraseña.php" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                <button type="submit" class="login-button"><b>Iniciar sesión</b></button>
+                <button type="submit" name="login" class="login-button"><b>Iniciar sesión</b></button>
                 <p id="error-message" style="color: red; display: none;"></p>
             </form>
             <p class="register">¿Aún no tienes cuenta? <a href="crearcuenta.php">Únete aquí</a></p>
@@ -88,7 +88,7 @@
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (!storedUser) {
             // Si no hay usuario almacenado, redirigir a la página de inicio de sesión
-            window.location.href = 'inicio_sesion.php';
+            window.location.href = 'index.php';
         } else {
             // Mostrar el nombre de usuario en la interfaz
             document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario

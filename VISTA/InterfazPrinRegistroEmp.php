@@ -96,7 +96,7 @@
                 <hr class="separator-line">
 
                 <div class="search-container">
-                    <input type ="text" placeholder="Buscar clientes..." aria-label="Buscar clientes">
+                    <input type="text" placeholder="Buscar clientes..." aria-label="Buscar clientes">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">Agregar Cliente</button>
                 </div>
 
@@ -174,6 +174,7 @@
                                 <th>Matrícula</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
+                                <th>Color</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -194,7 +195,6 @@
             <!-- Modal para agregar nuevo vehículo -->
             <div class="modal fade" id="vehicleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content ```html
                     <div class="modal-header">
                         <h5 class="modal-title" id="vehicleModalLabel">Formulario de Registro de Vehículo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -271,17 +271,19 @@
                                 <div class="row mb-3">
                                     <div class="col">
                                         <h3 class="centered">Placa</h3>
-                                        <select id="invoice-plate" class="nunito-unique-200">
+                                        <select id="invoice-plate-select" class="nunito-unique-200" onchange="updatePlateInput()">
                                             <option value="">Seleccione una placa</option>
                                             <!-- Las opciones de placas se agregarán aquí dinámicamente -->
                                         </select>
+                                        <input type="text" id="invoice-plate-input" placeholder="O ingrese una placa" class="nunito-unique-200" oninput="updatePlateSelect()">
                                     </div>
                                     <div class="col">
                                         <h3 class="centered">Usuario</h3>
-                                        <select id="invoice-user" class="nunito-unique-200">
+                                        <select id="invoice-user-select" class="nunito-unique-200" onchange="updateUserInput()">
                                             <option value="">Seleccione un usuario</option>
                                             <!-- Las opciones de usuarios se agregarán aquí dinámicamente -->
                                         </select>
+                                        <input type="text" id="invoice-user-input" placeholder="O ingrese un usuario" class="nunito-unique-200" oninput="updateUserSelect()">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -290,41 +292,33 @@
                                         <input type="time" id="invoice-entry-time" class="nunito-unique-200">
                                     </div>
                                     <div class="col">
-                                        <h3 class="centered">AM/PM</h3>
-                                        <select id="invoice-entry-am-pm" class="nunito-unique-200">
-                                            <option value="AM">AM</option>
-                                            <option value="PM">PM</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col">
                                         <h3 class="centered">Hora de Salida</h3>
                                         <input type="time" id="invoice-exit-time" class="nunito-unique-200">
                                     </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col">
                                         <h3 class="centered">Valor Hora</h3>
                                         <input type="number" id="invoice-hour-value" placeholder="Valor por hora" class="nunito-unique-200">
                                     </div>
-                                </div>
-                                <div class="row mb-3">
                                     <div class="col">
                                         <h3 class="centered">Total</h3>
                                         <input type="text" id="invoice-total" placeholder="Total" class="nunito-unique-200" readonly>
                                     </div>
                                 </div>
+                                <button type="button" class="btn btn-secondary" onclick="calculateTotal()">Calcular</button>
                                 <button type="button" class="nunito-unique-600" onclick="registerInvoice()">Registrar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <script>
                 let users = [];
                 let vehicles = [];
                 let invoices = [];
 
+                // Muestra la sección seleccionada
                 function showSection(section) {
                     document.querySelectorAll('.main-content').forEach((el) => {
                         el.classList.add('hidden');
@@ -332,13 +326,14 @@
                     document.getElementById(section).classList.remove('hidden');
                 }
 
-                function registerUser () {
+                // Funciones para manejar usuarios
+                function registerUser() {
                     const name = document.getElementById('user-name').value;
                     const lastname = document.getElementById('user-lastname').value;
                     const email = document.getElementById('user-email').value;
                     const phone = document.getElementById('user-phone').value;
 
-                    const newUser  = {
+                    const newUser = {
                         id: users.length + 1,
                         name,
                         lastname,
@@ -346,7 +341,7 @@
                         phone
                     };
 
-                    users.push(newUser );
+                    users.push(newUser);
                     updateUserTable();
                     clearUserForm();
                     $('#userModal').modal('hide');
@@ -358,12 +353,12 @@
 
                     users.forEach(user => {
                         const row = `<tr>
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.lastname}</td>
-                            <td>${user.email}</td>
-                            <td>${user.phone}</td>
-                        </tr>`;
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.lastname}</td>
+            <td>${user.email}</td>
+            <td>${user.phone}</td>
+        </tr>`;
                         userTableBody.innerHTML += row;
                     });
                 }
@@ -375,6 +370,7 @@
                     document.getElementById('user-phone').value = '';
                 }
 
+                // Funciones para manejar vehículos
                 function registerVehicle() {
                     const plate = document.getElementById('vehicle-plate').value;
                     const brand = document.getElementById('vehicle-brand').value;
@@ -401,12 +397,12 @@
 
                     vehicles.forEach(vehicle => {
                         const row = `<tr>
-                            <td>${vehicle.id}</td>
-                            <td>${vehicle.plate}</td>
-                            <td>${vehicle.brand}</td>
-                            <td>${vehicle.model}</td>
-                            <td>${vehicle.color}</td>
-                        </tr>`;
+            <td>${vehicle.id}</td>
+            <td>${vehicle.plate}</td>
+            <td>${vehicle.brand}</td>
+            <td>${vehicle.model}</td>
+            <td>${vehicle.color}</td>
+        </tr>`;
                         vehicleTableBody.innerHTML += row;
                     });
                 }
@@ -418,32 +414,36 @@
                     document.getElementById('vehicle-color').value = '';
                 }
 
+                // Funciones para manejar facturas
                 function registerInvoice() {
                     const plate = document.getElementById('invoice-plate').value;
-                    const user = document.get
-                    .getElementById('invoice-user').value;
+                    const user = document.getElementById('invoice-user').value;
                     const entryTime = document.getElementById('invoice-entry-time').value;
-                    const entryAmPm = document.getElementById('invoice-entry-am-pm').value;
                     const exitTime = document.getElementById('invoice-exit-time').value;
                     const hourValue = parseFloat(document.getElementById('invoice-hour-value').value);
 
-                    // Convertir la hora de entrada y salida a un formato que permita calcular la diferencia
-                    const entryDateTime = new Date(`1970-01-01T${entryTime}${entryAmPm === 'PM' ? 'T12:00:00' : 'T00:00:00'}`);
-                    const exitDateTime = new Date(`1970-01-01T${exitTime}${entryAmPm === 'PM' ? 'T12:00:00' : 'T00:00:00'}`);
+                    // Convertir la hora de entrada y salida a un objeto Date
+                    const entryDateTime = new Date(`1970-01-01T${entryTime}`);
+                    const exitDateTime = new Date(`1970-01-01T${exitTime}`);
 
                     // Calcular la diferencia en horas
                     const hoursSpent = (exitDateTime - entryDateTime) / (1000 * 60 * 60);
 
-                    // Calcular el total
-                    const total = hoursSpent * hourValue;
+                    // Validar que la hora de salida sea mayor que la de entrada
+                    if (hoursSpent < 0) {
+                        alert("La hora de salida debe ser mayor que la hora de entrada.");
+                        return;
+                    }
 
                     // Crear un nuevo objeto de factura
+                    const total = hoursSpent * hourValue;
                     const newInvoice = {
                         id: invoices.length + 1,
                         plate,
                         user,
-                        entryTime: `${entryTime} ${entryAmPm}`,
-                        exitTime: exitTime,
+                        entryTime,
+                        exitTime,
+                        hourValue,
                         total
                     };
 
@@ -459,15 +459,15 @@
 
                     invoices.forEach(invoice => {
                         const row = `<tr>
-                            <td>${invoice.id}</td>
-                            <td>${invoice.plate}</td>
-                            <td>${invoice.user}</td>
-                            <td>${invoice.entryTime}</td>
-                            <td>${invoice.exitTime}</td>
-                            <td>${invoice.hourValue}</td>
-                            <td>${invoice.total}</td>
-                            <td><button class="btn btn-warning" onclick="editInvoice(${invoice.id})"><i class="fas fa-edit"></i></button></td>
-                        </tr>`;
+            <td>${invoice.id}</td>
+            <td>${invoice.plate}</td>
+            <td>${invoice.user}</td>
+            <td>${invoice.entryTime}</td>
+            <td>${invoice.exitTime}</td>
+            <td>${invoice.hourValue}</td>
+            <td>${invoice.total.toFixed(2)}</td>
+            <td><button class="btn btn-warning" onclick="editInvoice(${invoice.id})"><i class="fas fa-edit"></i></button></td>
+        </tr>`;
                         invoiceTableBody.innerHTML += row;
                     });
                 }
@@ -476,15 +476,14 @@
                     document.getElementById('invoice-plate').value = '';
                     document.getElementById('invoice-user').value = '';
                     document.getElementById('invoice-entry-time').value = '';
-                    document.getElementById('invoice-entry-am-pm').value = 'AM';
                     document.getElementById('invoice-exit-time').value = '';
                     document.getElementById('invoice-hour-value').value = '';
                     document.getElementById('invoice-total').value = '';
                 }
 
+                // Funciones para manejar la sesión
                 function logout() {
-                    // Redirigir a inicio_sesion.php
-                    window.location.href = 'inicio_sesion.php';
+                    window.location.href = 'login.php';
                 }
 
                 // Mostrar automáticamente la sección de Clientes al cargar la página
@@ -493,11 +492,38 @@
                 }
 
                 // Mostrar el nombre de usuario en la interfaz
-                const storedUser  = JSON.parse(localStorage.getItem('user'));
-                if (storedUser ) {
-                    document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+                if (storedUser) {
+                    document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
                 } else {
-                    window.location.href = 'inicio_sesion.php'; // Redirigir si no hay usuario
+                    window.location.href = 'login.php'; // Redirigir si no hay usuario
+                }
+
+                // Funciones para manejar la entrada de placa y usuario
+                function updatePlateInput() {
+                    const plateSelect = document.getElementById('invoice-plate-select');
+                    const plateInput = document.getElementById('invoice-plate-input');
+
+                    if (plateSelect.value) {
+                        plateInput.value = plateSelect.value;
+                    }
+                }
+
+                function updatePlateSelect() {
+                    document.getElementById('invoice-plate-select').value = '';
+                }
+
+                function updateUserInput() {
+                    const userSelect = document.getElementById('invoice-user-select');
+                    const userInput = document.getElementById('invoice-user-input');
+
+                    if (userSelect.value) {
+                        userInput.value = userSelect.value;
+                    }
+                }
+
+                function updateUserSelect() {
+                    document.getElementById('invoice-user-select').value = '';
                 }
             </script>
         </div>
