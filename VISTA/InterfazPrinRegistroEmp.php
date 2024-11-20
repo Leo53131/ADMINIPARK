@@ -1,3 +1,22 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+<?php
+include '../conexion/conexion.php';
+include '../controladores/UsuarioController.php';
+include '../controladores/VehiculoController.php';
+include '../controladores/FacturaController.php';
+
+$usuarioController = new UsuarioController($conexion);
+$vehiculoController = new VehiculoController($conexion);
+$facturaController = new FacturaController($conexion);
+
+$usuarios = $usuarioController->listarUsuarios();
+$vehiculos = $vehiculoController->listarVehiculos();
+$facturas = $facturaController->listarFacturas();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../estilos/style_InterfazPrinRegistro.css">
     <title>Interfaz Principal Empleado</title>
@@ -83,7 +102,7 @@
             <div class="sidebar">
                 <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Clientes</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
-                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
+                <a href="#" onclick="showSection('invoices')"><i class=" fas fa-file-invoice"></i><span>Facturas</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
@@ -100,7 +119,6 @@
                     <button type="button" class="btn btn-primary">Buscar</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">Agregar Cliente</button>
                 </div>
-
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Clientes registrados</h3>
@@ -182,7 +200,7 @@
                             </tr>
                         </thead>
                         <tbody id="vehicleTableBody">
-                            <!-- Las filas de vehículos se agregarán aquí dinámicamente -->
+                            <!-- Las filas de vehículos se agregar án aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -231,6 +249,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Sección de Facturas -->
             <div id="invoices" class="main-content hidden">
                 <h2 class="nunito-unique-600">Facturas</h2>
@@ -277,7 +296,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="invoiceModalLabel">Formulario de Registro de Factura</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label ="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-container">
@@ -340,13 +359,13 @@
                 }
 
                 // Funciones para manejar usuarios
-                function registerUser() {
+                function registerUser () {
                     const name = document.getElementById('user-name').value;
                     const lastname = document.getElementById('user-lastname').value;
                     const email = document.getElementById('user-email').value;
                     const phone = document.getElementById('user-phone').value;
 
-                    const newUser = {
+                    const newUser  = {
                         id: users.length + 1,
                         name,
                         lastname,
@@ -354,7 +373,7 @@
                         phone
                     };
 
-                    users.push(newUser);
+                    users.push(newUser );
                     updateUserTable();
                     clearUserForm();
                     $('#userModal').modal('hide');
@@ -429,8 +448,8 @@
 
                 // Funciones para manejar facturas
                 function registerInvoice() {
-                    const plate = document.getElementById('invoice-plate').value;
-                    const user = document.getElementById('invoice-user').value;
+                    const plate = document.getElementById('invoice-plate-input').value;
+                    const user = document.getElementById('invoice-user-input').value;
                     const entryTime = document.getElementById('invoice-entry-time').value;
                     const exitTime = document.getElementById('invoice-exit-time').value;
                     const hourValue = parseFloat(document.getElementById('invoice-hour-value').value);
@@ -486,8 +505,8 @@
                 }
 
                 function clearInvoiceForm() {
-                    document.getElementById('invoice-plate').value = '';
-                    document.getElementById('invoice-user').value = '';
+                    document.getElementById('invoice-plate-input').value = '';
+                    document.getElementById('invoice-user-input').value = '';
                     document.getElementById('invoice-entry-time').value = '';
                     document.getElementById('invoice-exit-time').value = '';
                     document.getElementById('invoice-hour-value').value = '';
@@ -505,9 +524,9 @@
                 }
 
                 // Mostrar el nombre de usuario en la interfaz
-                const storedUser = JSON.parse(localStorage.getItem('user'));
-                if (storedUser) {
-                    document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
+                const storedUser  = JSON.parse(localStorage.getItem('user'));
+                if (storedUser ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
                 } else {
                     window.location.href = 'login.php'; // Redirigir si no hay usuario
                 }

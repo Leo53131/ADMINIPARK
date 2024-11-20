@@ -1,9 +1,13 @@
 <?php
 include '../conexion/conexion.php';
-include '../modelos/Usuario.php';
+include '../modelos/usuario.php';
 
 class UsuarioController {
     private $usuario;
+
+    public function listarUsuarios() {
+        return $this->usuario->listar();
+    }
 
     public function __construct($conexion) {
         $this->usuario = new Usuario($conexion);
@@ -59,4 +63,7 @@ if (isset($_POST['registrar'])) {
 } elseif (isset($_POST['login'])) {
     $controller->login();
 }
+
+
 ?>
+

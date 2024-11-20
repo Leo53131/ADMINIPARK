@@ -41,5 +41,16 @@ class Usuario {
         }
         return false; // Fallo en la autenticación
     }
+    public function listar() {
+        try {
+            $sql = "SELECT * FROM administrador"; // Cambia esto si también necesitas empleados
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve todos los usuarios
+        } catch (PDOException $e) {
+            return []; // Retorna un array vacío en caso de error
+        }
+    }
 }
+
 ?>
