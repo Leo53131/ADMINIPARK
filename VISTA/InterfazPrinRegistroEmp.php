@@ -97,8 +97,10 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar clientes..." aria-label="Buscar clientes">
+                    <button type="button" class="btn btn-primary">Buscar</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">Agregar Cliente</button>
                 </div>
+
 
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Clientes registrados</h3>
@@ -162,6 +164,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
+                    <button type="button" class="btn btn-primary">Buscar</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vehicleModal">Agregar Vehículo</button>
                 </div>
 
@@ -226,6 +229,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
+                    <button type="button" class="btn btn-primary">Buscar</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invoiceModal">Agregar Factura</button>
                 </div>
 

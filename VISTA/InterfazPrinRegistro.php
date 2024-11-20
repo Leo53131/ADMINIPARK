@@ -49,6 +49,38 @@
         .common-table td {
             color: #6c4a4a;
         }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Alinea los elementos a la derecha */
+            margin: 15px 0;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #da7e5b; /* Color del borde */
+            width: 250px; /* Ajusta el ancho según sea necesario */
+            margin-right: 10px; /* Espacio entre el input y el botón */
+            font-size: 16px; /* Tamaño de la fuente */
+            color: #6c4a4a; /* Color del texto */
+        }
+
+        .search-container button {
+            background-color: #da7e5b; /* Color de fondo del botón */
+            color: white; /* Color del texto del botón */
+            padding: 8px 15px; /* Espaciado interno del botón */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Esquinas redondeadas */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+            font-size: 16px; /* Tamaño de la fuente */
+            transition: background-color 0.3s ease; /* Efecto de transición para el color de fondo */
+        }
+
+        .search-container button:hover {
+            background-color: #965A46; /* Color de fondo del botón al pasar el mouse */
+        }
     </style>
 </head>
 
@@ -69,7 +101,7 @@
                             <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
+                            <li><button class="dropdown -item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
                             <li><button class="dropdown-item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
@@ -92,14 +124,13 @@
         <div class="div3">
             <!-- Sección de Gestión de Empleados -->
             <div id="employees" class="main-content">
-                <h2 class="nunito-unique -600">Empleados</h2>
+                <h2 class="nunito-unique-600">Empleados</h2>
                 <hr class="separator-line">
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar empleados..." aria-label="Buscar empleados">
-                    <button type="button" class="nunito-unique-600" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Agregar nuevo empleado
-                    </button>
+                    <button type="button" class="nunito-unique-600" onclick="searchUsers()">Buscar</button>
+                    <button type="button" class="nunito-unique-600" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar nuevo empleado</button>
                 </div>
 
                 <div class="table-container">
@@ -156,7 +187,7 @@
 
                                 <button type="button" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
                             </div>
-                        </div>
+                        </ div>
                     </div>
                 </div>
             </div>
@@ -168,6 +199,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
+                    <button type="button">Buscar</button>
                 </div>
 
                 <div class="table-container">
@@ -203,6 +235,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
+                    <button type="button">Buscar</button>
                 </div>
 
                 <div class="table-container">
@@ -238,6 +271,7 @@
 
                 <div class="search-container">
                     <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
+                    <button type="button">Buscar</button>
                 </div>
 
                 <div class="table-container">
@@ -278,6 +312,7 @@
             }
 
             // Función para registrar un nuevo empleado
+            
             function registerEmployee() {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
@@ -314,14 +349,14 @@
             function addEmployeeRow(employee) {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-            <td>${employee.id}</td>
-            <td>${employee.name}</td>
-            <td>******</td>
-            <td>${employee.role}</td>
-            <td class="action-buttons">
-                <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
-            </td>
-        `;
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>******</td>
+                    <td>${employee.role}</td>
+                    <td class="action-buttons">
+                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
+                    </td>
+                `;
                 document.getElementById('employeeTableBody').appendChild(newRow);
             }
 
@@ -400,7 +435,7 @@
             }
 
             // Agregar la funcionalidad de mostrar/ocultar contraseña
-            const togglePassword = document.getElementById('togglePassword');
+            const togglePassword = document.getElementById('toggle Password');
             const passwordInput = document.getElementById('password');
 
             if (togglePassword && passwordInput) {
@@ -427,11 +462,26 @@
             };
 
             // Mostrar el nombre de usuario en la interfaz
-            const storedUser = JSON.parse(localStorage.getItem('user'));
-            if (storedUser) {
-                document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
+            const storedUser  = JSON.parse(localStorage.getItem('user'));
+            if (storedUser ) {
+                document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
             } else {
                 window.location.href = 'inicio_sesion.php'; // Redirigir si no hay usuario
+            }
+
+            function searchUsers() {
+                const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+                const rows = document.querySelectorAll('#userTableBody tr');
+
+                rows.forEach(row => {
+                    const cells = row.getElementsByTagName('td');
+                    const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
+                    if (name.includes(searchTerm)) {
+                        row.style.display = ''; // Mostrar fila
+                    } else {
+                        row.style.display = 'none'; // Ocultar fila
+                    }
+                });
             }
         </script>
     </div>
