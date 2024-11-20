@@ -198,30 +198,39 @@
             <!-- Modal para agregar nuevo vehículo -->
             <div class="modal fade" id="vehicleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="vehicleModalLabel">Formulario de Registro de Vehículo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-container">
-                            <h3 style="text-align: center;">Matrícula</h3>
-                            <input type="text" id="vehicle-plate" placeholder="Matrícula" class="nunito-unique-200">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="vehicleModalLabel">Formulario de Registro de Vehículo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                <div class="mb-3">
+                                    <h3 class="centered">Matrícula</h3>
+                                    <input type="text" id="vehicle-plate" placeholder="Matrícula" class="nunito-unique-200" required>
+                                </div>
 
-                            <h3 style="text-align: center;">Marca</h3>
-                            <input type="text" id="vehicle-brand" placeholder="Marca" class="nunito-unique-200">
+                                <div class="mb-3">
+                                    <h3 class="centered">Marca</h3>
+                                    <input type="text" id="vehicle-brand" placeholder="Marca" class="nunito-unique-200" required>
+                                </div>
 
-                            <h3 style="text-align: center;">Modelo</h3>
-                            <input type="text" id="vehicle-model" placeholder="Modelo" class="nunito-unique-200">
+                                <div class="mb-3">
+                                    <h3 class="centered">Modelo</h3>
+                                    <input type="text" id="vehicle-model" placeholder="Modelo" class="nunito-unique-200" required>
+                                </div>
 
-                            <h3 style="text-align: center;">Color</h3>
-                            <input type="text" id="vehicle-color" placeholder="Color" class="nunito-unique-200">
+                                <div class="mb-3">
+                                    <h3 class="centered">Color</h3>
+                                    <input type="text" id="vehicle-color" placeholder="Color" class="nunito-unique-200" required>
+                                </div>
 
-                            <button type="button" class="nunito-unique-600" onclick="registerVehicle()">Registrar</button>
+                                <button type="button" class="btn btn-secondary" onclick="registerVehicle()">Registrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Sección de Facturas -->
             <div id="invoices" class="main-content hidden">
                 <h2 class="nunito-unique-600">Facturas</h2>

@@ -53,33 +53,48 @@
         .search-container {
             display: flex;
             align-items: center;
-            justify-content: flex-end; /* Alinea los elementos a la derecha */
+            justify-content: flex-end;
+            /* Alinea los elementos a la derecha */
             margin: 15px 0;
         }
 
         .search-container input[type="text"] {
             padding: 8px;
             border-radius: 5px;
-            border: 1px solid #da7e5b; /* Color del borde */
-            width: 250px; /* Ajusta el ancho según sea necesario */
-            margin-right: 10px; /* Espacio entre el input y el botón */
-            font-size: 16px; /* Tamaño de la fuente */
-            color: #6c4a4a; /* Color del texto */
+            border: 1px solid #da7e5b;
+            /* Color del borde */
+            width: 250px;
+            /* Ajusta el ancho según sea necesario */
+            margin-right: 10px;
+            /* Espacio entre el input y el botón */
+            font-size: 16px;
+            /* Tamaño de la fuente */
+            color: #6c4a4a;
+            /* Color del texto */
         }
 
         .search-container button {
-            background-color: #da7e5b; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            padding: 8px 15px; /* Espaciado interno del botón */
-            border: none; /* Sin borde */
-            border-radius: 5px; /* Esquinas redondeadas */
-            cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-            font-size: 16px; /* Tamaño de la fuente */
-            transition: background-color 0.3s ease; /* Efecto de transición para el color de fondo */
+            background-color: #da7e5b;
+            /* Color de fondo del botón */
+            color: white;
+            /* Color del texto del botón */
+            padding: 8px 15px;
+            /* Espaciado interno del botón */
+            border: none;
+            /* Sin borde */
+            border-radius: 5px;
+            /* Esquinas redondeadas */
+            cursor: pointer;
+            /* Cambia el cursor al pasar sobre el botón */
+            font-size: 16px;
+            /* Tamaño de la fuente */
+            transition: background-color 0.3s ease;
+            /* Efecto de transición para el color de fondo */
         }
 
         .search-container button:hover {
-            background-color: #965A46; /* Color de fondo del botón al pasar el mouse */
+            background-color: #965A46;
+            /* Color de fondo del botón al pasar el mouse */
         }
     </style>
 </head>
@@ -101,7 +116,7 @@
                             <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><button class="dropdown -item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
+                            <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
                             <li><button class="dropdown-item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
@@ -187,7 +202,7 @@
 
                                 <button type="button" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
                             </div>
-                        </ div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,137 +233,137 @@
                             <!-- Las filas de usuarios se agregarán aquí dinámicamente -->
                         </tbody>
                     </table>
+                 </div>
+
+                    <div class="pagination">
+                        <button class="nunito-unique-600">Anterior</button>
+                        <button class="nunito-unique-600">1</button>
+                        <button class="nunito-unique-600">2</button>
+                        <button class="nunito-unique-600">Siguiente</button>
+                    </div>
                 </div>
 
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
+                <!-- Sección de Vehículos -->
+                <div id="vehicles" class="main-content hidden">
+                    <h2 class="nunito-unique-600">Vehículos</h2>
+                    <hr class="separator-line">
+
+                    <div class="search-container">
+                        <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
+                        <button type="button">Buscar</button>
+                    </div>
+
+                    <div class="table-container">
+                        <h3 class="nunito-unique-600">Vehículos registrados</h3>
+                        <table class="vehicles-table common-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Matrícula</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vehicleTableBody">
+                                <!-- Las filas de vehículos se agregarán aquí dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="nunito-unique-600">Anterior</button>
+                        <button class="nunito-unique-600">1</button>
+                        <button class="nunito-unique-600">2</button>
+                        <button class="nunito-unique-600">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Sección de Facturas -->
+                <div id="invoices" class="main-content hidden">
+                    <h2 class="nunito-unique-600">Facturas</h2>
+                    <hr class="separator-line">
+
+                    <div class="search-container">
+                        <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
+                        <button type="button">Buscar</button>
+                    </div>
+
+                    <div class="table-container">
+                        <h3 class="nunito-unique-600">Facturas registradas</h3>
+                        <table class="invoices-table common-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Número de factura</th>
+                                    <th>Fecha de emisión</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoiceTableBody">
+                                <!-- Las filas de facturas se agregarán aquí dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="nunito-unique-600">Anterior</button>
+                        <button class="nunito-unique-600">1</button>
+                        <button class="nunito-unique-600">2</button>
+                        <button class="nunito-unique-600">Siguiente</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Sección de Vehículos -->
-            <div id="vehicles" class="main-content hidden">
-                <h2 class="nunito-unique-600">Vehículos</h2>
-                <hr class="separator-line">
+            <script>
+                let employeeCount = 1;
+                let employees = []; // Array para almacenar empleados
 
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
-                    <button type="button">Buscar</button>
-                </div>
-
-                <div class="table-container">
-                    <h3 class="nunito-unique-600">Vehículos registrados</h3>
-                    <table class="vehicles-table common-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Matrícula</th>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vehicleTableBody">
-                            <!-- Las filas de vehículos se agregarán aquí dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
-                </div>
-            </div>
-
-            <!-- Sección de Facturas -->
-            <div id="invoices" class="main-content hidden">
-                <h2 class="nunito-unique-600">Facturas</h2>
-                <hr class="separator-line">
-
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
-                    <button type="button">Buscar</button>
-                </div>
-
-                <div class="table-container">
-                    <h3 class="nunito-unique-600">Facturas registradas</h3>
-                    <table class="invoices-table common-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Número de factura</th>
-                                <th>Fecha de emisión</th>
-                                <th>Monto</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="invoiceTableBody">
-                            <!-- Las filas de facturas se agregarán aquí dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            let employeeCount = 1;
-            let employees = []; // Array para almacenar empleados
-
-            function showSection(sectionId) {
-                const sections = document.querySelectorAll('.main-content');
-                sections.forEach(section => section.classList.add('hidden'));
-                document.getElementById(sectionId).classList.remove('hidden');
-            }
-
-            // Función para registrar un nuevo empleado
-            
-            function registerEmployee() {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const role = document.getElementById('role').value;
-
-                // Validación de los campos
-                if (username === '' || password === '' || role === '') {
-                    alert('Por favor, complete todos los campos.');
-                    return;
+                function showSection(sectionId) {
+                    const sections = document.querySelectorAll('.main-content');
+                    sections.forEach(section => section.classList.add('hidden')); // Oculta todas las secciones
+                    document.getElementById(sectionId).classList.remove('hidden'); // Muestra la sección seleccionada
                 }
 
-                // Crear un nuevo empleado
-                const newEmployee = {
-                    id: employeeCount,
-                    name: username,
-                    password: password, // Considera encriptar la contraseña en un entorno real
-                    role: role
-                };
+                // Función para registrar un nuevo empleado
 
-                // Agregar el nuevo empleado al array
-                employees.push(newEmployee);
+                function registerEmployee() {
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const role = document.getElementById('role').value;
 
-                // Crear una nueva fila en la tabla
-                addEmployeeRow(newEmployee);
-                employeeCount++;
+                    // Validación de los campos
+                    if (username === '' || password === '' || role === '') {
+                        alert('Por favor, complete todos los campos.');
+                        return;
+                    }
 
-                // Restablecer el formulario y cerrar el modal
-                resetForm();
-                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-                modalElement.hide();
-            }
+                    // Crear un nuevo empleado
+                    const newEmployee = {
+                        id: employeeCount,
+                        name: username,
+                        password: password, // Considera encriptar la contraseña en un entorno real
+                        role: role
+                    };
 
-            // Función para agregar una fila de empleado a la tabla
-            function addEmployeeRow(employee) {
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
+                    // Agregar el nuevo empleado al array
+                    employees.push(newEmployee);
+
+                    // Crear una nueva fila en la tabla
+                    addEmployeeRow(newEmployee);
+                    employeeCount++;
+
+                    // Restablecer el formulario y cerrar el modal
+                    resetForm();
+                    const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modalElement.hide();
+                }
+
+                // Función para agregar una fila de empleado a la tabla
+                function addEmployeeRow(employee) {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
                     <td>${employee.id}</td>
                     <td>${employee.name}</td>
                     <td>******</td>
@@ -357,55 +372,55 @@
                         <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
                     </td>
                 `;
-                document.getElementById('employeeTableBody').appendChild(newRow);
-            }
-
-            // Función para editar un empleado
-            function editEmployee(id) {
-                const employee = employees.find(emp => emp.id === id);
-                if (employee) {
-                    document.getElementById('username').value = employee.name;
-                    document.getElementById('password').value = employee.password; // Puedes manejar la visualización de la contraseña aquí
-                    document.getElementById('role').value = employee.role;
-
-                    // Cambiar el botón de registrar a editar
-                    const modalTitle = document.getElementById('staticBackdropLabel');
-                    modalTitle.innerText = 'Editar Empleado';
-                    const registerButton = document.querySelector('.modal-body button');
-                    registerButton.setAttribute('onclick', `updateEmployee(${id})`);
-                    registerButton.innerText = 'Actualizar';
-
-                    // Mostrar el modal
-                    const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                    modal.show();
-                }
-            }
-
-            // Función para actualizar un empleado
-            function updateEmployee(id) {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const role = document.getElementById('role').value;
-
-                // Validación de los campos
-                if (username === '' || password === '' || role === '') {
-                    alert('Por favor, complete todos los campos.');
-                    return;
+                    document.getElementById('employeeTableBody').appendChild(newRow);
                 }
 
-                // Actualizar el empleado en el array
-                const employeeIndex = employees.findIndex(emp => emp.id === id);
-                if (employeeIndex !== -1) {
-                    employees[employeeIndex] = {
-                        id: id,
-                        name: username,
-                        password: password,
-                        role: role
-                    };
+                // Función para editar un empleado
+                function editEmployee(id) {
+                    const employee = employees.find(emp => emp.id === id);
+                    if (employee) {
+                        document.getElementById('username').value = employee.name;
+                        document.getElementById('password').value = employee.password; // Puedes manejar la visualización de la contraseña aquí
+                        document.getElementById('role').value = employee.role;
 
-                    // Actualizar la fila en la tabla
-                    const rows = document.querySelectorAll('#employeeTableBody tr');
-                    rows[employeeIndex].innerHTML = `
+                        // Cambiar el botón de registrar a editar
+                        const modalTitle = document.getElementById('staticBackdropLabel');
+                        modalTitle.innerText = 'Editar Empleado';
+                        const registerButton = document.querySelector('.modal-body button');
+                        registerButton.setAttribute('onclick', `updateEmployee(${id})`);
+                        registerButton.innerText = 'Actualizar';
+
+                        // Mostrar el modal
+                        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        modal.show();
+                    }
+                }
+
+                // Función para actualizar un empleado
+                function updateEmployee(id) {
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const role = document.getElementById('role').value;
+
+                    // Validación de los campos
+                    if (username === '' || password === '' || role === '') {
+                        alert('Por favor, complete todos los campos.');
+                        return;
+                    }
+
+                    // Actualizar el empleado en el array
+                    const employeeIndex = employees.findIndex(emp => emp.id === id);
+                    if (employeeIndex !== -1) {
+                        employees[employeeIndex] = {
+                            id: id,
+                            name: username,
+                            password: password,
+                            role: role
+                        };
+
+                        // Actualizar la fila en la tabla
+                        const rows = document.querySelectorAll('#employeeTableBody tr');
+                        rows[employeeIndex].innerHTML = `
                         <td>${id}</td>
                         <td>${username}</td>
                         <td>******</td>
@@ -414,77 +429,77 @@
                             <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
                         </td>
                     `;
+                    }
+
+                    // Restablecer el formulario y cerrar el modal
+                    resetForm();
+                    const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modalElement.hide();
                 }
 
-                // Restablecer el formulario y cerrar el modal
-                resetForm();
-                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-                modalElement.hide();
-            }
+                // Función para restablecer el formulario
+                function resetForm() {
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('role').value = '';
+                    const modalTitle = document.getElementById('staticBackdropLabel');
+                    modalTitle.innerText = 'Formulario de Registro de Empleado';
+                    const registerButton = document.querySelector('.modal-body button');
+                    registerButton.setAttribute('onclick', 'registerEmployee()');
+                    registerButton.innerText = 'Registrar';
+                }
 
-            // Función para restablecer el formulario
-            function resetForm() {
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('role').value = '';
-                const modalTitle = document.getElementById('staticBackdropLabel');
-                modalTitle.innerText = 'Formulario de Registro de Empleado';
-                const registerButton = document.querySelector('.modal-body button');
-                registerButton.setAttribute('onclick', 'registerEmployee()');
-                registerButton.innerText = 'Registrar';
-            }
+                // Agregar la funcionalidad de mostrar/ocultar contraseña
+                const togglePassword = document.getElementById('toggle Password');
+                const passwordInput = document.getElementById('password');
 
-            // Agregar la funcionalidad de mostrar/ocultar contraseña
-            const togglePassword = document.getElementById('toggle Password');
-            const passwordInput = document.getElementById('password');
+                if (togglePassword && passwordInput) {
+                    togglePassword.addEventListener('click', function() {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        this.classList.toggle('fa-eye-slash');
+                        this.classList.toggle('fa-eye');
+                    });
+                }
 
-            if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', function() {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    this.classList.toggle('fa-eye-slash');
-                    this.classList.toggle('fa-eye');
-                });
-            }
+                // Restablecer el formulario cuando el modal se oculta
+                const modalElement = document.getElementById('staticBackdrop');
+                modalElement.addEventListener('hidden.bs.modal', resetForm);
 
-            // Restablecer el formulario cuando el modal se oculta
-            const modalElement = document.getElementById('staticBackdrop');
-            modalElement.addEventListener('hidden.bs.modal', resetForm);
+                function logout() {
+                    // Redirigir a inicio_sesion.php
+                    window.location.href = 'login.php';
+                }
 
-            function logout() {
-                // Redirigir a inicio_sesion.php
-                window.location.href = 'inicio_sesion.php';
-            }
-
-            window.history.pushState(null, '', window.location.href);
-            window.onpopstate = function() {
                 window.history.pushState(null, '', window.location.href);
-            };
+                window.onpopstate = function() {
+                    window.history.pushState(null, '', window.location.href);
+                };
 
-            // Mostrar el nombre de usuario en la interfaz
-            const storedUser  = JSON.parse(localStorage.getItem('user'));
-            if (storedUser ) {
-                document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
-            } else {
-                window.location.href = 'inicio_sesion.php'; // Redirigir si no hay usuario
-            }
+                // Mostrar el nombre de usuario en la interfaz
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+                if (storedUser) {
+                    document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
+                } else {
+                    window.location.href = 'login.php'; // Redirigir si no hay usuario
+                }
 
-            function searchUsers() {
-                const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-                const rows = document.querySelectorAll('#userTableBody tr');
+                function searchUsers() {
+                    const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+                    const rows = document.querySelectorAll('#userTableBody tr');
 
-                rows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
-                    if (name.includes(searchTerm)) {
-                        row.style.display = ''; // Mostrar fila
-                    } else {
-                        row.style.display = 'none'; // Ocultar fila
-                    }
-                });
-            }
-        </script>
-    </div>
+                    rows.forEach(row => {
+                        const cells = row.getElementsByTagName('td');
+                        const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
+                        if (name.includes(searchTerm)) {
+                            row.style.display = ''; // Mostrar fila
+                        } else {
+                            row.style.display = 'none'; // Ocultar fila
+                        }
+                    });
+                }
+            </script>
+        </div>
 </body>
 
 </html>
