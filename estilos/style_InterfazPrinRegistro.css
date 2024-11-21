@@ -515,3 +515,68 @@
     .search-container button:hover {
         background-color: #965A46; /* Color de fondo del botón al pasar el mouse */
     }
+
+    .centered {
+        text-align: center;
+    }
+
+    /* Estilos comunes para todas las tablas */
+    .common-table {
+        width: 100%;
+        max-width: 800px;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .common-table th,
+    .common-table td {
+        padding: 20px;
+        text-align: left;
+        border-bottom: 1px solid #da7e5b;
+        font-size: 16px;
+        min-height: 50px;
+    }
+
+    /* Encabezado de la tabla */
+    .common-table th {
+        background-color: #da7e5b;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Celdas de la tabla */
+    .common-table td {
+        color: #6c4a4a;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 15px 0;
+    }
+
+    .search-container input[type="text"] {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #da7e5b;
+        width: 250px;
+        margin-right: 10px;
+        font-size: 16px;
+        color: #6c4a4a;
+    }
+
+    .search-container button {
+        background-color: #da7e5b;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .search-container button:hover {
+        background-color: #965A46;
+    }

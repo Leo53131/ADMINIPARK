@@ -19,5 +19,10 @@ class PropietarioController {
     public function editarPropietario($id, $nombre, $apellido, $correo) {
         return $this->propietario->editar($id, $nombre, $apellido, $correo);
     }
+
+    // Agregar propietario con username, role y password
+    public function agregarPropietario($username, $role, $hashedPassword) {
+        return $this->propietario->agregar($username, $role, $hashedPassword);
+    }
 }
 ?>
