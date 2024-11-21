@@ -22,7 +22,6 @@ ini_set('display_errors', 1);
         .hidden {
             display: none;
         }
-        
 
         .centered {
             text-align: center;
