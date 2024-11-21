@@ -24,8 +24,12 @@ class VehiculoController {
         }
     }
 
-    public function listarVehiculos() {
-        return $this->vehiculo->listar();
+    public function listar() {
+        if (isset($_GET['action']) && $_GET['action'] === 'listar') {
+            $vehiculos = $this->vehiculo->listar();
+            echo json_encode($vehiculos);
+            exit();
+        }
     }
 }
 ?>

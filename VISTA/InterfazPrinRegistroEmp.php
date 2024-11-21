@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
+
 <?php
 include '../conexion/conexion.php';
 include '../controladores/UsuarioController.php';
@@ -13,9 +14,10 @@ $vehiculoController = new VehiculoController($conexion);
 $facturaController = new FacturaController($conexion);
 
 $usuarios = $usuarioController->listarUsuarios();
-$vehiculos = $vehiculoController->listarVehiculos();
+$vehiculos = $vehiculoController->listar();
 $facturas = $facturaController->listarFacturas();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -297,7 +299,7 @@ $facturas = $facturaController->listarFacturas();
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="invoiceModalLabel">Formulario de Registro de Factura</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label ="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-container">
@@ -351,6 +353,12 @@ $facturas = $facturaController->listarFacturas();
                 let vehicles = [];
                 let invoices = [];
 
+                window.onload = function() {
+                    showSection('users');
+                    loadVehicles(); // Cargar vehículos al inicio
+                }
+
+
                 // Muestra la sección seleccionada
                 function showSection(section) {
                     document.querySelectorAll('.main-content').forEach((el) => {
@@ -360,13 +368,13 @@ $facturas = $facturaController->listarFacturas();
                 }
 
                 // Funciones para manejar usuarios
-                function registerUser () {
+                function registerUser() {
                     const name = document.getElementById('user-name').value;
                     const lastname = document.getElementById('user-lastname').value;
                     const email = document.getElementById('user-email').value;
                     const phone = document.getElementById('user-phone').value;
 
-                    const newUser  = {
+                    const newUser = {
                         id: users.length + 1,
                         name,
                         lastname,
@@ -374,7 +382,7 @@ $facturas = $facturaController->listarFacturas();
                         phone
                     };
 
-                    users.push(newUser );
+                    users.push(newUser);
                     updateUserTable();
                     clearUserForm();
                     $('#userModal').modal('hide');
@@ -525,9 +533,9 @@ $facturas = $facturaController->listarFacturas();
                 }
 
                 // Mostrar el nombre de usuario en la interfaz
-                const storedUser  = JSON.parse(localStorage.getItem('user'));
-                if (storedUser ) {
-                    document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+                if (storedUser) {
+                    document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
                 } else {
                     window.location.href = 'login.php'; // Redirigir si no hay usuario
                 }
@@ -557,6 +565,58 @@ $facturas = $facturaController->listarFacturas();
 
                 function updateUserSelect() {
                     document.getElementById('invoice-user-select').value = '';
+                }
+
+                function registerVehicle() {
+                    const plate = document.getElementById('vehicle-plate').value;
+                    const brand = document.getElementById('vehicle-brand').value;
+                    const model = document.getElementById('vehicle-model').value;
+                    const color = document.getElementById('vehicle-color').value;
+
+                    // Enviar los datos al servidor
+                    fetch('../controladores/VehiculoController.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                registrarVehiculo: true,
+                                matricula: plate,
+                                marca: brand,
+                                modelo: model,
+                                color: color
+                            })
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data); // Muestra el resultado del servidor en la consola
+                            // Aquí puedes agregar código para refrescar la tabla de vehículos
+                            clearVehicleForm();
+                            $('#vehicleModal').modal('hide');
+                            loadVehicles(); // Cargar nuevamente los vehículos
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
+                function loadVehicles() {
+                    fetch('../controladores/VehiculoController.php?action=listar')
+                        .then(response => response.json())
+                        .then(data => {
+                            const vehicleTableBody = document.getElementById('vehicleTableBody');
+                            vehicleTableBody.innerHTML = '';
+
+                            data.forEach(vehicle => {
+                                const row = `<tr>
+                    <td>${vehicle.id}</td>
+                    <td>${vehicle.matricula}</td>
+                    <td>${vehicle.marca}</td>
+                    <td>${vehicle.modelo}</td>
+                    <td>${vehicle.color}</td>
+                </tr>`;
+                                vehicleTableBody.innerHTML += row;
+                            });
+                        })
+                        .catch(error => console.error('Error:', error));
                 }
             </script>
         </div>
