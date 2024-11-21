@@ -228,14 +228,14 @@ ini_set('display_errors', 1);
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <?php foreach ($usuarios as $usuario): ?>
+                            <?php foreach ($propietarios as $propietario): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($usuario['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($usuario['Nombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($usuario['Apellido']); ?></td>
-                                    <td><?php echo htmlspecialchars($usuario['Correo']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Correo']); ?></td>
                                     <td>
-                                        <i class="fas fa-edit" title="Editar" onclick="editUser (<?php echo $usuario['id']; ?>)"></i>
+                                        <i class="fas fa-edit" title="Editar" onclick="editUser (<?php echo $propietario['id']; ?>)"></i>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -346,26 +346,44 @@ ini_set('display_errors', 1);
                     return;
                 }
 
-                // Crear un nuevo empleado
-                const newEmployee = {
-                    id: employeeCount,
-                    name: username,
-                    password: password, // Considera encriptar la contraseña en un entorno real
-                    role: role
-                };
+                const data = new FormData();
+                data.append('username', username);
+                data.append('password', password);
+                data.append('role', role);
 
-                // Agregar el nuevo empleado al array
-                employees.push(newEmployee);
+                fetch('agregar_empleado.php', {
+                        method: 'POST',
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Empleado agregado exitosamente.');
+                            // Aquí puedes actualizar la tabla de empleados
+                            addEmployeeRow({
+                                id: data.id,
+                                name: username,
+                                role: role
+                            });
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            };
 
-                // Crear una nueva fila en la tabla
-                addEmployeeRow(newEmployee);
-                employeeCount++;
+            // Agregar el nuevo empleado al array
+            employees.push(newEmployee);
 
-                // Restablecer el formulario y cerrar el modal
-                resetForm();
-                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-                modalElement.hide();
-            }
+            // Crear una nueva fila en la tabla
+            addEmployeeRow(newEmployee);
+            employeeCount++;
+
+            // Restablecer el formulario y cerrar el modal
+            resetForm();
+            const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+            modalElement.hide();
+
 
             // Función para agregar una fila de empleado a la tabla
             function addEmployeeRow(employee) {
@@ -387,20 +405,60 @@ ini_set('display_errors', 1);
                 const employee = employees.find(emp => emp.id === id);
                 if (employee) {
                     document.getElementById('username').value = employee.name;
-                    document.getElementById('password').value = employee.password; // Puedes manejar la visualización de la contraseña aquí
+                    document.getElementById('password').value = ''; // No mostrar la contraseña
                     document.getElementById('role').value = employee.role;
 
-                    // Cambiar el botón de registrar a editar
                     const modalTitle = document.getElementById('staticBackdropLabel');
                     modalTitle.innerText = 'Editar Empleado';
                     const registerButton = document.querySelector('.modal-body button');
                     registerButton.setAttribute('onclick', `updateEmployee(${id})`);
                     registerButton.innerText = 'Actualizar';
 
-                    // Mostrar el modal
                     const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
                     modal.show();
                 }
+            }
+
+            function updateEmployee(id) {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const role = document.getElementById('role').value;
+
+                const data = new FormData();
+                data.append('id', id);
+                data.append('username', username);
+                data.append('role', role);
+                if (password) {
+                    data.append('password', password); // Solo enviar si hay nueva contraseña
+                }
+
+                fetch('editar_empleado.php', {
+                        method: 'POST',
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Empleado actualizado exitosamente.');
+                            // Aquí puedes actualizar la fila en la tabla
+                            const rows = document.querySelectorAll('#employeeTableBody tr');
+                            const rowIndex = Array.from(rows).findIndex(row => row.cells[0].textContent == id);
+                            if (rowIndex !== -1) {
+                                rows[rowIndex].innerHTML = `
+                    <td>${id}</td>
+                    <td>${username}</td>
+                    <td>******</td>
+                    <td>${role}</td>
+                    <td class="action-buttons">
+                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
+                    </td>
+                `;
+                            }
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
 
             // Función para actualizar un empleado
@@ -447,7 +505,7 @@ ini_set('display_errors', 1);
             // Función para restablecer el formulario
             function resetForm() {
                 document.getElementById('username').value = '';
-                document.getElement .getElementById('password').value = '';
+                document.getElement.getElementById('password').value = '';
                 document.getElementById('role').value = '';
                 const modalTitle = document.getElementById('staticBackdropLabel');
                 modalTitle.innerText = 'Formulario de Registro de Empleado';
@@ -470,8 +528,14 @@ ini_set('display_errors', 1);
             }
 
             // Restablecer el formulario cuando el modal se oculta
-            const modalElement = document.getElementById('staticBackdrop');
-            modalElement.addEventListener('hidden.bs.modal', resetForm);
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalElement = document.getElementById('staticBackdrop');
+                if (modalElement) {
+                    modalElement.addEventListener('hidden.bs.modal', resetForm);
+                } else {
+                    console.error('No se encontró el elemento con ID "staticBackdrop".');
+                }
+            });
 
             function logout() {
                 // Redirigir a inicio_sesion.php
@@ -484,9 +548,9 @@ ini_set('display_errors', 1);
             };
 
             // Mostrar el nombre de usuario en la interfaz
-            const storedUser  = JSON.parse(localStorage.getItem('user'));
-            if (storedUser ) {
-                document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser) {
+                document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
             } else {
                 window.location.href = 'login.php'; // Redirigir si no hay usuario
             }
