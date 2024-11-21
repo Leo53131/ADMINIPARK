@@ -1,5 +1,5 @@
 <?php
-include '../modelos/Propietario.php'; // Asegúrate de que la ruta sea correcta
+require_once '../modelos/propietario.php';
 
 class PropietarioController {
     private $propietario;
@@ -9,23 +9,28 @@ class PropietarioController {
     }
 
     public function listarPropietarios() {
-        return $this->propietario->listarPropietarios();
+        return $this->propietario->listar();
     }
 
-    public function agregarPropietario($nombre, $apellido, $correo) {
-        return $this->propietario->agregarPropietario($nombre, $apellido, $correo);
+    public function registrarPropietario($nombre, $apellido, $celular, $correo) {
+        return $this->propietario->registrar($nombre, $apellido, $celular, $correo);
     }
 
-    public function obtenerPropietario($id) {
-        return $this->propietario->obtenerPropietario($id);
+    public function editarPropietario($id, $nombre, $apellido, $celular, $correo) {
+        return $this->propietario->editar($id, $nombre, $apellido, $celular, $correo);
     }
 
-    public function actualizarPropietario($id, $nombre, $apellido, $correo) {
-        return $this->propietario->actualizarPropietario($id, $nombre, $apellido, $correo);
-    }
-
-    public function eliminarPropietario($id) {
-        return $this->propietario->eliminarPropietario($id);
+    public function agregarPropietario($username, $role, $hashedPassword) {
+        try {
+            $id = $this->propietario->agregar($username, $role, $hashedPassword);
+            if ($id) {
+                return ['success' => true, 'id' => $id];
+            } else {
+                return ['success' => false, 'message' => 'Error al agregar el propietario.'];
+            }
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
     }
 }
 ?>

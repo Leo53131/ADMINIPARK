@@ -1,35 +1,59 @@
 <?php
-require_once '../modelos/Empleado.php';
+include '../modelos/empleado.php';
 
 class EmpleadoController {
-    private $empleado;
+    private $model;
 
     public function __construct($conexion) {
-        $this->empleado = new Empleado($conexion);
+        $this->model = new EmpleadoModel($conexion);
     }
 
-    public function listarEmpleadosPaginados($start, $perPage) {
-        return $this->empleado->listarEmpleadosPaginados($start, $perPage);
+    public function registrarEmpleado() {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $username = $data['username'];
+        $password = $data['password'];
+        $role = $data['role'];
+
+        if ($this->model->registrarEmpleado($username, $password, $role)) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al registrar el empleado.']);
+        }
     }
 
-    public function contarEmpleados() {
-        return $this->empleado->contarEmpleados();
+    public function listarEmpleados() {
+        echo json_encode($this->model->listarEmpleados());
     }
 
-    public function obtenerEmpleado($id) {
-        return $this->empleado->obtenerEmpleado($id);
-    }
+    public function actualizarEmpleado() {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $id = $data['id'];
+        $username = $data['username'];
+        $password = $data['password'];
+        $role = $data['role'];
 
-    public function agregarEmpleado($nombre, $apellido, $correo, $usuario, $contrasena) {
-        return $this->empleado->agregarEmpleado($nombre, $apellido, $correo, $usuario, $contrasena);
-    }
-
-    public function actualizarEmpleado($id, $nombre, $apellido, $correo, $usuario, $contrasena = null) {
-        return $this->empleado->actualizarEmpleado($id, $nombre, $apellido, $correo, $usuario, $contrasena);
-    }
-
-    public function eliminarEmpleado($id) {
-        return $this->empleado->eliminarEmpleado($id);
+        if ($this->model->actualizarEmpleado($id, $username, $password, $role)) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al actualizar el empleado.']);
+        }
     }
 }
 
+// Manejo de las acciones
+$conexion = new Conexion();
+$conexion = $conexion->conectar();
+$controller = new EmpleadoController($conexion);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'register':
+                $controller->registrarEmpleado();
+                break;
+            case 'update':
+                $controller->actualizarEmpleado();
+                break;
+        }
+    }
+}

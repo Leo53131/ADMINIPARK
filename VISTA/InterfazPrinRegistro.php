@@ -1,25 +1,6 @@
 <?php
-// Incluir la clase Conexion
-require_once '../modelos/conexion.php';  // Cambia esta ruta si es necesario
-
-// El resto de tu código
-include '../modelospPropietario.php';
-
-$conexion = new Conexion();
-$controller = new PropietarioController($conexion->conectar());
-$propietarios = $controller->listarPropietarios();
-?>
-
-<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-
-// Incluir controlador
-require_once '../controladores/propietariocontroller.php';
-$conexion = new Conexion();
-$controller = new propietariocontroller($conexion->conectar());
-$propietarios = $controller->listarPropietarios();
 ?>
 
 <!DOCTYPE html>
@@ -40,65 +21,29 @@ $propietarios = $controller->listarPropietarios();
         .hidden {
             display: none;
         }
-
-        .active-section {
-            display: block !important;
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .sidebar a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .sidebar i {
-            margin-right: 10px;
-        }
-
-        .main-content {
-            padding: 20px;
-        }
-
-        .separator-line {
-            margin: 20px 0;
-        }
-
-        .common-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .common-table th,
-        .common-table td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        .users-table th,
-        .users-table td {
-            text-align: center;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .nunito-unique-600 {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 600;
-        }
     </style>
 </head>
 
 <body>
+    <?php
+    include '../conexion/conexion.php';
+    include '../controladores/empleadocontroller.php'; // Incluir el controlador de empleados
+    include '../controladores/propietariocontroller.php'; // Incluir el controlador de propietarios
+
+    // Crear conexión a la base de datos
+    $conexion = new Conexion();
+    $conexion = $conexion->conectar();
+
+    // Verificar si la conexión fue exitosa
+    if ($conexion) {
+        $controller = new EmpleadoController($conexion);
+        $empleado = $controller->listarEmpleados(); // Obtener la lista de empleados
+    } else {
+        echo "<div class='alert alert-danger'>Error al conectar a la base de datos.</div>";
+        exit;
+    }
+    ?>
+
     <div class="parent">
         <!-- Encabezado de la interfaz -->
         <div class="div1">
@@ -123,56 +68,108 @@ $propietarios = $controller->listarPropietarios();
                 </div>
             </div>
         </div>
-
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
                 <a href="#" onclick="showSection('employees')"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
-                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Clientes</span></a>
+                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Cliente</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
-                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
+                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
 
         <!-- Contenido principal -->
         <div class="div3">
+            <!-- Sección de Gestión de Empleados -->
             <div id="employees" class="main-content">
                 <h2 class="nunito-unique-600">Empleados</h2>
                 <hr class="separator-line">
+
+                <div class="search-container">
+                    <input type="text" id="employeeSearch" placeholder="Buscar empleados..." aria-label="Buscar empleados">
+                    <button type="button" class="nunito-unique-600" onclick="searchEmployees()">Buscar</button>
+                    <button type="button" class="nunito-unique-600" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar nuevo empleado</button>
+                </div>
+
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Empleados registrados</h3>
-                    <table class="common-table">
+                    <table class="employees-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Email</th>
+                                <th>Usuario</th>
+                                <th>Contraseña</th>
+                                <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php foreach ($propietarios as $propietario): ?>
+                        <tbody id="employeeTableBody">
+                            <?php foreach ($empleados as $empleado): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($propietario['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($propietario['Nombre']); ?></td>
-                                    <td><?php echo htmlspecialchars($propietario['Apellido']); ?></td>
-                                    <td><?php echo htmlspecialchars($propietario['Correo']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['idEmpleado']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['Nombre_Usuario']); ?></td>
+                                    <td>******</td>
+                                    <td><?php echo htmlspecialchars($empleado['Rol']); ?></td>
                                     <td>
-                                        <i class="fas fa-edit" title="Editar" onclick="editUser(<?php echo $propietario['id']; ?>)"></i>
-                                        <i class="fas fa-trash" title="Eliminar" onclick="deleteUser(<?php echo $propietario['id']; ?>)"></i>
+                                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(<?php echo $empleado['idEmpleado']; ?>)"></i>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
+
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
             </div>
 
+            <!-- Modal para agregar nuevo empleado -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Formulario de Registro de Empleado</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-container">
+                                <h3 style="text-align: center;">Usuario</h3>
+                                <input type="text" id="username" placeholder="Usuario" class="nunito-unique-200">
+
+                                <h3 style="text-align: center;">Contraseña</h3>
+                                <div class="password-container">
+                                    <input type="password" id="password" placeholder="Contraseña">
+                                    <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
+                                </div>
+
+                                <h3 style="text-align: center;">Rol</h3>
+                                <select id="role" class="nunito-unique-200">
+                                    <option value="">-- Seleccione un rol --</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Empleado">Empleado</option>
+                                </select>
+
+                                <button type="button" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sección de cliente -->
             <div id="users" class="main-content hidden">
-                <h2 class="nunito-unique-600">Clientes</h2>
+                <h2 class="nunito-unique-600">Cliente</h2>
                 <hr class="separator-line">
+
+                <div class="search-container">
+                    <input type="text" id="userSearch" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
+                    <button type="button" class="nunito-unique-600" onclick="searchUsers()">Buscar</button>
+                </div>
+
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Clientes registrados</h3>
                     <table class="users-table common-table">
@@ -181,316 +178,310 @@ $propietarios = $controller->listarPropietarios();
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
+                                <th>celular</th>
                                 <th>Email</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="userTableBody">
                             <?php foreach ($propietarios as $propietario): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($propietario['id']); ?></td>
                                     <td><?php echo htmlspecialchars($propietario['Nombre']); ?></td>
                                     <td><?php echo htmlspecialchars($propietario['Apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['celular']); ?></td>
                                     <td><?php echo htmlspecialchars($propietario['Correo']); ?></td>
+                                    
                                     <td>
-                                        <i class="fas fa-edit" title="Editar" onclick="editUser(<?php echo $propietario['id']; ?>)"></i>
-                                        <i class="fas fa-trash" title="Eliminar" onclick="deleteUser(<?php echo $propietario['id']; ?>)"></i>
+                                        <i class="fas fa-edit" title="Editar" onclick="editUser (<?php echo $propietario['id']; ?>)"></i>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
+
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
             </div>
 
+            <!-- Sección de Vehículos -->
             <div id="vehicles" class="main-content hidden">
                 <h2 class="nunito-unique-600">Vehículos</h2>
                 <hr class="separator-line">
+
+                <div class="search-container">
+                    <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
+                    <button type="button">Buscar</button>
+                </div>
+
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Vehículos registrados</h3>
-                    <table class="common-table">
+                    <table class="vehicles-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Placa</th>
+                                <th>Matrícula</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
-                                <th>Cliente</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Aquí puedes agregar los datos de los vehículos -->
-                            <tr>
-                                <td>1</td>
-                                <td>ABC123</td>
-                                <td>Toyota</td>
-                                <td>Corolla</td>
-                                <td>Juan Pérez</td>
-                                <td>
-                                    <i class="fas fa-edit" title="Editar"></i>
-                                    <i class="fas fa-trash" title="Eliminar"></i>
-                                </td>
-                            </tr>
+                        <tbody id="vehicleTableBody">
+                            <!-- Las filas de vehículos se agregarán aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
+
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
             </div>
 
+            <!-- Sección de Facturas -->
             <div id="invoices" class="main-content hidden">
                 <h2 class="nunito-unique-600">Facturas</h2>
                 <hr class="separator-line">
+
+                <div class="search-container">
+                    <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
+                    <button type="button">Buscar</button>
+                </div>
+
                 <div class="table-container">
-                    <h3 class="nunito-unique-600">Facturas generadas</h3>
-                    <table class="common-table">
+                    <h3 class="nunito-unique-600">Facturas registradas</h3>
+                    <table class="invoices-table common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Vehículo</th>
+                                <th>Número de factura</th>
+                                <th>Fecha de emisión</th>
                                 <th>Monto</th>
-                                <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Juan Pérez</td>
-                                <td>Toyota Corolla</td>
-                                <td>$200</td>
-                                <td>2024-11-21</td>
-                                <td>
-                                    <i class="fas fa-eye" title="Ver"></i>
-                                    <i class="fas fa-edit" title="Editar"></i>
-                                    <i class="fas fa-trash" title="Eliminar"></i>
-                                </td>
-                            </tr>
+                        <tbody id="invoiceTableBody">
+                            <!-- Las filas de facturas se agregarán aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
+
+                <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.main-content');
-            sections.forEach((section) => {
-                section.classList.add('hidden');
-            });
-            const activeSection = document.getElementById(sectionId);
-            activeSection.classList.remove('hidden');
-        }
-    </script>
-</body>
+            <script>
+                let employeeCount = <?php echo count($empleados) + 1; ?>; // Contador de empleados
+                let employees = <?php echo json_encode($empleados); ?>; // Cargar empleados desde PHP
 
-</html>
-
-
-        <script>
-            let employeeCount = 1;
-            let employees = []; // Array para almacenar empleados
-
-            function showSection(sectionId) {
-                const sections = document.querySelectorAll('.main-content');
-                sections.forEach(section => section.classList.add('hidden')); // Oculta todas las secciones
-                document.getElementById(sectionId).classList.remove('hidden'); // Muestra la sección seleccionada
-            }
-
-            // Función para registrar un nuevo empleado
-            function registerEmployee() {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const role = document.getElementById('role').value;
-
-                // Validación de los campos
-                if (username === '' || password === '' || role === '') {
-                    alert('Por favor, complete todos los campos.');
-                    return;
+                function showSection(sectionId) {
+                    const sections = document.querySelectorAll('.main-content');
+                    sections.forEach(section => section.classList.add('hidden'));
+                    document.getElementById(sectionId).classList.remove('hidden');
                 }
 
-                const data = new FormData();
-                data.append('username', username);
-                data.append('password', password);
-                data.append('role', role);
+                function registerEmployee() {
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const role = document.getElementById('role').value;
 
-                fetch('agregar_empleado.php', {
+                    if (username === '' || password === '' || role === '') {
+                        alert('Por favor, complete todos los campos.');
+                        return;
+                    // Enviar datos al servidor para registrar el empleado
+                    fetch('../controladores/empleadocontroller.php', {
                         method: 'POST',
-                        body: data
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action: 'register',
+                            username: username,
+                            password: password,
+                            role: role
+                        })
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Empleado agregado exitosamente.');
-                            addEmployeeRow({
-                                id: data.id,
-                                name: username,
-                                role: role
-                            }); // Actualizar la tabla
-                            employees.push({
-                                id: data.id,
-                                name: username,
-                                role: role
-                            }); // Actualizar el array
+                            const newEmployee = {
+                                idEmpleado: employeeCount,
+                                Nombre_Usuario: username,
+                                Rol: role
+                            };
+                            employees.push(newEmployee);
+                            addEmployeeRow(newEmployee);
+                            employeeCount++;
+                            resetForm();
+                            const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                            modalElement.hide();
                         } else {
-                            alert(data.message);
+                            alert('Error al registrar el empleado: ' + data.message);
                         }
                     })
-                    .catch(error => console.error('Error:', error));
-            }
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                } }
 
-            // Función para agregar una fila de empleado a la tabla
-            function addEmployeeRow(employee) {
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-            <td>${employee.id}</td>
-            <td>${employee.name}</td>
-            <td>******</td>
-            <td>${employee.role}</td>
-            <td class="action-buttons">
-                <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
-            </td>
-        `;
-                document.getElementById('employeeTableBody').appendChild(newRow);
-            }
-
-            // Función para editar un empleado
-            function editEmployee(id) {
-                const employee = employees.find(emp => emp.id === id);
-                if (employee) {
-                    document.getElementById('username').value = employee.name;
-                    document.getElementById('password').value = ''; // No mostrar la contraseña
-                    document.getElementById('role').value = employee.role;
-
-                    const modalTitle = document.getElementById('staticBackdropLabel');
-                    modalTitle.innerText = 'Editar Empleado';
-                    const registerButton = document.querySelector('.modal-body button');
-                    registerButton.setAttribute('onclick', `updateEmployee(${id})`);
-                    registerButton.innerText = 'Actualizar';
-
-                    const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                    modal.show();
-                }
-            }
-
-            // Función para actualizar un empleado
-            function updateEmployee(id) {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const role = document.getElementById('role').value;
-
-                if (username === '' || role === '') {
-                    alert('Por favor, complete todos los campos.');
-                    return;
+                function addEmployeeRow(employee) {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${employee.idEmpleado}</td>
+                        <td>${employee.Nombre_Usuario}</td>
+                        <td>******</td>
+                        <td>${employee.Rol}</td>
+                        <td>
+                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.idEmpleado})"></i>
+                        </td>
+                    `;
+                    document.getElementById('employeeTableBody').appendChild(newRow);
                 }
 
-                const data = new FormData();
-                data.append('id', id);
-                data.append('username', username);
-                data.append('role', role);
-                if (password) {
-                    data.append('password', password); // Solo enviar si hay nueva contraseña
+                function editEmployee(id) {
+                    const employee = employees.find(emp => emp.idEmpleado === id);
+                    if (employee) {
+                        document.getElementById('username').value = employee.Nombre_Usuario;
+                        document.getElementById('password').value = ''; // No mostrar la contraseña
+                        document.getElementById('role').value = employee.Rol;
+
+                        const modalTitle = document.getElementById('staticBackdropLabel');
+                        modalTitle.innerText = 'Editar Empleado';
+                        const registerButton = document.querySelector('.modal-body button');
+                        registerButton.setAttribute('onclick', `updateEmployee(${id})`);
+                        registerButton.innerText = 'Actualizar';
+
+                        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        modal.show();
+                    }
                 }
 
-                fetch('editar_empleado.php', {
+                function updateEmployee(id) {
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value.trim();
+                    const role = document.getElementById('role').value;
+
+                    if (username === '' || role === '') {
+                        alert('Por favor, complete todos los campos.');
+                        return;
+                    }
+
+                    fetch('../controladores/empleadocontroller.php', {
                         method: 'POST',
-                        body: data
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action: 'update',
+                            id: id,
+                            username: username,
+                            password: password,
+                            role: role
+                        })
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Empleado actualizado exitosamente.');
-                            const employeeIndex = employees.findIndex(emp => emp.id === id);
+                            const employeeIndex = employees.findIndex(emp => emp.idEmpleado === id);
                             if (employeeIndex !== -1) {
                                 employees[employeeIndex] = {
-                                    id,
-                                    name: username,
-                                    role
+                                    idEmpleado: id,
+                                    Nombre_Usuario: username,
+                                    Rol: role
                                 };
-                                updateEmployeeRow(id, username, role); // Actualizar la tabla
+                                const rows = document.querySelectorAll('#employeeTableBody tr');
+                                rows[employeeIndex].innerHTML = `
+                                    <td>${id}</td>
+                                    <td>${username}</td>
+                                    <td>******</td>
+                                    <td>${role}</td>
+                                    <td>
+                                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
+                                    </td>
+                                `;
                             }
+                            resetForm();
+                            const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                            modalElement.hide();
                         } else {
-                            alert(data.message);
+                            alert('Error al actualizar el empleado: ' + data.message);
                         }
                     })
-                    .catch(error => console.error('Error:', error));
-            }
-
-            // Función para actualizar la fila de empleado en la tabla
-            function updateEmployeeRow(id, username, role) {
-                const rows = document.querySelectorAll('#employeeTableBody tr');
-                const rowIndex = Array.from(rows).findIndex(row => row.cells[0].textContent == id);
-                if (rowIndex !== -1) {
-                    rows[rowIndex].innerHTML = `
-                <td>${id}</td>
-                <td>${username}</td>
-                <td>******</td>
-                <td>${role}</td>
-                <td class="action-buttons">
-                    <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
-                </td>
-            `;
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 }
-            }
 
-            // Función para restablecer el formulario
-            function resetForm() {
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('role').value = '';
-                const modalTitle = document.getElementById('staticBackdropLabel');
-                modalTitle.innerText = 'Formulario de Registro de Empleado';
-                const registerButton = document.querySelector('.modal-body button');
-                registerButton.setAttribute('onclick', 'registerEmployee()');
-                registerButton.innerText = 'Registrar';
-            }
+                function resetForm() {
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('role').value = '';
+                    const modalTitle = document.getElementById('staticBackdropLabel');
+                    modalTitle.innerText = 'Formulario de Registro de Empleado';
+                    const registerButton = document.querySelector('.modal-body button');
+                    registerButton.setAttribute('onclick', 'registerEmployee()');
+                    registerButton.innerText = 'Registrar';
+                }
 
-            // Agregar la funcionalidad de mostrar/ocultar contraseña
-            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const togglePassword = document.getElementById('togglePassword');
                 const passwordInput = document.getElementById('password');
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.classList.toggle('fa-eye-slash');
-                this.classList.toggle('fa-eye');
-            });
 
-            // Restablecer el formulario cuando el modal se oculta
-            document.addEventListener('DOMContentLoaded', function() {
-                const modalElement = document.getElementById('staticBackdrop');
-                if (modalElement) {
-                    modalElement.addEventListener('hidden.bs.modal', resetForm);
-                } else {
-                    console.error('No se encontró el elemento con ID "staticBackdrop".');
+                if (togglePassword && passwordInput) {
+                    togglePassword.addEventListener('click', function() {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        this.classList.toggle('fa-eye-slash');
+                        this.classList.toggle('fa-eye');
+                    });
                 }
-            });
 
-            function logout() {
-                window.location.href = 'login.php';
-            }
+                const modalElement = document.getElementById('staticBackdrop');
+                modalElement.addEventListener('hidden.bs.modal', resetForm);
 
-            window.history.pushState(null, '', window.location.href);
-            window.onpopstate = function() {
+                function logout() {
+                    window.location.href = 'login.php';
+                }
+
                 window.history.pushState(null, '', window.location.href);
-            };
+                window.onpopstate = function() {
+                    window.history.pushState(null, '', window.location.href);
+                };
 
-            const storedUser = JSON.parse(localStorage.getItem('user'));
-            if (storedUser) {
-                document.getElementById('usernameDisplay').textContent = storedUser.usuario;
-            } else {
-                window.location.href = 'login.php';
-            }
+                const storedUser  = JSON.parse(localStorage.getItem('user'));
+                if (storedUser ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser .usuario;
+                } else {
+                    window.location.href = 'login.php';
+                }
 
-            // Búsqueda de empleados
-            function searchEmployees() {
-                const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
-                document.querySelectorAll('#employeeTableBody tr').forEach(row => {
-                    const name = row.cells[1].textContent.toLowerCase();
-                    row.style.display = name.includes(searchTerm) ? '' : 'none';
-                });
-            }
-        </script>
+                function searchEmployees() {
+                    const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
+                    const rows = document.querySelectorAll('#employeeTableBody tr');
 
+                    rows.forEach(row => {
+                        const cells = row.getElementsByTagName('td');
+                        const name = cells[1].textContent.toLowerCase();
+                        if (name.includes(searchTerm)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+            </script>
+        </div>
     </div>
 </body>
 

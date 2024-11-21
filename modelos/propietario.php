@@ -6,45 +6,36 @@ class Propietario {
         $this->conexion = $conexion;
     }
 
-    public function listarPropietarios() {
-        $query = "SELECT * FROM propietario"; // Cambia 'propietarios' por el nombre de tu tabla
+    public function listar() {
+        // Asegúrate de que 'idPropietario' es el nombre correcto de la columna
+        $query = "SELECT idPropietario, nombreCompleto, numeroCelular, correoElectronico FROM propietario";
         $stmt = $this->conexion->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function agregarPropietario($nombre, $apellido, $correo) {
-        $query = "INSERT INTO propietario (Nombre, Apellido, Correo) VALUES (:nombre, :apellido, :correo)";
+    public function registrar($nombre, $apellido, $celular, $correo) {
+        // Inserta en las columnas correctas
+        $query = "INSERT INTO propietario (nombreCompleto, numeroCelular, correoElectronico) VALUES (?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellido', $apellido);
-        $stmt->bindParam(':correo', $correo);
-        return $stmt->execute();
+        return $stmt->execute([$nombre . ' ' . $apellido, $celular, $correo]);
     }
 
-    public function obtenerPropietario($id) {
-        $query = "SELECT * FROM propietario WHERE id = :id"; // Cambia 'id' por el nombre de tu campo ID
+    public function editar($idPropietario, $nombre, $apellido, $celular, $correo) {
+        // Actualiza en las columnas correctas
+        $query = "UPDATE propietario SET nombreCompleto = ?, numeroCelular = ?, correoElectronico = ? WHERE idPropietario = ?";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->execute([$nombre . ' ' . $apellido, $celular, $correo, $idPropietario]);
     }
 
-    public function actualizarPropietario($id, $nombre, $apellido, $correo) {
-        $query = "UPDATE propietario SET Nombre = :nombre, Apellido = :apellido, Correo = :correo WHERE id = :id";
+    public function agregar($username, $role, $hashedPassword) {
+        // Asegúrate de que la tabla tenga las columnas necesarias
+        $query = "INSERT INTO propietario (Username, Role, Password) VALUES (?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellido', $apellido);
-        $stmt->bindParam(':correo', $correo);
-        return $stmt->execute();
-    }
-
-    public function eliminarPropietario($id) {
-        $query = "DELETE FROM propietario WHERE id = :id";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        if ($stmt->execute([$username, $role, $hashedPassword])) {
+            return $this->conexion->lastInsertId();
+        }
+        return false;
     }
 }
 ?>

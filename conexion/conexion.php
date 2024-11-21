@@ -4,7 +4,7 @@ class Conexion {
 
     public function conectar() {
         $host = '127.0.0.1:3306'; 
-        $db = 'mybd';
+        $db = 'mydb';
         $user = 'root';
         $pass = '12345678';
 
