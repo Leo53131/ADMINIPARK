@@ -1,31 +1,31 @@
 <?php
-include 'EmpleadoModel.php'; // Asegúrate de incluir el modelo
+include '../modelos/Empleado.php'; // Asegúrate de que la ruta sea correcta
 
 class EmpleadoController {
-    private $modelo;
+    private $empleado;
 
     public function __construct($conexion) {
-        $this->modelo = new EmpleadoModel($conexion);
+        $this->empleado = new Empleado($conexion);
     }
 
-    // Listar empleados
     public function listarEmpleados() {
-        return $this->modelo->listarEmpleados();
+        return $this->empleado->listarEmpleados();
     }
 
-    // Agregar nuevo empleado
-    public function agregarEmpleado($usuario, $contrasena, $rol) {
-        return $this->modelo->agregarEmpleado($usuario, $contrasena, $rol);
+    public function agregarEmpleado($username, $password, $role) {
+        return $this->empleado->agregarEmpleado($username, $password, $role);
     }
 
-    // Obtener empleado por ID
     public function obtenerEmpleado($id) {
-        return $this->modelo->obtenerEmpleado($id);
+        return $this->empleado->obtenerEmpleado($id);
     }
 
-    // Actualizar empleado
-    public function actualizarEmpleado($id, $usuario, $contrasena, $rol) {
-        return $this->modelo->actualizarEmpleado($id, $usuario, $contrasena, $rol);
+    public function actualizarEmpleado($id, $username, $password, $role) {
+        return $this->empleado->actualizarEmpleado($id, $username, $password, $role);
+    }
+
+    public function eliminarEmpleado($id) {
+        return $this->empleado->eliminarEmpleado($id);
     }
 }
 ?>

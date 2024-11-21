@@ -73,9 +73,9 @@
             if (storedUser && (storedUser.usuario === username || storedUser.correo === username) && storedUser.contraseña === password) {
                 // Redirigir según el rol
                 if (role === 'admin') {
-                    window.location.href = 'InterfazPrinRegistro.php'; // Redirigir a Administrador
+                    window.location.href = 'empleadoA.php'; // Redirigir a Administrador
                 } else if (role === 'employee') {
-                    window.location.href = 'InterfazPrinRegistroEMP.php'; // Redirigir a Empleado
+                    window.location.href = 'clienteE.php'; // Redirigir a Empleado
                 }
             } else {
                 // Si las credenciales son incorrectas, muestra un mensaje de error

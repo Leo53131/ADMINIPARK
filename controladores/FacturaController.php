@@ -1,6 +1,5 @@
 <?php
-include '../conexion/conexion.php';
-include '../modelos/Factura.php';
+include '../modelos/Factura.php'; // Asegúrate de que la ruta sea correcta
 
 class FacturaController {
     private $factura;
@@ -9,25 +8,24 @@ class FacturaController {
         $this->factura = new Factura($conexion);
     }
 
-    public function registrar() {
-        if (isset($_POST['registrarFactura'])) {
-            $placa = $_POST['placa'];
-            $usuario = $_POST['usuario'];
-            $horaEntrada = $_POST['horaEntrada'];
-            $horaSalida = $_POST['horaSalida'];
-            $valorHora = $_POST['valorHora'];
-            $total = $_POST['total'];
-
-            if ($this->factura->registrar($placa, $usuario, $horaEntrada, $horaSalida, $valorHora, $total)) {
-                echo "Registro de factura exitoso";
-            } else {
-                echo "Error al registrar la factura";
-            }
-        }
+    public function listarFacturas() {
+        return $this->factura->listarFacturas();
     }
 
-    public function listarFacturas() {
-        return $this->factura->listar();
+    public function agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
+        return $this->factura->agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+    }
+
+    public function obtenerFactura($id) {
+        return $this->factura->obtenerFactura($id);
+    }
+
+    public function actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
+        return $this->factura->actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+    }
+
+    public function eliminarFactura($id) {
+        return $this->factura->eliminarFactura($id);
     }
 }
 ?>

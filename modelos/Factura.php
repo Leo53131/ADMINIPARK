@@ -6,32 +6,49 @@ class Factura {
         $this->conexion = $conexion;
     }
 
-    public function registrar($placa, $usuario, $horaEntrada, $horaSalida, $valorHora, $total) {
-        try {
-            $sql = "INSERT INTO facturas (placa, usuario, hora_entrada, hora_salida, valor_hora, total) VALUES (:placa, :usuario, :horaEntrada, :horaSalida, :valorHora, :total)";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bindParam(':placa', $placa);
-            $stmt->bindParam(':usuario', $usuario);
-            $stmt->bindParam(':horaEntrada', $horaEntrada);
-            $stmt->bindParam(':horaSalida', $horaSalida);
-            $stmt->bindParam(':valorHora', $valorHora);
-            $stmt->bindParam(':total', $total);
-            $stmt->execute();
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
+    public function listarFacturas() {
+        $query = "SELECT * FROM factura"; // Cambia 'facturas' por el nombre de tu tabla
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function listar() {
-        try {
-            $sql = "SELECT * FROM facturas";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return [];
-        }
+    public function agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
+        $query = "INSERT INTO factura (placa, usuario, hora_entrada, hora_salida, valor_hora) VALUES (:placa, :usuario, :horaEntrada, :horaSalida, :valorHora)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':placa', $placa);
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':horaEntrada', $horaEntrada);
+        $stmt->bindParam(':horaSalida', $horaSalida);
+        $stmt->bindParam(':valorHora', $valorHora);
+        return $stmt->execute();
+    }
+
+    public function obtenerFactura($id) {
+        $query = "SELECT * FROM factura WHERE id = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
+        $query = "UPDATE factura SET placa = :placa, usuario = :usuario, hora_entrada = :horaEntrada, hora_salida = :horaSalida, valor_hora = :valorHora WHERE id = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':placa', $placa);
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':horaEntrada', $horaEntrada);
+        $stmt->bindParam(':horaSalida', $horaSalida);
+        $stmt->bindParam(':valorHora', $valorHora);
+        return $stmt->execute();
+    }
+
+    public function eliminarFactura($id) {
+        $query = "DELETE FROM factura WHERE id = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 }
 ?>

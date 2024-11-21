@@ -1,40 +1,51 @@
 <?php
-class EmpleadoModel {
+class Empleado {
     private $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    // Listar empleados
     public function listarEmpleados() {
-        $query = "SELECT * FROM empleados"; // Cambia 'empleados' por el nombre de tu tabla
-        $result = $this->conexion->query($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $query = "SELECT * FROM empleado"; // Cambia 'empleados' por el nombre de tu tabla
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Agregar nuevo empleado
-    public function agregarEmpleado($usuario, $contrasena, $rol) {
-        $query = "INSERT INTO empleados (usuario, contrasena, rol) VALUES (?, ?, ?)";
+    public function agregarEmpleado($username, $password, $role) {
+        $query = "INSERT INTO empleado (Nombre_Usuario, Contraseña, Rol) VALUES (:username, :password, :role)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("sss", $usuario, $contrasena, $rol);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT)); // Asegúrate de hashear la contraseña
+        $stmt->bindParam(':role', $role);
         return $stmt->execute();
     }
 
-    // Obtener empleado por ID
     public function obtenerEmpleado($id) {
-        $query = "SELECT * FROM empleados WHERE id = ?";
+        $query = "SELECT * FROM empleado WHERE idEmpleado = :id"; // Cambia 'idEmpleado' por el nombre de tu campo ID
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Actualizar empleado
-    public function actualizarEmpleado($id, $usuario, $contrasena, $rol) {
-        $query = "UPDATE empleados SET usuario = ?, contrasena = ?, rol = ? WHERE id = ?";
+    public function actualizarEmpleado($id, $username, $password, $role) {
+        $query = "UPDATE empleado SET Nombre_Usuario = :username, Rol = :role" . ($password ? ", Contraseña = :password" : "") . " WHERE idEmpleado = :id";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("sssi", $usuario, $contrasena, $rol, $id);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':username', $username);
+        if ($password) {
+            $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+        }
+        $stmt->bindParam(':role', $role);
+        return $stmt->execute();
+    }
+
+    public function eliminarEmpleado($id) {
+        $query = "DELETE FROM empleado WHERE idEmpleado = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 }

@@ -1,6 +1,5 @@
 <?php
-include '../conexion/conexion.php';
-include '../modelos/Vehiculo.php';
+include '../modelos/Vehiculo.php'; // Asegúrate de que la ruta sea correcta
 
 class VehiculoController {
     private $vehiculo;
@@ -9,27 +8,24 @@ class VehiculoController {
         $this->vehiculo = new Vehiculo($conexion);
     }
 
-    public function registrar() {
-        if (isset($_POST['registrarVehiculo'])) {
-            $matricula = $_POST['matricula'];
-            $marca = $_POST['marca'];
-            $modelo = $_POST['modelo'];
-            $color = $_POST['color'];
-
-            if ($this->vehiculo->registrar($matricula, $marca, $modelo, $color)) {
-                echo "Registro de vehículo exitoso";
-            } else {
-                echo "Error al registrar el vehículo";
-            }
-        }
+    public function listarVehiculos() {
+        return $this->vehiculo->listarVehiculos();
     }
 
-    public function listar() {
-        if (isset($_GET['action']) && $_GET['action'] === 'listar') {
-            $vehiculos = $this->vehiculo->listar();
-            echo json_encode($vehiculos);
-            exit();
-        }
+    public function agregarVehiculo($matricula, $marca, $modelo) {
+        return $this->vehiculo->agregarVehiculo($matricula, $marca, $modelo);
+    }
+
+    public function obtenerVehiculo($idVehiculo) {
+        return $this->vehiculo->obtenerVehiculo($idVehiculo);
+    }
+
+    public function actualizarVehiculo($idVehiculo, $matricula, $marca, $modelo) {
+        return $this->vehiculo->actualizarVehiculo($idVehiculo, $matricula, $marca, $modelo);
+    }
+
+    public function eliminarVehiculo($idVehiculo) {
+        return $this->vehiculo->eliminarVehiculo($idVehiculo);
     }
 }
 ?>
