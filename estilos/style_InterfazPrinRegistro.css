@@ -580,3 +580,66 @@
     .search-container button:hover {
         background-color: #965A46;
     }
+
+    /* Estilos específicos para la tabla de facturas */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-striped {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-striped th,
+.table-striped td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #da7e5b;
+}
+
+.table-striped th {
+    background-color: #da7e5b;
+    color: white;
+    font-weight: bold;
+}
+
+.table-striped tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-striped tr:hover {
+    background-color: #ddd;
+}
+
+/* Estilos para los botones de acción en la tabla */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #da7e5b;
+    border-color: #da7e5b;
+}
+
+.btn-primary:hover {
+    background-color: #c26a4a;
+    border-color: #c26a4a;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}

@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 <body>
     <?php
     include '../conexion/conexion.php';
-    include '../controladores/vehiculocontroller.php'; // Incluir el controlador de vehículos
+    include '../controladores/VehiculoController.php'; // Incluir el controlador de vehículos
 
     // Crear conexión a la base de datos
     $conexion = new Conexion();
@@ -61,7 +61,9 @@ ini_set('display_errors', 1);
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
-                <a href="#" onclick="showVehicles()"><i class="fas fa-car"></i><span>Vehículos</span></a>
+                <a href="clienteE.php"><i class="fas fa-users"></i><span>Clientes</span></a>
+                <a href="vehiculoE.php"><i class="fas fa-car"></i><span>Vehículos</span></a>
+                <a href="facturaE.php"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
@@ -108,6 +110,14 @@ ini_set('display_errors', 1);
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="pagination">
+                    <button class="nunito-unique-600">Anterior</button>
+                    <button class="nunito-unique-600">1</button>
+                    <button class="nunito-unique-600">2</button>
+                    <button class="nunito-unique-600">Siguiente</button>
                 </div>
             </div>
 

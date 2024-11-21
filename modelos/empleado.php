@@ -48,5 +48,12 @@ class Empleado {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+    public function toggleEstado($id, $estado) {
+        $query = "UPDATE empleado SET Estado = :estado WHERE idEmpleado = :id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':estado', $estado);
+        return $stmt->execute();
+    }
 }
 ?>

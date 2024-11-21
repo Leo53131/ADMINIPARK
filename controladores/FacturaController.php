@@ -1,5 +1,5 @@
 <?php
-include '../modelos/Factura.php'; // Asegúrate de que la ruta sea correcta
+require_once '../modelos/Factura.php';
 
 class FacturaController {
     private $factura;
@@ -9,23 +9,48 @@ class FacturaController {
     }
 
     public function listarFacturas() {
-        return $this->factura->listarFacturas();
+        try {
+            return $this->factura->listarFacturas();
+        } catch (Exception $e) {
+            error_log("Error al listar facturas: " . $e->getMessage());
+            throw new Exception("Error al listar facturas");
+        }
     }
 
     public function agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
-        return $this->factura->agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+        try {
+            return $this->factura->agregarFactura($placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+        } catch (Exception $e) {
+            error_log("Error al agregar factura: " . $e->getMessage());
+            throw new Exception("Error al agregar factura");
+        }
     }
 
     public function obtenerFactura($id) {
-        return $this->factura->obtenerFactura($id);
+        try {
+            return $this->factura->obtenerFactura($id);
+        } catch (Exception $e) {
+            error_log("Error al obtener factura: " . $e->getMessage());
+            throw new Exception("Error al obtener factura");
+        }
     }
 
     public function actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora) {
-        return $this->factura->actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+        try {
+            return $this->factura->actualizarFactura($id, $placa, $usuario, $horaEntrada, $horaSalida, $valorHora);
+        } catch (Exception $e) {
+            error_log("Error al actualizar factura: " . $e->getMessage());
+            throw new Exception("Error al actualizar factura");
+        }
     }
 
     public function eliminarFactura($id) {
-        return $this->factura->eliminarFactura($id);
+        try {
+            return $this->factura->eliminarFactura($id);
+        } catch (Exception $e) {
+            error_log("Error al eliminar factura: " . $e->getMessage());
+            throw new Exception("Error al eliminar factura");
+        }
     }
 }
 ?>

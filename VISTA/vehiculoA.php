@@ -17,7 +17,7 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../estilos/style_InterfazPrinRegistro.css">
     <title>Interfaz Principal Admin</title>
-    
+
 </head>
 
 <body>
@@ -84,7 +84,6 @@ ini_set('display_errors', 1);
                 <div class="search-container">
                     <input type="text" id="vehicleSearch" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
                     <button type="button" onclick="searchVehicles()">Buscar</button>
-                    < <button type="button" onclick="showAddVehicleModal()">Agregar Vehículo</button>
                 </div>
 
                 <div class="table-container">
@@ -105,14 +104,21 @@ ini_set('display_errors', 1);
                     </table>
                 </div>
             </div>
+            <div class="pagination">
+                <button class="nunito-unique-600">Anterior</button>
+                <button class="nunito-unique-600">1</button>
+                <button class="nunito-unique-600">2</button>
+                <button class="nunito-unique-600">Siguiente</button>
+            </div>
+        </div>
 
-            <script>
-                let vehicleCount = <?php echo count($vehiculos) + 1; ?>; // Contador de vehículos
-                let vehicles = <?php echo json_encode($vehiculos); ?>; // Cargar vehículos desde PHP
+        <script>
+            let vehicleCount = <?php echo count($vehiculos) + 1; ?>; // Contador de vehículos
+            let vehicles = <?php echo json_encode($vehiculos); ?>; // Cargar vehículos desde PHP
 
-                function addVehicleRow(vehicle) {
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
+            function addVehicleRow(vehicle) {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
                         <td>${vehicle.idVehiculo}</td>
                         <td>${vehicle.matricula}</td>
                         <td>${vehicle.marca}</td>
@@ -121,29 +127,39 @@ ini_set('display_errors', 1);
                             <i class="fas fa-edit" title="Editar" onclick="editVehicle(${vehicle.idVehiculo})"></i>
                         </td>
                     `;
-                    document.getElementById('vehicleTableBody').appendChild(newRow);
+                document.getElementById('vehicleTableBody').appendChild(newRow);
+            }
+
+            function showAddVehicleModal() {
+                // Lógica para mostrar el modal de agregar vehículo
+            }
+
+            function searchVehicles() {
+                const searchTerm = document.getElementById('vehicleSearch').value.toLowerCase();
+                const rows = document.querySelectorAll('#vehicleTableBody tr');
+
+                rows.forEach(row => {
+                    const cells = row.getElementsByTagName('td');
+                    const matricula = cells[1].textContent.toLowerCase();
+                    if (matricula.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+            function logout() {
+                    window.location.href = 'login.php';
                 }
 
-                function showAddVehicleModal() {
-                    // Lógica para mostrar el modal de agregar vehículo
+                const storedUser  = JSON.parse(localStorage.getItem('user'));
+                if (storedUser ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser .usuario;
+                } else {
+                    window.location.href = 'login.php';
                 }
-
-                function searchVehicles() {
-                    const searchTerm = document.getElementById('vehicleSearch').value.toLowerCase();
-                    const rows = document.querySelectorAll('#vehicleTableBody tr');
-
-                    rows.forEach(row => {
-                        const cells = row.getElementsByTagName('td');
-                        const matricula = cells[1].textContent.toLowerCase();
-                        if (matricula.includes(searchTerm)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                }
-            </script>
-        </div>
+        </script>
+    </div>
     </div>
 </body>
 

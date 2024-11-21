@@ -144,6 +144,16 @@ ini_set('display_errors', 1);
                         }
                     });
                 }
+                function logout() {
+                    window.location.href = 'login.php';
+                }
+
+                const storedUser  = JSON.parse(localStorage.getItem('user'));
+                if (storedUser ) {
+                    document.getElementById('usernameDisplay').textContent = storedUser .usuario;
+                } else {
+                    window.location.href = 'login.php';
+                }
             </script>
         </div>
     </div>

@@ -2,11 +2,23 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '../conexion/conexion.php';
-include '../controladores/FacturaController.php';
+require_once '../conexion/conexion.php';
+require_once '../controladores/FacturaController.php';
+
+$conexionObj = new Conexion();
+$conexion = $conexionObj->conectar();
+
+if (!$conexion) {
+    die("Error de conexión: No se pudo establecer la conexión a la base de datos.");
+}
 
 $facturaController = new FacturaController($conexion);
-$facturas = $facturaController->listarFacturas();
+
+try {
+    $facturas = $facturaController->listarFacturas();
+} catch (Exception $e) {
+    die("Error al listar facturas: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +29,7 @@ $facturas = $facturaController->listarFacturas();
     <title>Gestión de Facturas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../estilos/style_InterfazPrinRegistro.css">
 </head>
 <body>
     <div class="parent">
@@ -47,7 +60,9 @@ $facturas = $facturaController->listarFacturas();
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
-                <a href="#" onclick="showInvoices()"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
+                <a href="clienteE.php"><i class="fas fa-users"></i><span>Clientes</span></a>
+                <a href="vehiculoE.php"><i class="fas fa-car"></i><span>Vehículos</span></a>
+                <a href="facturaE.php"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
@@ -93,6 +108,9 @@ $facturas = $facturaController->listarFacturas();
                                         <button class="btn btn-sm btn-primary" onclick="editInvoice(<?php echo $factura['id']; ?>)">
                                             <i class="fas fa-edit"></i>
                                         </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteInvoice(<?php echo $factura['id']; ?>)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -100,44 +118,51 @@ $facturas = $facturaController->listarFacturas();
                     </table>
                 </div>
             </div>
+            
+            <div class="pagination">
+                <button class="nunito-unique-600">Anterior</button>
+                <button class="nunito-unique-600">1</button>
+                <button class="nunito-unique-600">2</button>
+                <button class="nunito-unique-600">Siguiente</button>
+            </div>
+        </div>
 
-            <!-- Modal para agregar/editar factura -->
-            <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="invoiceModalLabel">Agregar Factura</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="invoiceForm">
-                                <input type="hidden" id="invoice-id">
-                                <div class="mb-3">
-                                    <label for="invoice-plate" class="form-label">Placa</label>
-                                    <input type="text" class="form-control" id="invoice-plate" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="invoice-user" class="form-label">Usuario</label>
-                                    <input type="text" class="form-control" id="invoice-user" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="invoice-entry-time" class="form-label">Hora de Entrada</label>
-                                    <input type="time" class="form-control" id="invoice-entry-time" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="invoice-exit-time" class="form-label">Hora de Salida</label>
-                                    <input type="time" class="form-control" id="invoice-exit-time" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="invoice-hour-value" class="form-label">Valor por Hora</label>
-                                    <input type="number" class="form-control" id="invoice-hour-value" required>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="saveInvoice()">Guardar</button>
-                        </div>
+        <!-- Modal para agregar/editar factura -->
+        <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="invoiceModalLabel">Agregar Factura</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="invoiceForm">
+                            <input type="hidden" id="invoice-id">
+                            <div class="mb-3">
+                                <label for="invoice-plate" class="form-label">Placa</label>
+                                <input type="text" class="form-control" id="invoice-plate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="invoice-user" class="form-label">Usuario</label>
+                                <input type="text" class="form-control" id="invoice-user" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="invoice-entry-time" class="form-label">Hora de Entrada</label>
+                                <input type="datetime-local" class="form-control" id="invoice-entry-time" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="invoice-exit-time" class="form-label">Hora de Salida</label>
+                                <input type="datetime-local" class="form-control" id="invoice-exit-time" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="invoice-hour-value" class="form-label">Valor por Hora</label>
+                                <input type="number" class="form-control" id="invoice-hour-value" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveInvoice()">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -146,10 +171,6 @@ $facturas = $facturaController->listarFacturas();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function showInvoices() {
-            document.getElementById('invoices').style.display = 'block';
-        }
-
         function searchInvoices() {
             const searchTerm = document.getElementById('invoiceSearch').value.toLowerCase();
             const rows = document.querySelectorAll('#invoiceTableBody tr');
@@ -161,7 +182,7 @@ $facturas = $facturaController->listarFacturas();
         }
 
         function editInvoice(id) {
-            fetch(`../controladores/FacturaController.php?action=obtener&id=${id}`)
+            fetch(`../controladores/facturaApi.php?action=obtener&id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('invoice-id').value = data.id;
@@ -179,14 +200,13 @@ $facturas = $facturaController->listarFacturas();
         }
 
         function saveInvoice() {
-            const id = document.getElementById('invoice-id').value; // Obtener el ID de la factura (si existe)
-            const plate = document.getElementById('invoice-plate').value; // Obtener la placa
-            const user = document.getElementById('invoice-user').value; // Obtener el usuario
-            const entryTime = document.getElementById('invoice-entry-time').value; // Obtener la hora de entrada
-            const exitTime = document.getElementById('invoice-exit-time').value; // Obtener la hora de salida
-            const hourValue = document.getElementById('invoice-hour-value').value; // Obtener el valor por hora
+            const id = document.getElementById('invoice-id').value;
+            const plate = document.getElementById('invoice-plate').value;
+            const user = document.getElementById('invoice-user').value;
+            const entryTime = document.getElementById('invoice-entry-time').value;
+            const exitTime = document.getElementById('invoice-exit-time').value;
+            const hourValue = document.getElementById('invoice-hour-value').value;
 
-            // Crear el objeto de datos a enviar
             const data = {
                 id: id,
                 placa: plate,
@@ -196,10 +216,8 @@ $facturas = $facturaController->listarFacturas();
                 valor_hora: hourValue
             };
 
-            // Determinar la URL dependiendo de si es una actualización o un registro
             const url = id ? '../controladores/facturaApi.php?action=actualizar' : '../controladores/facturaApi.php?action=registrar';
 
-            // Enviar la solicitud AJAX
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -211,7 +229,7 @@ $facturas = $facturaController->listarFacturas();
             .then(data => {
                 if (data.success) {
                     alert(id ? 'Factura actualizada con éxito' : 'Factura registrada con éxito');
-                    location.reload(); // Recargar la página para ver los cambios
+                    location.reload();
                 } else {
                     alert('Error: ' + data.message);
                 }
@@ -221,9 +239,29 @@ $facturas = $facturaController->listarFacturas();
                 alert('Ocurrió un error al procesar la solicitud');
             });
 
-            // Cerrar el modal después de enviar la solicitud
             const modal = bootstrap.Modal.getInstance(document.getElementById('invoiceModal'));
             modal.hide();
+        }
+
+        function deleteInvoice(id) {
+            if (confirm('¿Está seguro de que desea eliminar esta factura?')) {
+                fetch(`../controladores/facturaApi.php?action=eliminar&id=${id}`, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Factura eliminada con éxito');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al procesar la solicitud');
+                });
+            }
         }
 
         function logout() {
@@ -238,7 +276,6 @@ $facturas = $facturaController->listarFacturas();
             } else {
                 window.location.href = 'login.php';
             }
-            showInvoices();
         });
     </script>
 </body>
