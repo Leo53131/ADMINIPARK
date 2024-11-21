@@ -1,6 +1,25 @@
 <?php
+// Incluir la clase Conexion
+require_once '../modelos/conexion.php';  // Cambia esta ruta si es necesario
+
+// El resto de tu código
+include '../modelospPropietario.php';
+
+$conexion = new Conexion();
+$controller = new PropietarioController($conexion->conectar());
+$propietarios = $controller->listarPropietarios();
+?>
+
+<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+
+// Incluir controlador
+require_once '../controladores/propietariocontroller.php';
+$conexion = new Conexion();
+$controller = new propietariocontroller($conexion->conectar());
+$propietarios = $controller->listarPropietarios();
 ?>
 
 <!DOCTYPE html>
@@ -22,82 +41,64 @@ ini_set('display_errors', 1);
             display: none;
         }
 
-        .centered {
-            text-align: center;
+        .active-section {
+            display: block !important;
         }
 
-        /* Estilos comunes para todas las tablas */
+        .sidebar a {
+            text-decoration: none;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebar i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .separator-line {
+            margin: 20px 0;
+        }
+
         .common-table {
             width: 100%;
-            max-width: 800px;
             border-collapse: collapse;
-            margin-top: 10px;
         }
 
         .common-table th,
         .common-table td {
-            padding: 20px;
+            padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #da7e5b;
-            font-size: 16px;
-            min-height: 50px;
+            border: 1px solid #ddd;
         }
 
-        /* Encabezado de la tabla */
-        .common-table th {
-            background-color: #da7e5b;
-            color: white;
-            font-weight: bold;
+        .users-table th,
+        .users-table td {
+            text-align: center;
         }
 
-        /* Celdas de la tabla */
-        .common-table td {
-            color: #6c4a4a;
+        .table-container {
+            overflow-x: auto;
         }
 
-        .search-container {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin: 15px 0;
-        }
-
-        .search-container input[type="text"] {
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #da7e5b;
-            width: 250px;
-            margin-right: 10px;
-            font-size: 16px;
-            color: #6c4a4a;
-        }
-
-        .search-container button {
-            background-color: #da7e5b;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .search-container button:hover {
-            background-color: #965A46;
+        .nunito-unique-600 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
         }
     </style>
 </head>
 
 <body>
-    <?php
-    include '../conexion/conexion.php';
-    include '../controladores/propietariocontroller.php'; // Cambiar a propietario
-
-    $controller = new PropietarioController($conexion); // Cambiar a propietario
-    $propietarios = $controller->listarPropietarios(); // Obtener la lista de propietarios
-    ?>
-
     <div class="parent">
         <!-- Encabezado de la interfaz -->
         <div class="div1">
@@ -115,106 +116,63 @@ ini_set('display_errors', 1);
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
-                            <li><button class="dropdown -item" type="button">Configuración</button></li>
+                            <li><button class="dropdown-item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- Barra lateral de navegación -->
         <div class="div2">
             <div class="sidebar">
                 <a href="#" onclick="showSection('employees')"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
-                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Cliente</span></a>
+                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Clientes</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
-                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
+                <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
 
         <!-- Contenido principal -->
         <div class="div3">
-            <!-- Sección de Gestión de Empleados -->
             <div id="employees" class="main-content">
                 <h2 class="nunito-unique-600">Empleados</h2>
                 <hr class="separator-line">
-
-                <div class="search-container">
-                    <input type="text" id="employeeSearch" placeholder="Buscar empleados..." aria-label="Buscar empleados">
-                    <button type="button" class="nunito-unique-600" onclick="searchEmployees()">Buscar</button>
-                    <button type="button" class="nunito-unique-600" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar nuevo empleado</button>
-                </div>
-
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Empleados registrados</h3>
-                    <table class="employees-table common-table">
+                    <table class="common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Usuario</th>
-                                <th>Contraseña</th>
-                                <th>Rol</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Email</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="employeeTableBody">
-                            <!-- Las filas de empleados se agregarán aquí dinámicamente -->
+                        <tbody>
+                            <?php foreach ($propietarios as $propietario): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($propietario['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($propietario['Correo']); ?></td>
+                                    <td>
+                                        <i class="fas fa-edit" title="Editar" onclick="editUser(<?php echo $propietario['id']; ?>)"></i>
+                                        <i class="fas fa-trash" title="Eliminar" onclick="deleteUser(<?php echo $propietario['id']; ?>)"></i>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
-                </div>
             </div>
 
-            <!-- Modal para agregar nuevo empleado -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Formulario de Registro de Empleado</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-container">
-                                <h3 style="text-align: center;">Usuario</h3>
-                                <input type="text" id="username" placeholder="Usuario" class="nunito-unique-200">
-
-                                <h3 style="text-align: center;">Contraseña</h3>
-                                <div class="password-container">
-                                    <input type="password" id="password" placeholder="Contraseña">
-                                    <i class="fas fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
-                                </div>
-
-                                <h3 style="text-align: center;">Rol</h3>
-                                <select id="role" class="nunito-unique-200">
-                                    <option value="">-- Seleccione un rol --</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Empleado">Empleado</option>
-                                </select>
-
-                                <button type="button" class="nunito-unique-600" onclick="registerEmployee()">Registrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sección de Usuarios -->
             <div id="users" class="main-content hidden">
-                <h2 class="nunito-unique-600">Cliente</h2>
+                <h2 class="nunito-unique-600">Clientes</h2>
                 <hr class="separator-line">
-
-                <div class="search-container">
-                    <input type="text" id="userSearch" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
-                    <button type="button" class="nunito-unique-600" onclick="searchUsers()">Buscar</button>
-                </div>
-
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Clientes registrados</h3>
                     <table class="users-table common-table">
@@ -227,7 +185,7 @@ ini_set('display_errors', 1);
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="userTableBody">
+                        <tbody>
                             <?php foreach ($propietarios as $propietario): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($propietario['id']); ?></td>
@@ -235,94 +193,100 @@ ini_set('display_errors', 1);
                                     <td><?php echo htmlspecialchars($propietario['Apellido']); ?></td>
                                     <td><?php echo htmlspecialchars($propietario['Correo']); ?></td>
                                     <td>
-                                        <i class="fas fa-edit" title="Editar" onclick="editUser (<?php echo $propietario['id']; ?>)"></i>
+                                        <i class="fas fa-edit" title="Editar" onclick="editUser(<?php echo $propietario['id']; ?>)"></i>
+                                        <i class="fas fa-trash" title="Eliminar" onclick="deleteUser(<?php echo $propietario['id']; ?>)"></i>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
-                </div>
             </div>
 
-            <!-- Sección de Vehículos -->
             <div id="vehicles" class="main-content hidden">
                 <h2 class="nunito-unique-600">Vehículos</h2>
                 <hr class="separator-line">
-
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar vehículos..." aria-label="Buscar vehículos">
-                    <button type="button">Buscar</button>
-                </div>
-
                 <div class="table-container">
                     <h3 class="nunito-unique-600">Vehículos registrados</h3>
-                    <table class="vehicles-table common-table">
+                    <table class="common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Matrícula</th>
+                                <th>Placa</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
+                                <th>Cliente</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="vehicleTableBody">
-                            <!-- Las filas de vehículos se agregarán aquí dinámicamente -->
+                        <tbody>
+                            <!-- Aquí puedes agregar los datos de los vehículos -->
+                            <tr>
+                                <td>1</td>
+                                <td>ABC123</td>
+                                <td>Toyota</td>
+                                <td>Corolla</td>
+                                <td>Juan Pérez</td>
+                                <td>
+                                    <i class="fas fa-edit" title="Editar"></i>
+                                    <i class="fas fa-trash" title="Eliminar"></i>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
-                </div>
             </div>
 
-            <!-- Sección de Facturas -->
             <div id="invoices" class="main-content hidden">
                 <h2 class="nunito-unique-600">Facturas</h2>
                 <hr class="separator-line">
-
-                <div class="search-container">
-                    <input type="text" placeholder="Buscar facturas..." aria-label="Buscar facturas">
-                    <button type="button">Buscar</button>
-                </div>
-
                 <div class="table-container">
-                    <h3 class="nunito-unique-600">Facturas registradas</h3>
-                    <table class="invoices-table common-table">
+                    <h3 class="nunito-unique-600">Facturas generadas</h3>
+                    <table class="common-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Número de factura</th>
-                                <th>Fecha de emisión</th>
+                                <th>Cliente</th>
+                                <th>Vehículo</th>
                                 <th>Monto</th>
+                                <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="invoiceTableBody">
-                            <!-- Las filas de facturas se agregarán aquí dinámicamente -->
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Juan Pérez</td>
+                                <td>Toyota Corolla</td>
+                                <td>$200</td>
+                                <td>2024-11-21</td>
+                                <td>
+                                    <i class="fas fa-eye" title="Ver"></i>
+                                    <i class="fas fa-edit" title="Editar"></i>
+                                    <i class="fas fa-trash" title="Eliminar"></i>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="pagination">
-                    <button class="nunito-unique-600">Anterior</button>
-                    <button class="nunito-unique-600">1</button>
-                    <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente </button>
-                </div>
             </div>
         </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.main-content');
+            sections.forEach((section) => {
+                section.classList.add('hidden');
+            });
+            const activeSection = document.getElementById(sectionId);
+            activeSection.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>
+
 
         <script>
             let employeeCount = 1;
@@ -359,44 +323,35 @@ ini_set('display_errors', 1);
                     .then(data => {
                         if (data.success) {
                             alert('Empleado agregado exitosamente.');
-                            // Aquí puedes actualizar la tabla de empleados
                             addEmployeeRow({
                                 id: data.id,
                                 name: username,
                                 role: role
-                            });
+                            }); // Actualizar la tabla
+                            employees.push({
+                                id: data.id,
+                                name: username,
+                                role: role
+                            }); // Actualizar el array
                         } else {
                             alert(data.message);
                         }
                     })
                     .catch(error => console.error('Error:', error));
-            };
-
-            // Agregar el nuevo empleado al array
-            employees.push(newEmployee);
-
-            // Crear una nueva fila en la tabla
-            addEmployeeRow(newEmployee);
-            employeeCount++;
-
-            // Restablecer el formulario y cerrar el modal
-            resetForm();
-            const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-            modalElement.hide();
-
+            }
 
             // Función para agregar una fila de empleado a la tabla
             function addEmployeeRow(employee) {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td>${employee.id}</td>
-                    <td>${employee.name}</td>
-                    <td>******</td>
-                    <td>${employee.role}</td>
-                    <td class="action-buttons">
-                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
-                    </td>
-                `;
+            <td>${employee.id}</td>
+            <td>${employee.name}</td>
+            <td>******</td>
+            <td>${employee.role}</td>
+            <td class="action-buttons">
+                <i class="fas fa-edit" title="Editar" onclick="editEmployee(${employee.id})"></i>
+            </td>
+        `;
                 document.getElementById('employeeTableBody').appendChild(newRow);
             }
 
@@ -419,10 +374,16 @@ ini_set('display_errors', 1);
                 }
             }
 
+            // Función para actualizar un empleado
             function updateEmployee(id) {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const role = document.getElementById('role').value;
+
+                if (username === '' || role === '') {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
 
                 const data = new FormData();
                 data.append('id', id);
@@ -440,19 +401,14 @@ ini_set('display_errors', 1);
                     .then(data => {
                         if (data.success) {
                             alert('Empleado actualizado exitosamente.');
-                            // Aquí puedes actualizar la fila en la tabla
-                            const rows = document.querySelectorAll('#employeeTableBody tr');
-                            const rowIndex = Array.from(rows).findIndex(row => row.cells[0].textContent == id);
-                            if (rowIndex !== -1) {
-                                rows[rowIndex].innerHTML = `
-                    <td>${id}</td>
-                    <td>${username}</td>
-                    <td>******</td>
-                    <td>${role}</td>
-                    <td class="action-buttons">
-                        <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
-                    </td>
-                `;
+                            const employeeIndex = employees.findIndex(emp => emp.id === id);
+                            if (employeeIndex !== -1) {
+                                employees[employeeIndex] = {
+                                    id,
+                                    name: username,
+                                    role
+                                };
+                                updateEmployeeRow(id, username, role); // Actualizar la tabla
                             }
                         } else {
                             alert(data.message);
@@ -461,51 +417,27 @@ ini_set('display_errors', 1);
                     .catch(error => console.error('Error:', error));
             }
 
-            // Función para actualizar un empleado
-            function updateEmployee(id) {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const role = document.getElementById('role').value;
-
-                // Validación de los campos
-                if (username === '' || password === '' || role === '') {
-                    alert('Por favor, complete todos los campos.');
-                    return;
+            // Función para actualizar la fila de empleado en la tabla
+            function updateEmployeeRow(id, username, role) {
+                const rows = document.querySelectorAll('#employeeTableBody tr');
+                const rowIndex = Array.from(rows).findIndex(row => row.cells[0].textContent == id);
+                if (rowIndex !== -1) {
+                    rows[rowIndex].innerHTML = `
+                <td>${id}</td>
+                <td>${username}</td>
+                <td>******</td>
+                <td>${role}</td>
+                <td class="action-buttons">
+                    <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
+                </td>
+            `;
                 }
-
-                // Actualizar el empleado en el array
-                const employeeIndex = employees.findIndex(emp => emp.id === id);
-                if (employeeIndex !== -1) {
-                    employees[employeeIndex] = {
-                        id: id,
-                        name: username,
-                        password: password,
-                        role: role
-                    };
-
-                    // Actualizar la fila en la tabla
-                    const rows = document.querySelectorAll('#employeeTableBody tr');
-                    rows[employeeIndex].innerHTML = `
-                        <td>${id}</td>
-                        <td>${username}</td>
-                        <td>******</td>
-                        <td>${role}</td>
-                        <td class="action-buttons">
-                            <i class="fas fa-edit" title="Editar" onclick="editEmployee(${id})"></i>
-                        </td>
-                    `;
-                }
-
-                // Restablecer el formulario y cerrar el modal
-                resetForm();
-                const modalElement = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-                modalElement.hide();
             }
 
             // Función para restablecer el formulario
             function resetForm() {
                 document.getElementById('username').value = '';
-                document.getElement.getElementById('password').value = '';
+                document.getElementById('password').value = '';
                 document.getElementById('role').value = '';
                 const modalTitle = document.getElementById('staticBackdropLabel');
                 modalTitle.innerText = 'Formulario de Registro de Empleado';
@@ -515,17 +447,13 @@ ini_set('display_errors', 1);
             }
 
             // Agregar la funcionalidad de mostrar/ocultar contraseña
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
-
-            if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', function() {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    this.classList.toggle('fa-eye-slash');
-                    this.classList.toggle('fa-eye');
-                });
-            }
+            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+                this.classList.toggle('fa-eye');
+            });
 
             // Restablecer el formulario cuando el modal se oculta
             document.addEventListener('DOMContentLoaded', function() {
@@ -538,7 +466,6 @@ ini_set('display_errors', 1);
             });
 
             function logout() {
-                // Redirigir a inicio_sesion.php
                 window.location.href = 'login.php';
             }
 
@@ -547,44 +474,23 @@ ini_set('display_errors', 1);
                 window.history.pushState(null, '', window.location.href);
             };
 
-            // Mostrar el nombre de usuario en la interfaz
             const storedUser = JSON.parse(localStorage.getItem('user'));
             if (storedUser) {
-                document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario
+                document.getElementById('usernameDisplay').textContent = storedUser.usuario;
             } else {
-                window.location.href = 'login.php'; // Redirigir si no hay usuario
+                window.location.href = 'login.php';
             }
 
+            // Búsqueda de empleados
             function searchEmployees() {
                 const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
-                const rows = document.querySelectorAll('#employeeTableBody tr');
-
-                rows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
-                    if (name.includes(searchTerm)) {
-                        row.style.display = ''; // Mostrar fila
-                    } else {
-                        row.style.display = 'none'; // Ocultar fila
-                    }
-                });
-            }
-
-            function searchUsers() {
-                const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-                const rows = document.querySelectorAll('#userTableBody tr');
-
-                rows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
-                    if (name.includes(searchTerm)) {
-                        row.style.display = ''; // Mostrar fila
-                    } else {
-                        row.style.display = 'none'; // Ocultar fila
-                    }
+                document.querySelectorAll('#employeeTableBody tr').forEach(row => {
+                    const name = row.cells[1].textContent.toLowerCase();
+                    row.style.display = name.includes(searchTerm) ? '' : 'none';
                 });
             }
         </script>
+
     </div>
 </body>
 
