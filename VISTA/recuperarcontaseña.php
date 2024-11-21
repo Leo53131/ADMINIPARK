@@ -1,3 +1,7 @@
+<?php
+    include 'C:/AppServ/www/desarrollo_web/ADMINIPARK-main/ADMINIPARK/conexionBD/conexionBD.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
