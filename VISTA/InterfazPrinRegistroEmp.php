@@ -72,6 +72,7 @@ $facturas = $facturaController->listarFacturas();
 </head>
 
 <body>
+    
     <div class="parent">
         <!-- Encabezado de la interfaz -->
         <div class="div1">
