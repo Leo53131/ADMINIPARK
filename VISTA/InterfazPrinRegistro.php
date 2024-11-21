@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,10 +92,10 @@ ini_set('display_errors', 1);
 <body>
     <?php
     include '../conexion/conexion.php';
-    include '../controladores/usuariocontroller.php';
+    include '../controladores/propietariocontroller.php'; // Cambiar a propietario
 
-    $controller = new UsuarioController($conexion);
-    $usuarios = $controller->listarUsuarios(); // Obtener la lista de usuarios
+    $controller = new PropietarioController($conexion); // Cambiar a propietario
+    $propietarios = $controller->listarPropietarios(); // Obtener la lista de propietarios
     ?>
 
     <div class="parent">
@@ -116,7 +115,7 @@ ini_set('display_errors', 1);
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
-                            <li><button class="dropdown-item" type="button">Configuración</button></li>
+                            <li><button class="dropdown -item" type="button">Configuración</button></li>
                             <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
                         </ul>
                     </div>
@@ -127,7 +126,7 @@ ini_set('display_errors', 1);
         <div class="div2">
             <div class="sidebar">
                 <a href="#" onclick="showSection('employees')"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
-                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Usuarios</span></a>
+                <a href="#" onclick="showSection('users')"><i class="fas fa-users"></i><span>Cliente</span></a>
                 <a href="#" onclick="showSection('vehicles')"><i class="fas fa-car"></i><span>Vehículos</span></a>
                 <a href="#" onclick="showSection('invoices')"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
                 <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
@@ -142,8 +141,8 @@ ini_set('display_errors', 1);
                 <hr class="separator-line">
 
                 <div class="search-container">
-                    <input type="text" placeholder="Buscar empleados..." aria-label="Buscar empleados">
-                    <button type="button" class="nunito-unique-600" onclick="searchUsers()">Buscar</button>
+                    <input type="text" id="employeeSearch" placeholder="Buscar empleados..." aria-label="Buscar empleados">
+                    <button type="button" class="nunito-unique-600" onclick="searchEmployees()">Buscar</button>
                     <button type="button" class="nunito-unique-600" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar nuevo empleado</button>
                 </div>
 
@@ -208,16 +207,16 @@ ini_set('display_errors', 1);
 
             <!-- Sección de Usuarios -->
             <div id="users" class="main-content hidden">
-                <h2 class="nunito-unique-600">Usuarios</h2>
+                <h2 class="nunito-unique-600">Cliente</h2>
                 <hr class="separator-line">
 
                 <div class="search-container">
-                    <input type="text" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
-                    <button type="button">Buscar</button>
+                    <input type="text" id="userSearch" placeholder="Buscar usuarios..." aria-label="Buscar usuarios">
+                    <button type="button" class="nunito-unique-600" onclick="searchUsers()">Buscar</button>
                 </div>
 
                 <div class="table-container">
-                    <h3 class="nunito-unique-600">Usuarios registrados</h3>
+                    <h3 class="nunito-unique-600">Clientes registrados</h3>
                     <table class="users-table common-table">
                         <thead>
                             <tr>
@@ -237,7 +236,6 @@ ini_set('display_errors', 1);
                                     <td><?php echo htmlspecialchars($usuario['Correo']); ?></td>
                                     <td>
                                         <i class="fas fa-edit" title="Editar" onclick="editUser (<?php echo $usuario['id']; ?>)"></i>
-                                        <!-- Puedes agregar más acciones aquí -->
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -321,7 +319,7 @@ ini_set('display_errors', 1);
                     <button class="nunito-unique-600">Anterior</button>
                     <button class="nunito-unique-600">1</button>
                     <button class="nunito-unique-600">2</button>
-                    <button class="nunito-unique-600">Siguiente</button>
+                    <button class="nunito-unique-600">Siguiente </button>
                 </div>
             </div>
         </div>
@@ -337,7 +335,6 @@ ini_set('display_errors', 1);
             }
 
             // Función para registrar un nuevo empleado
-
             function registerEmployee() {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value.trim();
@@ -450,7 +447,7 @@ ini_set('display_errors', 1);
             // Función para restablecer el formulario
             function resetForm() {
                 document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
+                document.getElement .getElementById('password').value = '';
                 document.getElementById('role').value = '';
                 const modalTitle = document.getElementById('staticBackdropLabel');
                 modalTitle.innerText = 'Formulario de Registro de Empleado';
@@ -492,6 +489,21 @@ ini_set('display_errors', 1);
                 document.getElementById('usernameDisplay').textContent = storedUser .usuario; // Solo el nombre de usuario
             } else {
                 window.location.href = 'login.php'; // Redirigir si no hay usuario
+            }
+
+            function searchEmployees() {
+                const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
+                const rows = document.querySelectorAll('#employeeTableBody tr');
+
+                rows.forEach(row => {
+                    const cells = row.getElementsByTagName('td');
+                    const name = cells[1].textContent.toLowerCase(); // Suponiendo que el nombre está en la segunda celda
+                    if (name.includes(searchTerm)) {
+                        row.style.display = ''; // Mostrar fila
+                    } else {
+                        row.style.display = 'none'; // Ocultar fila
+                    }
+                });
             }
 
             function searchUsers() {
