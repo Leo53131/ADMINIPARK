@@ -6,51 +6,59 @@ class Usuario {
         $this->conexion = $conexion;
     }
 
-    public function registrar($nombre, $apellido, $correo, $usuario, $contraseña) {
+    public function registrar($nombre, $apellido, $correo, $nombreUsuario, $contrasena, $idRol) {
         try {
-            $sql = "INSERT INTO administrador (Nombre, Apellido, Correo, Usuario, password) VALUES (:Nombre, :Apellido, :Correo, :Usuario, :password)";
+            // Preparar la consulta SQL para insertar el nuevo usuario
+            $sql = "INSERT INTO usuarios (nombre, apellido, correo, nombreUsuario, contrasena, idRol) VALUES (:nombre, :apellido, :correo, :nombreUsuario, :contrasena, :idRol)";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bindParam(':Nombre', $nombre);
-            $stmt->bindParam(':Apellido', $apellido);
-            $stmt->bindParam(':Correo', $correo);
-            $stmt->bindParam(':Usuario', $usuario);
-            $stmt->bindParam(':password', password_hash($contraseña, PASSWORD_DEFAULT)); // Hashear la contraseña
+
+            // Vincular los parámetros
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellido', $apellido);
+            $stmt->bindParam(':correo', $correo);
+            $stmt->bindParam(':nombreUsuario', $nombreUsuario);
+            $stmt->bindParam(':contrasena', password_hash($contrasena, PASSWORD_DEFAULT)); // Encriptar la contraseña
+            $stmt->bindParam(':idRol', $idRol);
+
+            // Ejecutar la consulta
             $stmt->execute();
-            return true; // Registro exitoso
+            return "Registro exitoso"; // Mensaje de éxito
         } catch (PDOException $e) {
-            return false; // Error en el registro
+            // Manejo de errores
+            return "Error al registrar el usuario: " . $e->getMessage(); // Mensaje de error
         }
     }
 
-    public function login($usuario, $contraseña, $rol) {
-        // Aquí asumimos que tienes dos tablas: 'administrador' y 'empleado'
-        if ($rol === 'administrador') {
-            $sql = "SELECT * FROM administrador WHERE Usuario = :Usuario";
-        } else {
-            $sql = "SELECT * FROM empleado WHERE Usuario = :Usuario";
-        }
-    
+    public function login($nombreUsuario, $contrasena) {
+        // Preparar la consulta SQL para buscar al usuario
+        $sql = "SELECT * FROM usuarios WHERE nombreUsuario = :nombreUsuario";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bindParam(':Usuario', $usuario);
+        $stmt->bindParam(':nombreUsuario', $nombreUsuario);
         $stmt->execute();
+
+        // Obtener el usuario encontrado
         $usuarioEncontrado = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-        // Verificar si el usuario fue encontrado y si la contraseña es correcta
-        if ($usuarioEncontrado && password_verify($contraseña, $usuarioEncontrado['password'])) {
-            return $usuarioEncontrado; // Autenticación exitosa
+
+        // Verificar la contraseña
+        if ($usuarioEncontrado && password_verify($contrasena, $usuarioEncontrado['contrasena'])) {
+            return $usuarioEncontrado; // Devuelve el usuario encontrado
         }
         return false; // Fallo en la autenticación
     }
+
     public function listar() {
         try {
-            $sql = "SELECT * FROM administrador"; // Cambia esto si también necesitas empleados
+            // Preparar la consulta SQL para listar todos los usuarios
+            $sql = "SELECT * FROM usuarios";
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve todos los usuarios
+
+            // Devolver todos los usuarios
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            return []; // Retorna un array vacío en caso de error
+            // Manejo de errores
+            return [];
         }
     }
 }
-
 ?>

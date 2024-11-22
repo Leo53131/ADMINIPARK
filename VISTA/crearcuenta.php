@@ -1,3 +1,20 @@
+<?php
+session_start(); // Iniciar la sesión
+include '../conexion/conexion.php'; // Incluir el archivo de conexión
+include '../controladores/UsuarioController.php'; // Incluir el controlador
+
+// Crear una instancia del controlador
+$usuarioController = new UsuarioController($conexion);
+
+// Variable para almacenar el mensaje
+$mensaje = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Llamar al método registrar del controlador
+    $mensaje = $usuarioController->registrar();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -34,7 +51,7 @@
                 <button type="submit" name="registrar" class="Registrarse">Registrarse</button>
             </form>
 
-            <?php if (isset($mensaje)): ?>
+            <?php if (!empty($mensaje)): ?>
                 <div class="alert">
                     <?php echo $mensaje; ?>
                 </div>
