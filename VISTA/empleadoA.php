@@ -1,27 +1,27 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require_once '../conexion/conexion.php';
-require_once '../controladores/empleadocontroller.php';
+require_once '../controladores/EmpleadoController.php';
 
-$conexionObj = new Conexion();
-$conexion = $conexionObj->conectar();
-
-if (!$conexion) {
-    die("<div class='alert alert-danger'>Error al conectar a la base de datos.</div>");
+session_start();
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['nombreRol'] !== 'Administrador') {
+    header("Location: login.php");
+    exit();
 }
 
-$empleadoController = new EmpleadoController($conexion);
-$empleados = $empleadoController->listarEmpleados();
+$conexion = new Conexion();
+$db = $conexion->conectar();
+$empleadoController = new EmpleadoController($db);
 
-// Configuración de la paginación
-$empleadosPorPagina = 6;
-$totalEmpleados = count($empleados);
-$totalPaginas = ceil($totalEmpleados / $empleadosPorPagina);
-$paginaActual = isset($_GET['pagina']) ? max(1, min($totalPaginas, intval($_GET['pagina']))) : 1;
-$indiceInicio = ($paginaActual - 1) * $empleadosPorPagina;
-$empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina);
+// Pagination logic
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 10;
+$start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
+
+$empleados = $empleadoController->listarEmpleadosPaginados($start, $perPage);
+$total = $empleadoController->contarEmpleados();
+
+$pages = ceil($total / $perPage);
+
 ?>
 
 <!DOCTYPE html>
@@ -36,42 +36,8 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
 </head>
 <body>
     <div class="parent">
-        <!-- Encabezado de la interfaz -->
-        <div class="div1">
-            <div class="top-bar">
-                <div class="logo-container">
-                    <img src="../imagenes/Logo vistas (1).png" alt="Logo">
-                </div>
-                <div class="top-right">
-                    <div class="notification" style="margin-right: 20px;">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <div class="user-profile dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
-                            <li><button class="dropdown-item" type="button">Configuración</button></li>
-                            <li><button class="dropdown-item" type="button" onclick="cerrarSesion()">Cerrar sesión</button></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Header and sidebar code remains the same -->
 
-        <!-- Barra lateral de navegación -->
-        <div class="div2">
-            <div class="sidebar">
-                <a href="empleadoA.php"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
-                <a href="clienteA.php"><i class="fas fa-users"></i><span>Cliente</span></a>
-                <a href="vehiculoA.php"><i class="fas fa-car"></i><span>Vehículos</span></a>
-                <a href="facturaA.php"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
-                <a href="#" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
-            </div>
-        </div>
-
-        <!-- Contenido principal -->
         <div class="div3">
             <div id="employees" class="main-content">
                 <h2 class="nunito-unique-600">Empleados</h2>
@@ -89,25 +55,29 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Correo</th>
                                 <th>Usuario</th>
-                                <th>Contraseña</th>
                                 <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="employeeTableBody">
-                            <?php foreach ($empleadosPaginados as $empleado): ?>
+                            <?php foreach ($empleados as $empleado): ?>
                                 <tr>
-                <td><?php echo htmlspecialchars($empleado['idEmpleado']); ?></td>
-                                    <td><?php echo htmlspecialchars($empleado['Nombre_Usuario']); ?></td>
-                                    <td><?php echo $empleado['Contrasena'] === 'Inactivo' ? 'Inactivo' : '********'; ?></td>
-                                    <td><?php echo htmlspecialchars($empleado['Rol']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['idEmpleado']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['apellido']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['correo']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['nombreUsuario']); ?></td>
+                                    <td><?php echo htmlspecialchars($empleado['nombreRol']); ?></td>
                                     <td>
                                         <button class="btn btn-sm btn-primary" onclick="editarEmpleado(<?php echo $empleado['idEmpleado']; ?>)">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm <?php echo $empleado['Contrasena'] !== 'Inactivo' ? 'btn-warning' : 'btn-success'; ?>" onclick="toggleEstadoEmpleado(<?php echo $empleado['idEmpleado']; ?>, '<?php echo $empleado['Contrasena']; ?>')">
-                                            <i class="fas <?php echo $empleado['Contrasena'] !== 'Inactivo' ? 'fa-ban' : 'fa-check'; ?>"></i>
+                                        <button class="btn btn-sm btn-danger" onclick="eliminarEmpleado(<?php echo $empleado['idEmpleado']; ?>)">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -117,11 +87,9 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
                 </div>
 
                 <div class="pagination">
-                    <button class="nunito-unique-600" onclick="cambiarPagina(<?php echo max(1, $paginaActual - 1); ?>)">Anterior</button>
-                    <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                        <button class="nunito-unique-600 <?php echo $i === $paginaActual ? 'active' : ''; ?>" onclick="cambiarPagina(<?php echo $i; ?>)"><?php echo $i; ?></button>
+                    <?php for ($i = 1; $i <= $pages; $i++): ?>
+                        <a href="?page=<?php echo $i; ?>" class="<?php echo $page == $i ? 'active' : ''; ?>"><?php echo $i; ?></a>
                     <?php endfor; ?>
-                    <button class="nunito-unique-600" onclick="cambiarPagina(<?php echo min($totalPaginas, $paginaActual + 1); ?>)">Siguiente</button>
                 </div>
             </div>
 
@@ -137,20 +105,24 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
                             <form id="employeeForm">
                                 <input type="hidden" id="employee-id">
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Usuario</label>
-                                    <input type="text" class="form-control" id="username" required>
+                                    <label for="employee-nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="employee-nombre" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <label for="employee-apellido" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="employee-apellido" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="role" class="form-label">Rol</label>
-                                    <select class="form-control" id="role" required>
-                                        <option value="">Seleccione un rol</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Empleado">Empleado</option>
-                                    </select>
+                                    <label for="employee-correo" class="form-label">Correo</label>
+                                    <input type="email" class="form-control" id="employee-correo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="employee-usuario" class="form-label">Usuario</label>
+                                    <input type="text" class="form-control" id="employee-usuario" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="employee-contrasena" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" id="employee-contrasena" required>
                                 </div>
                             </form>
                         </div>
@@ -164,37 +136,16 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function buscarEmpleados() {
-            const terminoBusqueda = document.getElementById('employeeSearch').value.toLowerCase();
-            const filas = document.querySelectorAll('#employeeTableBody tr');
-            let resultadosEncontrados = 0;
+            const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#employeeTableBody tr');
 
-            filas.forEach(fila => {
-                const texto = fila.textContent.toLowerCase();
-                if (texto.includes(terminoBusqueda)) {
-                    fila.style.display = '';
-                    resultadosEncontrados++;
-                } else {
-                    fila.style.display = 'none';
-                }
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
-
-            const paginacion = document.querySelector('.pagination');
-            paginacion.style.display = terminoBusqueda ? 'none' : '';
-
-            const mensajeNoResultados = document.getElementById('mensajeNoResultados');
-            if (mensajeNoResultados) {
-                mensajeNoResultados.remove();
-            }
-            if (resultadosEncontrados === 0) {
-                const mensaje = document.createElement('p');
-                mensaje.id = 'mensajeNoResultados';
-                mensaje.textContent = 'No se encontraron resultados.';
-                document.querySelector('.table-container').appendChild(mensaje);
-            }
         }
 
         function editarEmpleado(id) {
@@ -202,32 +153,39 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('employee-id').value = data.idEmpleado;
-                    document.getElementById('username').value = data.Nombre_Usuario;
-                    document.getElementById('password').value = '';
-                    document.getElementById('role').value = data.Rol;
+                    document.getElementById('employee-nombre').value = data.nombre;
+                    document.getElementById('employee-apellido').value = data.apellido;
+                    document.getElementById('employee-correo').value = data.correo;
+                    document.getElementById('employee-usuario').value = data.nombreUsuario;
+                    document.getElementById('employee-contrasena').value = '';
                     
                     document.getElementById('employeeModalLabel').textContent = 'Editar Empleado';
                     const modal = new bootstrap.Modal(document.getElementById('employeeModal'));
                     modal.show();
-                })
-                .catch(error => console.error('Error:', error));
+                });
         }
 
         function guardarEmpleado() {
             const id = document.getElementById('employee-id').value;
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
+            const nombre = document.getElementById('employee-nombre').value;
+            const apellido = document.getElementById('employee-apellido').value;
+            const correo = document.getElementById('employee-correo').value;
+            const usuario = document.getElementById('employee-usuario').value;
+            const contrasena = document.getElementById('employee-contrasena').value;
 
             const data = {
-                action: id ? 'actualizar' : 'agregar',
                 id: id,
-                username: username,
-                password: password,
-                role: role
+                nombre: nombre,
+                apellido: apellido,
+                correo: correo,
+                nombreUsuario: usuario,
+                contrasena: contrasena,
+                rol: 'Empleado' // Automatically set role as Empleado
             };
 
-            fetch('../controladores/EmpleadoController.php', {
+            const url = id ? '../controladores/EmpleadoController.php?action=actualizar' : '../controladores/EmpleadoController.php?action=agregar';
+
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,47 +210,35 @@ $empleadosPaginados = array_slice($empleados, $indiceInicio, $empleadosPorPagina
             modal.hide();
         }
 
-        function toggleEstadoEmpleado(id, contrasenaActual) {
-            const nuevaContrasena = contrasenaActual === 'Inactivo' ? 'Activo' : 'Inactivo';
-            fetch('../controladores/EmpleadoController.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    action: 'toggleEstado',
-                    id: id,
-                    contrasena: nuevaContrasena
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Estado del empleado actualizado con éxito');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Ocurrió un error al procesar la solicitud');
-            });
+        function eliminarEmpleado(id) {
+            if (confirm('¿Está seguro de que desea eliminar este empleado?')) {
+                fetch(`../controladores/EmpleadoController.php?action=eliminar&id=${id}`, {
+                    method: 'POST',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Empleado eliminado con éxito');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Ocurrió un error al procesar la solicitud');
+                });
+            }
         }
 
-        function cambiarPagina(pagina) {
-            window.location.href = 'empleadoA.php?pagina=' + pagina;
-        }
-
-        function cerrarSesion() {
-            localStorage.removeItem('user');
+        function logout() {
             window.location.href = 'login.php';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const usuarioAlmacenado = JSON.parse(localStorage.getItem('user'));
-            if (usuarioAlmacenado) {
-                document.getElementById('usernameDisplay').textContent = usuarioAlmacenado.usuario;
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser) {
+                document.getElementById('usernameDisplay').textContent = storedUser.usuario;
             } else {
                 window.location.href = 'login.php';
             }

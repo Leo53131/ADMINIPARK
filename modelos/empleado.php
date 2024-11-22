@@ -1,59 +1,61 @@
 <?php
 class Empleado {
-    private $conexion;
+    private $db;
 
     public function __construct($conexion) {
-        $this->conexion = $conexion;
+        $this->db = $conexion;
     }
 
-    public function listarEmpleados() {
-        $query = "SELECT * FROM empleado"; // Cambia 'empleados' por el nombre de tu tabla
-        $stmt = $this->conexion->prepare($query);
+    public function listarEmpleadosPaginados($start, $perPage) {
+        $sql = "SELECT e.*, r.nombreRol FROM empleado e
+                JOIN rol r ON e.idRol = r.idRol
+                LIMIT ?, ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(1, $start, PDO::PARAM_INT);
+        $stmt->bindValue(2, $perPage, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function agregarEmpleado($username, $password, $role) {
-        $query = "INSERT INTO empleado (Nombre_Usuario, Contraseña, Rol) VALUES (:username, :password, :role)";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT)); // Asegúrate de hashear la contraseña
-        $stmt->bindParam(':role', $role);
-        return $stmt->execute();
+    public function contarEmpleados() {
+        $sql = "SELECT COUNT(*) FROM empleado";
+        return $this->db->query($sql)->fetchColumn();
     }
 
     public function obtenerEmpleado($id) {
-        $query = "SELECT * FROM empleado WHERE idEmpleado = :id"; // Cambia 'idEmpleado' por el nombre de tu campo ID
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $sql = "SELECT e.*, r.nombreRol FROM empleado e
+                JOIN rol r ON e.idRol = r.idRol
+                WHERE e.idEmpleado = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function actualizarEmpleado($id, $username, $password, $role) {
-        $query = "UPDATE empleado SET Nombre_Usuario = :username, Rol = :role" . ($password ? ", Contraseña = :password" : "") . " WHERE idEmpleado = :id";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':username', $username);
-        if ($password) {
-            $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+    public function agregarEmpleado($nombre, $apellido, $correo, $usuario, $contrasena) {
+        $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO empleado (nombre, apellido, nombreUsuario, contrasena, correo, idRol) 
+                VALUES (?, ?, ?, ?, ?, 2)"; // 2 es el idRol para Empleado
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $apellido, $usuario, $contrasenaHash, $correo]);
+    }
+
+    public function actualizarEmpleado($id, $nombre, $apellido, $correo, $usuario, $contrasena = null) {
+        if ($contrasena) {
+            $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+            $sql = "UPDATE empleado SET nombre = ?, apellido = ?, nombreUsuario = ?, contrasena = ?, correo = ? WHERE idEmpleado = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$nombre, $apellido, $usuario, $contrasenaHash, $correo, $id]);
+        } else {
+            $sql = "UPDATE empleado SET nombre = ?, apellido = ?, nombreUsuario = ?, correo = ? WHERE idEmpleado = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$nombre, $apellido, $usuario, $correo, $id]);
         }
-        $stmt->bindParam(':role', $role);
-        return $stmt->execute();
     }
 
     public function eliminarEmpleado($id) {
-        $query = "DELETE FROM empleado WHERE idEmpleado = :id";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    }
-    public function toggleEstado($id, $estado) {
-        $query = "UPDATE empleado SET Estado = :estado WHERE idEmpleado = :id";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':estado', $estado);
-        return $stmt->execute();
+        $sql = "DELETE FROM empleado WHERE idEmpleado = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$id]);
     }
 }
-?>
+

@@ -1,54 +1,35 @@
 <?php
-include '../modelos/Empleado.php'; // Asegúrate de que la ruta sea correcta
+require_once '../modelos/Empleado.php';
 
-class EmpleadoController
-{
+class EmpleadoController {
     private $empleado;
 
-
-    public function __construct($conexion)
-    {
+    public function __construct($conexion) {
         $this->empleado = new Empleado($conexion);
     }
 
-    public function listarEmpleados()
-    {
-        return $this->empleado->listarEmpleados();
+    public function listarEmpleadosPaginados($start, $perPage) {
+        return $this->empleado->listarEmpleadosPaginados($start, $perPage);
     }
 
-    public function agregarEmpleado($username, $password, $role)
-    {
-        return $this->empleado->agregarEmpleado($username, $password, $role);
+    public function contarEmpleados() {
+        return $this->empleado->contarEmpleados();
     }
 
-    public function obtenerEmpleado($id)
-    {
+    public function obtenerEmpleado($id) {
         return $this->empleado->obtenerEmpleado($id);
     }
 
-    public function actualizarEmpleado($id, $username, $password, $role)
-    {
-        return $this->empleado->actualizarEmpleado($id, $username, $password, $role);
+    public function agregarEmpleado($nombre, $apellido, $correo, $usuario, $contrasena) {
+        return $this->empleado->agregarEmpleado($nombre, $apellido, $correo, $usuario, $contrasena);
     }
 
-    public function eliminarEmpleado($id)
-    {
+    public function actualizarEmpleado($id, $nombre, $apellido, $correo, $usuario, $contrasena = null) {
+        return $this->empleado->actualizarEmpleado($id, $nombre, $apellido, $correo, $usuario, $contrasena);
+    }
+
+    public function eliminarEmpleado($id) {
         return $this->empleado->eliminarEmpleado($id);
     }
-    public function toggleEstadoEmpleado($id, $estado)
-    {
-        return $this->empleado->toggleEstado($id, $estado);
-    }
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $controller = new EmpleadoController($conexion);
 
-    switch ($data['action']) {
-            // ... (casos existentes) ...
-        case 'toggleEstado':
-            $result = $controller->toggleEstadoEmpleado($data['id'], $data['estado']);
-            echo json_encode(['success' => $result]);
-            break;
-    }
-}
