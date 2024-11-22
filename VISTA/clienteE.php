@@ -57,7 +57,7 @@
                 <a href="clienteE.php"><i class="fas fa-users"></i><span>Clientes</span></a>
                 <a href="vehiculoE.php"><i class="fas fa-car"></i><span>Vehículos</span></a>
                 <a href="facturaE.php"><i class="fas fa-file-invoice"></i><span>Facturas</span></a>
-                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
+                <a href="#" onclick="logout()" class="logout-link"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
             </div>
         </div>
 
@@ -207,6 +207,12 @@
         } else {
             window.location.href = 'login.php';
         }
+
+        function logout() {
+                    window.location.href = 'login.php';
+                }
+
+                
     </script>
 </body>
 

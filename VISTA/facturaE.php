@@ -277,6 +277,9 @@ try {
                 window.location.href = 'login.php';
             }
         });
+        function logout() {
+                    window.location.href = 'login.php';
+                }
     </script>
 </body>
 </html>

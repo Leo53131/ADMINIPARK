@@ -251,6 +251,10 @@ ini_set('display_errors', 1);
             }
             showVehicles(); // Mostrar la sección de vehículos por defecto
         });
+
+        function logout() {
+                    window.location.href = 'login.php';
+                }
     </script>
 </body>
 </html>

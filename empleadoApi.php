@@ -1,46 +1,28 @@
-<?php
-require_once '../conexion/conexion.php';
-require_once '../controladores/EmpleadoController.php';
+class EmpleadoController {
+    private $conexion;
 
-$conexionObj = new Conexion();
-$conexion = $conexionObj ->conectar();
-$controller = new EmpleadoController($conexion);
+    public function __construct($conexion) {
+        $this->conexion = $conexion;
+    }
 
-$requestMethod = $_SERVER['REQUEST_METHOD'];
+    public function agregarEmpleado($username, $password, $role) {
+        $query = "INSERT INTO empleados (Nombre_Usuario, Contrasena, Rol) VALUES (?, ?, ?)";
+        $stmt = $this->conexion->prepare($query);
+        
+        // Asegúrate de usar un método adecuado para manejar la contraseña (hashing)
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bind_param("sss", $username, $hashedPassword, $role);
 
-switch ($requestMethod) {
-    case 'POST':
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (isset($data['action'])) {
-            switch ($data['action']) {
-                case 'register':
-                    $result = $controller->agregarEmpleado($data['username'], $data['password'], $data['role']);
-                    echo json_encode(['success' => $result]);
-                    break;
-                case 'update':
-                    $result = $controller->actualizarEmpleado($data['id'], $data['username'], $data['password'], $data['role']);
-                    echo json_encode(['success' => $result]);
-                    break;
-                default:
-                    echo json_encode(['success' => false, 'message' => 'Acción no válida']);
-                    break;
-            }
+        if ($stmt->execute()) {
+            return ['success' => true];
         } else {
-            echo json_encode(['success' => false, 'message' => 'No se especificó la acción']);
+            return ['success' => false, 'message' => $stmt->error];
         }
-        break;
+    }
 
-    case 'GET':
-        if (isset($_GET['id'])) {
-            $empleado = $controller->obtenerEmpleado($_GET['id']);
-            echo json_encode($empleado);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'ID no especificado']);
-        }
-        break;
-
-    default:
-        echo json_encode(['success' => false, 'message' => 'Método no permitido']);
-        break;
+    public function listarEmpleados() {
+        $query = "SELECT * FROM empleados";
+        $stmt = $this->conexion->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
-?>
