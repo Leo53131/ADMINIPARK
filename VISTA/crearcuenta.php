@@ -1,4 +1,60 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+// Incluir conexión
+require_once '../conexion/conexion.php';
+
+// Crear instancia de conexión
+$conexion = new Conexion();
+$db = $conexion->conectar();
+$baseDatosConectada = false;
+
+// Verificar si la conexión es exitosa
+if ($db) {
+    $baseDatosConectada = true;
+}
+
+// Inicializar mensaje para mostrar después de intentar registrar
+$mensaje = "";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['registrar'])) {
+    // Recoger los datos del formulario
+    $nombre = $_POST['Nombre'];
+    $apellido = $_POST['Apellido'];
+    $correo = $_POST['Correo'];
+    $usuario = $_POST['Usuario'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Encriptar contraseña
+
+    if ($baseDatosConectada) {
+        try {
+            // Preparar la consulta SQL
+            $query = "INSERT INTO administrador (Nombre, Apellido, correo, Usuario, Contraseña) 
+                      VALUES (:nombre, :apellido, :correo, :usuario, :password)";
+            $stmt = $db->prepare($query);
+
+            // Asignar valores a los parámetros
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellido', $apellido);
+            $stmt->bindParam(':correo', $correo);
+            $stmt->bindParam(':usuario', $usuario);
+            $stmt->bindParam(':password', $password);
+
+            // Ejecutar la consulta
+            if ($stmt->execute()) {
+                $mensaje = "Usuario registrado exitosamente.";
+            } else {
+                $mensaje = "Error al registrar el usuario.";
+            }
+        } catch (PDOException $e) {
+            $mensaje = "Error en la base de datos: " . $e->getMessage();
+        }
+    } else {
+        $mensaje = "No se pudo conectar a la base de datos.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,9 +67,20 @@
 <body>
 <div class="contenedor">
     <div class="box">
+        <!-- Mostrar el estado de la conexión -->
+        <?php if ($baseDatosConectada): ?>
+            <div class="alert alert-success">
+                Conexión exitosa a la base de datos.
+            </div>
+        <?php else: ?>
+            <div class="alert alert-error">
+                No se pudo conectar a la base de datos.
+            </div>
+        <?php endif; ?>
+
         <div class="encabezado">
             <h2>Crear una cuenta nueva</h2>
-            <h5>¿Ya te registraste? Inicia sesión aquí</h5>
+            <h5>¿Ya te registraste? <a href="login.php" class="login-link">Inicia sesión aquí</a></h5>
         </div>
 
         <form method="post" action="crearcuenta.php">
@@ -33,13 +100,13 @@
             <button type="submit" name="registrar" class="Registrarse">Registrarse</button>
         </form>
 
-        <?php if (isset($mensaje)): ?>
+        <!-- Mostrar mensaje de éxito o error -->
+        <?php if (!empty($mensaje)): ?>
             <div class="alert">
                 <?php echo $mensaje; ?>
             </div>
         <?php endif; ?>
     </div>
 </div>
-
 </body>
 </html>

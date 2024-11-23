@@ -1,8 +1,9 @@
 <?php
 // Conexion.php
+
 class Conexion {
-    private $host = '127.0.0.1:3306';
-    private $db = 'mydb';
+    private $host = 'localhost';
+    private $db = 'mybd';
     private $user = 'root';
     private $pass = '12345678';
     private $conexion;
@@ -20,5 +21,6 @@ class Conexion {
             return null;
         }
     }
+    
 }
 ?>
