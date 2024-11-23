@@ -88,7 +88,7 @@
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (!storedUser) {
             // Si no hay usuario almacenado, redirigir a la página de inicio de sesión
-            window.location.href = 'inicio_sesion.php';
+            window.location.href = 'index.php';
         } else {
             // Mostrar el nombre de usuario en la interfaz
             document.getElementById('usernameDisplay').textContent = storedUser.usuario; // Solo el nombre de usuario

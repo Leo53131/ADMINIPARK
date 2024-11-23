@@ -59,7 +59,7 @@
 
         // Redirigir a la página de inicio de sesión
         alert('Registro exitoso. Ahora puedes iniciar sesión.');
-        window.location.href = 'inicio_sesion.php'; // Cambia esto a la ruta de tu página de inicio de sesión
+        window.location.href = 'index.php'; // Cambia esto a la ruta de tu página de inicio de sesión
     });
 </script>
 </body>
