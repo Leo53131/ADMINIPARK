@@ -7,9 +7,9 @@ if (isset($_SESSION['usuario'])) {
     $rol = $_SESSION['usuario']['rol']; // Suponiendo que el rol se almacena en la sesión
 
     if ($rol === 'admin') {
-        header('Location: VISTA/InterfazPrinRegistroEMP.php'); // Redirigir a la interfaz de administrador
+        header('Location: VISTA/empleadoA.php'); // Redirigir a la interfaz de administrador
     } elseif ($rol === 'employee') {
-        header('Location: VISTA/InterfazPrinRegistro.php'); // Redirigir a la interfaz de empleado
+        header('Location: VISTA/clenteE.php'); // Redirigir a la interfaz de empleado
     }
     exit();
 } else {

@@ -2,11 +2,7 @@
 require_once '../conexion/conexion.php';
 require_once '../controladores/EmpleadoController.php';
 
-session_start();
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['nombreRol'] !== 'Administrador') {
-    header("Location: login.php");
-    exit();
-}
+
 
 $conexion = new Conexion();
 $db = $conexion->conectar();
@@ -17,8 +13,8 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $perPage = 10;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
-$empleados = $empleadoController->listarEmpleadosPaginados($start, $perPage);
-$total = $empleadoController->contarEmpleados();
+
+
 
 $pages = ceil($total / $perPage);
 
@@ -36,7 +32,39 @@ $pages = ceil($total / $perPage);
 </head>
 <body>
     <div class="parent">
-        <!-- Header and sidebar code remains the same -->
+        <!-- Encabezado de la interfaz -->
+        <div class="div1">
+            <div class="top-bar">
+                <div class="logo-container">
+                    <img src="../imagenes/Logo vistas (1).png" alt="Logo">
+                </div>
+                <div class="top-right">
+                    <div class="notification" style="margin-right: 20px;">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="user-profile dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i> <span id="usernameDisplay"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><button class="dropdown-item" type="button" onclick="window.open('../imagenes/Manual de usuario.pdf', '_blank')">Ayuda</button></li>
+                            <li><button class="dropdown-item" type="button">Configuración</button></li>
+                            <li><button class="dropdown-item" type="button" onclick="logout()">Cerrar sesión</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Barra lateral de navegación -->
+        <div class="div2">
+            <div class="sidebar">
+                <a href="empleadoA.php"><i class="fas fa-user"></i><span>Gestión de empleados</span></a>
+                <a href="clienteA.php"><i class="fas fa-users"></i><span>Cliente</span></a>
+                <a href="vehiculoA.php"><i class="fas fa-car"></i><span>Vehículos</span></a>
+                <a href="facturaA.php"><i class="fas fa-file-invoice"></i><span>Factura</span></a>
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Salir</span></a>
+            </div>
+        </div>
 
         <div class="div3">
             <div id="employees" class="main-content">

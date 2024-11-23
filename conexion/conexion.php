@@ -1,20 +1,26 @@
 <?php
+// Conexion.php
+
 class Conexion {
+    private $host = 'localhost';
+    private $db = 'mybd';
+    private $user = 'root';
+    private $pass = '12345678';
     private $conexion;
 
+    // Método para conectar a la base de datos
     public function conectar() {
-        $host = '127.0.0.1:3306'; 
-        $db = 'mydb';
-        $user = 'root';
-        $pass = '12345678';
-
         try {
-            $this->conexion = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+            // Establecer la conexión utilizando PDO
+            $this->conexion = new PDO("mysql:host={$this->host};dbname={$this->db};charset=utf8", $this->user, $this->pass);
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->conexion;
         } catch (PDOException $e) {
-            echo "Error en la conexión: " . $e->getMessage();
+            // Capturar errores y mostrarlos
+            echo "Error de conexión: " . $e->getMessage();
             return null;
         }
     }
+    
 }
+?>

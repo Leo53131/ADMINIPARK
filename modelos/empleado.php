@@ -1,43 +1,28 @@
 <?php
-class EmpleadoModel {
-    private $conexion;
+class Empleado {
+    private $db;
+    private $table = 'empleados';
 
-    public function __construct($conexion) {
-        $this->conexion = $conexion;
+    public function __construct($db) {
+        $this->db = $db;
     }
 
-    public function registrarEmpleado($username, $password, $role) {
-        try {
-            $stmt = $this->conexion->prepare("INSERT INTO empleado (Nombre_Usuario, Contraseña, Rol) VALUES (?, ?, ?)");
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashear la contraseña
-            $stmt->execute([$username, $hashedPassword, $role]);
-            return true;
-        } catch (PDOException $e) {
-            error_log("Error al registrar empleado: " . $e->getMessage());
-            return false;
-        }
+    public function agregarEmpleado($nombre, $apellido, $correo, $nombreUsuario, $contrasena, $rol) {
+        $query = "INSERT INTO $this->table (nombre, apellido, correo, nombreUsuario, contrasena, rol) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("ssssss", $nombre, $apellido, $correo, $nombreUsuario, $contrasena, $rol);
+
+        return $stmt->execute();
     }
 
-    public function listarEmpleados() {
-        try {
-            $query = "SELECT idEmpleado, Nombre_Usuario, Rol FROM empleado";
-            $stmt = $this->conexion->query($query);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Aquí se corrige el método fetchAll()
-        } catch (PDOException $e) {
-            error_log("Error al listar empleados: " . $e->getMessage());
-            return [];
-        }
-    }
+    public function actualizarEmpleado($id, $nombre, $apellido, $correo, $nombreUsuario, $contrasena, $rol) {
+        $query = "UPDATE $this->table SET nombre = ?, apellido = ?, correo = ?, nombreUsuario = ?, contrasena = ?, rol = ? WHERE idEmpleado = ?";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("ssssssi", $nombre, $apellido, $correo, $nombreUsuario, $contrasena, $rol, $id);
 
-    public function actualizarEmpleado($id, $username, $password, $role) {
-        try {
-            $stmt = $this->conexion->prepare("UPDATE empleado SET Nombre_Usuario = ?, Contraseña = ?, Rol = ? WHERE idEmpleado = ?");
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashear la contraseña
-            $stmt->execute([$username, $hashedPassword, $role, $id]);
-            return true;
-        } catch (PDOException $e) {
-            error_log("Error al actualizar empleado: " . $e->getMessage());
-            return false;
-        }
+        return $stmt->execute();
     }
 }
+?>
